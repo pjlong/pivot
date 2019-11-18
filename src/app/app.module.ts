@@ -10,6 +10,7 @@ import { ProjectService } from './resources/project.service';
 import { CurrentUserComponent } from './current-user/current-user.component';
 import { HomeComponent } from './containers/home/home.component';
 import { ProjectDashboardComponent } from './containers/project-dashboard/project-dashboard.component';
+import { EpicService } from './resources/epic.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ProjectDashboardComponent } from './containers/project-dashboard/projec
   providers: [
     PivotalAPIService,
     MeService,
-    ProjectService
+    ProjectService,
+    EpicService
   ],
   bootstrap: [AppComponent]
 })
