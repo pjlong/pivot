@@ -1,9 +1,12 @@
+import * as process from 'process';
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  host: 'http://localhost:8080',
+  pivotalAPIToken: 'aabe9b65aeb4d6392ad55a1ee1c37f46'
 };
 
 /*

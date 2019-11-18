@@ -10,6 +10,9 @@
     "module": "esnext",
     "moduleResolution": "node",
     "importHelpers": true,
+    "paths": {
+      "@env": ["./src/environments/environment"]
+    },
     "target": "es2015",
     "typeRoots": [
       "node_modules/@types"

@@ -12,13 +12,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "pt",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      "pt",
       "kebab-case"
     ],
     "import-blacklist": [
@@ -66,7 +66,29 @@
       "as-needed"
     ],
     "object-literal-sort-keys": false,
-    "ordered-imports": false,
+    "ordered-imports": [
+      true,
+      {
+        "grouped-imports": true,
+        "groups": [
+          {
+            "name": "Third-party Modules",
+            "match": "^(?!(@app|@tests|@env))@?[\\w-]+",
+            "order": 10
+          },
+          {
+            "name": "Scoped First-party Modules",
+            "match": "^@(app|test|env)/",
+            "order": 20
+          },
+          {
+            "name": "Relative Imports",
+            "match": "^(\\.\\.|\\.)",
+            "order": 30
+          }
+        ]
+      }
+    ],
     "quotemark": [
       true,
       "single"
@@ -86,6 +108,8 @@
     "use-pipe-transform-interface": true
   },
   "rulesDirectory": [
-    "codelyzer"
-  ]
+    "codelyzer",
+    "node_modules/@types"
+  ],
+  "types": "node"
 }
