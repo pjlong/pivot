@@ -9,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
       <strong>Projects</strong>
       <ul *ngIf="user.projects.length">
         <li *ngFor="let project of user.projects">
-          <span>{{ project.project_name}}</span>
+          <a [routerLink]="['/project/' + project.project_id]">{{ project.project_name}}</a>
         </li>
       </ul>
     </div>

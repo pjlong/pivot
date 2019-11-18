@@ -4,8 +4,12 @@ import { MeService } from 'src/app/resources/me.service';
 
 @Component({
   selector: 'pt-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  template: `
+    <pt-current-user
+      [user]="me"
+    ></pt-current-user>
+  `
 })
 export class HomeComponent implements OnInit {
   me: any;
@@ -16,11 +20,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.meService.me$
-    .pipe(take(1))
-    .subscribe(response => {
-      console.log('res', response);
-      this.me = response;
-    });
+      .pipe(take(1))
+      .subscribe(response => {
+        console.log('ME', response);
+        this.me = response;
+      });
 
     this.meService.get();
   }
