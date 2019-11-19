@@ -1,20 +1,20 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PivotalAPIService } from './pivotal-api.service';
-import { MeService } from './resources/me.service';
-import { ProjectService } from './resources/project.service';
-import { CurrentUserComponent } from './current-user/current-user.component';
-import { HomeComponent } from './containers/home/home.component';
-import { ProjectDashboardComponent } from './containers/project-dashboard/project-dashboard.component';
-import { EpicService } from './resources/epic.service';
-import { ProjectTeamComponent } from './containers/project-team/project-team.component';
-import { ProjectMembershipsService } from './resources/project-memberships.service';
 import { CardComponent } from './bootstrap/card/card.component';
+import { HomeComponent } from './containers/home/home.component';
+import { ProjectBoardComponent } from './containers/project-board/project-board.component';
+import { ProjectDashboardComponent } from './containers/project-dashboard/project-dashboard.component';
+import { CurrentUserComponent } from './current-user/current-user.component';
+import { PivotalAPIService } from './pivotal-api.service';
+import { EpicService } from './resources/epic.service';
+import { MeService } from './resources/me.service';
+import { ProjectMembershipsService } from './resources/project-memberships.service';
+import { ProjectService } from './resources/project.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,7 @@ import { CardComponent } from './bootstrap/card/card.component';
     CurrentUserComponent,
     HomeComponent,
     ProjectDashboardComponent,
-    ProjectTeamComponent,
+    ProjectBoardComponent,
     CardComponent
   ],
   imports: [

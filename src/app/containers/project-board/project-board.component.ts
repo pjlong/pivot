@@ -7,10 +7,10 @@ import { ProjectMembershipResponse, ProjectMembershipsService } from '@app/resou
 import { StoriesService, StoryResponse } from '@app/resources/stories.service';
 
 @Component({
-  selector: 'pt-project-team',
+  selector: 'pt-project-board',
   template: `
     <nav class="navbar navbar-dark sticky-top bg-dark">
-      <h1 class="navbar-brand">Team View</h1>
+      <h1 class="navbar-brand">Board View</h1>
       <a [routerLink]="['/project/' + projectId]">
         Back to Project
       </a>
@@ -70,9 +70,9 @@ import { StoriesService, StoryResponse } from '@app/resources/stories.service';
       </section>
     </section>
   `,
-  styleUrls: ['./project-team.component.scss']
+  styleUrls: ['./project-board.component.scss']
 })
-export class ProjectTeamComponent implements OnInit, OnDestroy {
+export class ProjectBoardComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
   projectId: string;

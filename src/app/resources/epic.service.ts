@@ -28,8 +28,7 @@ export class EpicService {
   constructor(private pivotalAPI: PivotalAPIService) { }
 
   get(projectId: string) {
-    const req = this.pivotalAPI.get(`/projects/${projectId}/epics`)
-      .pipe(map(r => r.body));
+    const req = this.pivotalAPI.get(`/projects/${projectId}/epics`).pipe(map(r => r.body));
     req.subscribe({
       next: response => {
         this.data$.next(response as EpicResponse[]);

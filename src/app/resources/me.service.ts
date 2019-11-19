@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 import { PivotalAPIService } from '../pivotal-api.service';
 
@@ -19,7 +19,7 @@ export class MeService {
   }
 
   private _get() {
-    const req = this.pivotalAPI.get('/me');
+    const req = this.pivotalAPI.get('/me').pipe(map(r => r.body));
     req.subscribe({
       next: me => {
         this._me$.next(me);

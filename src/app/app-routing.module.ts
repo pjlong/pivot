@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './containers/home/home.component';
+import { ProjectBoardComponent } from './containers/project-board/project-board.component';
 import { ProjectDashboardComponent } from './containers/project-dashboard/project-dashboard.component';
-import { ProjectTeamComponent } from './containers/project-team/project-team.component';
 
 
 const routes: Routes = [
@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path: 'project/:id',
     children: [
-      { path: 'team', component: ProjectTeamComponent },
+      { path: 'board', component: ProjectBoardComponent },
       { path: '', component: ProjectDashboardComponent }
     ]
   }

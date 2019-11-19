@@ -12,7 +12,7 @@ import { ProjectResponse, ProjectService } from 'src/app/resources/project.servi
     <section *ngIf="project">
       <h1>Project: {{ project.name }}</h1>
       <nav>
-        <a [routerLink]="['team']">Team</a>
+        <a [routerLink]="['board']">Board</a>
       </nav>
       <hr>
       <h2>Epics</h2>

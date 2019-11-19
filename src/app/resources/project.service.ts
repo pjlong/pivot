@@ -25,8 +25,7 @@ export class ProjectService {
   constructor(private pivotalAPI: PivotalAPIService) { }
 
   get(id: string) {
-    const req = this.pivotalAPI.get(`/projects/${id}`)
-      .pipe(map(r => r.body));
+    const req = this.pivotalAPI.get(`/projects/${id}`).pipe(map(r => r.body));
     req.subscribe({
       next: response => {
         this.data$.next(response as ProjectResponse);
