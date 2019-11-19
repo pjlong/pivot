@@ -1,0 +1,29 @@
+@import "../../../variables";
+
+.pool {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.swimlane {
+  float: left;
+  height: 100vh;
+  width: 21rem;
+}
+
+.y-scroll {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.viewport {
+  width: 100vw;
+  overflow-x: auto;
+}
+
+.badge-label {
+  max-width: 15rem;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

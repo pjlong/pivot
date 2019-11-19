@@ -5,7 +5,9 @@ import { MeService } from './resources/me.service';
 @Component({
   selector: 'pt-root',
   template: `
-    <router-outlet></router-outlet>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
   `,
   styleUrls: ['./app.component.scss']
 })

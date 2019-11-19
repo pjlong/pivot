@@ -8,24 +8,27 @@ import { environment } from '@env';
 })
 export class PivotalAPIService {
   PIVOTAL_API_ROOT = 'https://pivotaltracker.com/services/v5';
+  DEFAULT_HEADERS = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    'X-TrackerToken': environment.pivotalAPIToken
+  };
 
   headers: HttpHeaders;
 
   constructor(
     private http: HttpClient
-  ) {
-    this.headers = new HttpHeaders({
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'X-TrackerToken': environment.pivotalAPIToken
-    });
-  }
+  ) { }
 
-  get(path: string, params: any = {}) {
+  get(path: string, options?: any) {
+    const params = options ? options.params : {};
+    const headers = options ? options.headers : {};
+
     return this.http.get(`${environment.host}/${this.PIVOTAL_API_ROOT}${path}`,
       {
-        headers: this.headers,
-        params
+        headers: this.buildHeaders(headers),
+        params,
+        observe: 'response'
       }
     );
   }
@@ -33,9 +36,16 @@ export class PivotalAPIService {
   post(path: string, params: any) {
     return this.http.post(`${environment.host}/${this.PIVOTAL_API_ROOT}${path}`,
       {
-        headers: this.headers,
+        headers: this.buildHeaders(),
         params
       }
     );
+  }
+
+  private buildHeaders(headers = {}) {
+    return new HttpHeaders({
+      ...headers,
+      ...this.DEFAULT_HEADERS
+    });
   }
 }

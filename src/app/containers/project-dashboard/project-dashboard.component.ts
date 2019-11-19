@@ -11,6 +11,9 @@ import { ProjectResponse, ProjectService } from 'src/app/resources/project.servi
   template: `
     <section *ngIf="project">
       <h1>Project: {{ project.name }}</h1>
+      <nav>
+        <a [routerLink]="['team']">Team</a>
+      </nav>
       <hr>
       <h2>Epics</h2>
       <div *ngFor="let epic of epics">

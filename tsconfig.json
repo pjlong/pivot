@@ -11,7 +11,9 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "paths": {
-      "@env": ["./src/environments/environment"]
+      "@env": ["./src/environments/environment"],
+      "@app/*": ["./src/app/*"],
+      "@bootstrap/*": ["./src/app/bootstrap/*"]
     },
     "target": "es2015",
     "typeRoots": [
