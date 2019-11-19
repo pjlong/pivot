@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -31,6 +32,7 @@ import { StoriesService, StoryResponse } from '@app/resources/stories.service';
                   'alert-danger': story.story_type === 'bug',
                   'alert-secondary': story.story_type === 'chore'
                 }"
+                (click)="openStoryModal(content, stateName, story.id)"
               >
                 <header class="card-body">
                   <h5>{{ story.name }}</h5>
@@ -65,8 +67,8 @@ import { StoriesService, StoryResponse } from '@app/resources/stories.service';
                   <div class="d-flex flex-row-reverse">
                     <span
                       class="badge badge-primary mt-2 mr-1"
-                      [title]="owner?.name"
                       *ngFor="let owner of story.owners"
+                      [title]="owner?.name"
                     >{{ owner?.initials | uppercase }}
                     </span>
                   </div>
@@ -77,6 +79,56 @@ import { StoriesService, StoryResponse } from '@app/resources/stories.service';
         </div>
       </section>
     </section>
+    <ng-template #content let-modal>
+      <header class="modal-header">
+        <h4 class="modal-title">{{ focusedStory?.name }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <i aria-hidden="true">&times;</i>
+        </button>
+      </header>
+      <div class="modal-body container-fluid">
+        <div class="row">
+          <p class="col-sm-7 col-lg-9">{{ focusedStory?.description }}</p>
+          <div class="col-sm-5 col-lg-3">
+            <div class="mb-2">
+              <h4>Story Type:</h4>
+              <span>
+                <i
+                  class="fas"
+                  [ngClass]="{
+                    'fa-star text-warning': focusedStory.story_type === 'feature',
+                    'fa-bug text-danger': focusedStory.story_type === 'bug',
+                    'fa-wrench text-secondary': focusedStory.story_type === 'chore'
+                  }"
+                ></i>
+                {{ focusedStory?.story_type }}
+              </span>
+            </div>
+            <div class="mb-2">
+              <h4>Requester:</h4>
+              <span>{{ focusedStory?.requester.name || 'None' }}</span>
+            </div>
+            <div class="mb-2">
+              <h4>Owners:</h4>
+              <span class="d-block" *ngFor="let owner of focusedStory?.owners">
+                {{ owner?.name }}
+              </span>
+              <span class="text-muted" *ngIf="focusedStory?.owners.length === 0">None</span>
+            </div>
+            <div class="mb-2">
+              <h4>Estimate:</h4>
+              <span>{{ focusedStory?.estimate || 'unestimated' }}</span>
+            </div>
+            <div class="mb-2">
+              <h4>Labels:</h4>
+              <span class="badge badge-dark" *ngFor="let label of focusedStory?.labels">
+                {{ label.name }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
   `,
   styleUrls: ['./project-board.component.scss']
 })
@@ -89,11 +141,13 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
   peopleMap = {};
   displayGroups = {};
   displayOrder = ['unscheduled', 'unstarted', 'started', 'finished', 'delivered', 'accepted'];
+  focusedStory?: StoryResponse;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private storiesService: StoriesService,
-    private projectMembershipService: ProjectMembershipsService
+    private projectMembershipService: ProjectMembershipsService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -139,5 +193,14 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  openStoryModal(content: TemplateRef<Element>, state: string, storyId: number | string) {
+    this.focusedStory = this.findStory(state, storyId);
+    this.modalService.open(content, { size: 'xl', scrollable: true });
+  }
 
+  private findStory(state: string, storyId: number | string): StoryResponse | null {
+    const storyGroup = this.displayGroups[state];
+    const story = storyGroup.find(({ id }: { id: number | string }) => id === storyId);
+    return story;
+  }
 }
