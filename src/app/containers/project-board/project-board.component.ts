@@ -15,11 +15,14 @@ import { StoriesService, StoryResponse } from '@app/resources/stories.service';
         Back to Project
       </a>
     </nav>
-    <section class="viewport pb-8">
-      <section class="pool mt-4 mb-5 py-2" [style.width.rem]="20 * displayOrder.length" *ngIf="stories.length">
+    <section class="viewport px-3">
+      <section class="pool mt-4 mb-5 py-2" [style.width.rem]="(21 + 1) * displayOrder.length" *ngIf="stories.length">
         <div class="swimlane mr-3" *ngFor="let stateName of displayOrder">
-          <h2>{{ stateName | titlecase }}</h2>
-          <div class="y-scroll">
+          <header>
+            <h2 class="d-inline mr-1">{{ stateName | titlecase }}</h2>
+            <span>({{ displayGroups[stateName]?.length }})</span>
+          </header>
+          <div class="y-scroll pb-3">
             <div *ngFor="let story of displayGroups[stateName]">
               <article
                 class="card my-3"
@@ -60,7 +63,12 @@ import { StoriesService, StoryResponse } from '@app/resources/stories.service';
                     </span>
                   </div>
                   <div class="d-flex flex-row-reverse">
-                    <span class="badge badge-primary mt-2" *ngFor="let owner of story.owners">{{ owner?.initials | uppercase }}</span>
+                    <span
+                      class="badge badge-primary mt-2 mr-1"
+                      [title]="owner?.name"
+                      *ngFor="let owner of story.owners"
+                    >{{ owner?.initials | uppercase }}
+                    </span>
                   </div>
                 </div>
               </article>
@@ -80,7 +88,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
   memberships: ProjectMembershipResponse[] = [];
   peopleMap = {};
   displayGroups = {};
-  displayOrder = ['unstarted', 'started', 'finished', 'delivered', 'accepted', 'rejected'];
+  displayOrder = ['unscheduled', 'unstarted', 'started', 'finished', 'delivered', 'accepted'];
 
   constructor(
     private activatedRoute: ActivatedRoute,
