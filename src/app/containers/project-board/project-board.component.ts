@@ -10,12 +10,7 @@ import { StoriesService, StoryResponse } from '@app/resources/stories.service';
 @Component({
   selector: 'pt-project-board',
   template: `
-    <nav class="navbar navbar-dark sticky-top bg-dark">
-      <h1 class="navbar-brand">Board View</h1>
-      <a [routerLink]="['/project/' + projectId]">
-        Back to Project
-      </a>
-    </nav>
+    <pt-project-nav activeTab="board"></pt-project-nav>
     <section class="viewport px-3">
       <section class="pool mt-4 mb-5 py-2" [style.width.rem]="(21 + 1) * displayOrder.length" *ngIf="stories.length">
         <div class="swimlane mr-3" *ngFor="let stateName of displayOrder">

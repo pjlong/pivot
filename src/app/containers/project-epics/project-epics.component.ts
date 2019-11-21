@@ -1,24 +1,25 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { EpicResponse, EpicService } from 'src/app/resources/epic.service';
-import { ProjectResponse, ProjectService } from 'src/app/resources/project.service';
+
+import { EpicResponse, EpicService } from '@app/resources/epic.service';
+import { ProjectResponse, ProjectService } from '@app/resources/project.service';
 
 @Component({
-  selector: 'pt-project-dashboard',
+  selector: 'pt-project-epics',
   template: `
-    <pt-project-nav></pt-project-nav>
-    <section class="container-fluid">
-      <section *ngIf="project">
-        <h1>Project: {{ project.name }}</h1>
-      </section>
+    <pt-project-nav activeTab="board"></pt-project-nav>
+    <section class="container">
+      <div *ngFor="let epic of epics">
+        <h3>{{ epic.name }}</h3>
+        <span *ngFor="let label of epic.labels">{{ label.name }}</span>
+      </div>
     </section>
   `,
-  styleUrls: ['./project-dashboard.component.scss']
+  styleUrls: ['./project-epics.component.scss']
 })
-export class ProjectDashboardComponent implements OnInit, OnDestroy {
+export class ProjectEpicsComponent implements OnInit, OnDestroy {
   project: ProjectResponse;
   epics: EpicResponse[];
   private destroy$ = new Subject();
@@ -27,8 +28,9 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private projectService: ProjectService,
     private epicService: EpicService,
-  ) { }
+  ) {
 
+  }
   ngOnInit() {
     this.activatedRoute.paramMap
       .subscribe(params => {
@@ -55,4 +57,5 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
 }

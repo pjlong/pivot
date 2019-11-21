@@ -15,6 +15,8 @@ import { EpicService } from './resources/epic.service';
 import { MeService } from './resources/me.service';
 import { ProjectMembershipsService } from './resources/project-memberships.service';
 import { ProjectService } from './resources/project.service';
+import { ProjectEpicsComponent } from './containers/project-epics/project-epics.component';
+import { ProjectNavComponent } from './components/project-nav/project-nav.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { ProjectService } from './resources/project.service';
     HomeComponent,
     ProjectDashboardComponent,
     ProjectBoardComponent,
-    CardComponent
+    CardComponent,
+    ProjectEpicsComponent,
+    ProjectNavComponent
   ],
   imports: [
     BrowserModule,

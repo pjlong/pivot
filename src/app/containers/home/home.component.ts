@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit {
     this.meService.me$
       .pipe(take(1))
       .subscribe(response => {
-        console.log('ME', response);
         this.me = response;
       });
 
