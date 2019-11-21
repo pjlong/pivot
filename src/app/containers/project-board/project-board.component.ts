@@ -83,43 +83,58 @@ import { StoriesService, StoryResponse } from '@app/resources/stories.service';
       </header>
       <div class="modal-body container-fluid">
         <div class="row">
-          <p class="col-sm-7 col-lg-9">{{ focusedStory?.description }}</p>
+          <section class="col-sm-7 col-lg-9 px-3">
+            <h4>Description</h4>
+            <div class="p-2">
+              <markdown>
+                {{ focusedStory?.description }}
+              </markdown>
+            </div>
+          </section>
           <div class="col-sm-5 col-lg-3">
-            <div class="mb-2">
-              <h4>Story Type:</h4>
-              <span>
-                <i
-                  class="fas"
-                  [ngClass]="{
-                    'fa-star text-warning': focusedStory.story_type === 'feature',
-                    'fa-bug text-danger': focusedStory.story_type === 'bug',
-                    'fa-wrench text-secondary': focusedStory.story_type === 'chore'
-                  }"
-                ></i>
-                {{ focusedStory?.story_type }}
-              </span>
-            </div>
-            <div class="mb-2">
-              <h4>Requester:</h4>
-              <span>{{ focusedStory?.requester.name || 'None' }}</span>
-            </div>
-            <div class="mb-2">
-              <h4>Owners:</h4>
-              <span class="d-block" *ngFor="let owner of focusedStory?.owners">
-                {{ owner?.name }}
-              </span>
-              <span class="text-muted" *ngIf="focusedStory?.owners.length === 0">None</span>
-            </div>
-            <div class="mb-2">
-              <h4>Estimate:</h4>
-              <span>{{ focusedStory?.estimate || 'unestimated' }}</span>
-            </div>
-            <div class="mb-2">
-              <h4>Labels:</h4>
-              <span class="badge badge-dark" *ngFor="let label of focusedStory?.labels">
-                {{ label.name }}
-              </span>
-            </div>
+            <aside class="card">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h4 class="h6">Story Type:</h4>
+                  <span>
+                    <i
+                      class="fas"
+                      [ngClass]="{
+                        'fa-star text-warning': focusedStory.story_type === 'feature',
+                        'fa-bug text-danger': focusedStory.story_type === 'bug',
+                        'fa-wrench text-secondary': focusedStory.story_type === 'chore'
+                      }"
+                    ></i>
+                    {{ focusedStory?.story_type }}
+                  </span>
+                </li>
+                <li class="list-group-item">
+                  <h4 class="h6">Requester:</h4>
+                  <span>{{ focusedStory?.requester.name || 'None' }}</span>
+                </li>
+                <li class="list-group-item">
+                  <h4 class="h6">Owners:</h4>
+                  <span class="d-block" *ngFor="let owner of focusedStory?.owners">
+                    {{ owner?.name }}
+                  </span>
+                  <span class="text-muted" *ngIf="focusedStory?.owners.length === 0">None</span>
+                </li>
+                <li class="list-group-item">
+                  <h4 class="h6">Estimate:</h4>
+                  <span>{{ focusedStory?.estimate || 'unestimated' }}</span>
+                </li>
+                <li class="list-group-item">
+                  <h4 class="h6">Labels:</h4>
+                  <span
+                    class="badge badge-dark text-truncate overflow-hidden w-100"
+                    [title]="label.name"
+                    *ngFor="let label of focusedStory?.labels"
+                  >
+                    {{ label.name }}
+                  </span>
+                </li>
+              </ul>
+            </aside>
           </div>
         </div>
       </div>

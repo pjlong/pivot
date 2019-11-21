@@ -31,9 +31,14 @@
             "styles": [
               "node_modules/bootstrap/scss/bootstrap.scss",
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/prismjs/themes/prism-twilight.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/marked/lib/marked.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/index.js"
+            ]
           },
           "configurations": {
             "production": {
