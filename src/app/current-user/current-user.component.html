@@ -4,7 +4,7 @@
   <strong>Projects</strong>
   <ul *ngIf="user.projects.length">
     <li *ngFor="let project of user.projects">
-      <a [routerLink]="['/project/' + project.project_id]">{{ project.project_name}}</a>
+      <a [routerLink]="['/project', project.project_id, 'board']">{{ project.project_name }}</a>
     </li>
   </ul>
 </div>
