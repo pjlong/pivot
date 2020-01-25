@@ -8,15 +8,7 @@ import { ProjectResponse, ProjectService } from '@app/resources/project.service'
 
 @Component({
   selector: 'pt-project-epics',
-  template: `
-    <pt-project-nav activeTab="board"></pt-project-nav>
-    <section class="container">
-      <div *ngFor="let epic of epics">
-        <h3>{{ epic.name }}</h3>
-        <span *ngFor="let label of epic.labels">{{ label.name }}</span>
-      </div>
-    </section>
-  `,
+  templateUrl: './project-epics.component.html',
   styleUrls: ['./project-epics.component.scss']
 })
 export class ProjectEpicsComponent implements OnInit, OnDestroy {

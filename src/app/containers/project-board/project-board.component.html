@@ -1,0 +1,76 @@
+<pt-project-nav activeTab="board"></pt-project-nav>
+<section class="viewport px-3">
+  <section class="pool mt-4 mb-5 py-2" [style.width.rem]="(21 + 1) * displayOrder.length" *ngIf="stories.length">
+    <div class="swimlane mr-3" *ngFor="let stateName of displayOrder">
+      <header>
+        <h2 class="d-inline mr-1">{{ stateName | titlecase }}</h2>
+        <span>({{ displayGroups[stateName]?.length }})</span>
+      </header>
+      <div class="y-scroll pb-3">
+        <div *ngFor="let story of displayGroups[stateName]">
+          <article
+            class="card my-3"
+            [ngClass]="{
+              'alert-warning': story.story_type === 'feature',
+              'alert-danger': story.story_type === 'bug',
+              'alert-secondary': story.story_type === 'chore'
+            }"
+            (click)="openStoryModal(storyModal, stateName, story.id)"
+          >
+            <header class="card-body">
+              <h5>{{ story.name }}</h5>
+            </header>
+            <div class="card-body pt-0">
+              <div class="d-flex flex-row">
+                <span class="badge badge-light mr-1 mb-2">
+                  <i
+                    class="fas"
+                    [ngClass]="{
+                      'fa-star text-warning': story.story_type === 'feature',
+                      'fa-bug text-danger': story.story_type === 'bug',
+                      'fa-wrench text-secondary': story.story_type === 'chore'
+                    }"
+                  ></i>
+                  {{ story.story_type }}
+                </span>
+                <span class="badge badge-secondary mr-1 mb-2">{{ story.requester?.name || '--' }}</span>
+                <span class="badge badge-info mb-2">
+                  <i class="fas fa-signal"></i>
+                  {{ story.estimate || 'unestimated' }}
+                </span>
+              </div>
+              <div class="d-flex flex-row flex-wrap">
+                <span
+                  class="badge badge-dark badge-label mr-1 mb-2"
+                  [title]="label.name"
+                  *ngFor="let label of story.labels"
+                >{{ label.name }}
+                </span>
+              </div>
+              <div class="d-flex flex-row-reverse">
+                <span
+                  class="badge badge-primary mt-2 mr-1"
+                  *ngFor="let owner of story.owners"
+                  [title]="owner?.name"
+                >{{ owner?.initials | uppercase }}
+                </span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<ng-template #storyModal let-modal>
+  <header class="modal-header">
+    <h4 class="modal-title">{{ focusedStory?.name }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <i aria-hidden="true">&times;</i>
+    </button>
+  </header>
+  <div class="modal-body container-fluid">
+    <pt-story-modal-content [story]="focusedStory"></pt-story-modal-content>
+  </div>
+</ng-template>

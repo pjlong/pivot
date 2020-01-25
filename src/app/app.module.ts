@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CardComponent } from './bootstrap/card/card.component';
 import { ProjectNavComponent } from './components/project-nav/project-nav.component';
+import { StoryModalContentComponent } from './components/story-modal-content/story-modal-content.component';
 import { HomeComponent } from './containers/home/home.component';
 import { ProjectBoardComponent } from './containers/project-board/project-board.component';
 import { ProjectDashboardComponent } from './containers/project-dashboard/project-dashboard.component';
@@ -28,7 +29,8 @@ import { ProjectService } from './resources/project.service';
     ProjectBoardComponent,
     CardComponent,
     ProjectEpicsComponent,
-    ProjectNavComponent
+    ProjectNavComponent,
+    StoryModalContentComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +44,7 @@ import { ProjectService } from './resources/project.service';
     MeService,
     ProjectService,
     EpicService,
-    ProjectMembershipsService
+    ProjectMembershipsService,
   ],
   bootstrap: [AppComponent]
 })

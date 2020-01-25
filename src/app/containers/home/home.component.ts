@@ -5,11 +5,7 @@ import { MeService } from 'src/app/resources/me.service';
 @Component({
   selector: 'pt-home',
   styleUrls: ['./home.component.scss'],
-  template: `
-    <pt-current-user
-      [user]="me"
-    ></pt-current-user>
-  `
+  templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
   me: any;

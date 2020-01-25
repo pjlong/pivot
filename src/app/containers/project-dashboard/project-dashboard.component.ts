@@ -1,4 +1,3 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -8,14 +7,7 @@ import { ProjectResponse, ProjectService } from 'src/app/resources/project.servi
 
 @Component({
   selector: 'pt-project-dashboard',
-  template: `
-    <pt-project-nav></pt-project-nav>
-    <section class="container-fluid">
-      <section *ngIf="project">
-        <h1>Project: {{ project.name }}</h1>
-      </section>
-    </section>
-  `,
+  templateUrl: './project-dashboard.component.html',
   styleUrls: ['./project-dashboard.component.scss']
 })
 export class ProjectDashboardComponent implements OnInit, OnDestroy {

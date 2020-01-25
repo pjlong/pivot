@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AsyncSubject, BehaviorSubject, concat, defer, EMPTY, from, merge, Observable } from 'rxjs';
-import { combineAll, combineLatest, concatAll, expand, filter, map, mergeMap, tap, toArray } from 'rxjs/operators';
+import { BehaviorSubject, concat, EMPTY, from, Observable } from 'rxjs';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
 import { PtElement } from '.';
 import { PivotalAPIService } from '../pivotal-api.service';
@@ -17,6 +17,7 @@ export interface StoryResponse extends PtElement {
   url: string;
   owner_ids: number[];
   labels: LabelResponse;
+  estimate: number;
 
   // Non API properties
   owners: PersonResponse[];
