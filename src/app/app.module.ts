@@ -11,7 +11,6 @@ import { ProjectNavComponent } from './components/project-nav/project-nav.compon
 import { StoryModalContentComponent } from './components/story-modal-content/story-modal-content.component';
 import { HomeComponent } from './containers/home/home.component';
 import { ProjectBoardComponent } from './containers/project-board/project-board.component';
-import { ProjectDashboardComponent } from './containers/project-dashboard/project-dashboard.component';
 import { ProjectEpicsComponent } from './containers/project-epics/project-epics.component';
 import { CurrentUserComponent } from './current-user/current-user.component';
 import { PivotalAPIService } from './pivotal-api.service';
@@ -25,12 +24,11 @@ import { ProjectService } from './resources/project.service';
     AppComponent,
     CurrentUserComponent,
     HomeComponent,
-    ProjectDashboardComponent,
     ProjectBoardComponent,
     CardComponent,
     ProjectEpicsComponent,
     ProjectNavComponent,
-    StoryModalContentComponent
+    StoryModalContentComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +44,6 @@ import { ProjectService } from './resources/project.service';
     EpicService,
     ProjectMembershipsService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
