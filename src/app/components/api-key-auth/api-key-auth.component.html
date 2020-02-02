@@ -1,0 +1,36 @@
+<section class="container pt-5">
+  <div class="col-lg-6 offset-3">
+    <div class="card">
+      <section class="card-body">
+        <form submit></form>
+        <div class="form-group">
+          <label for="apiKey"
+            >Enter your Pivotal Tracker API Key to continue:</label
+          >
+          <input
+            class="form-control"
+            id="apiKey"
+            type="text"
+            [formControl]="apiKeyControl"
+          />
+        </div>
+        <footer class="d-flex justify-content-between">
+          <a
+            class="btn btn-link card-link"
+            href="https://www.pivotaltracker.com/profile#api"
+            target="_blank"
+            rel="nofollow noreferrer"
+            >Don&apos;t have one? Generate your API Key here!</a
+          >
+          <button
+            class="btn btn-primary card-link"
+            type="button"
+            (click)="submit()"
+          >
+            Save
+          </button>
+        </footer>
+      </section>
+    </div>
+  </div>
+</section>

@@ -4,42 +4,52 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { ProjectMembershipResponse, ProjectMembershipsService } from '@app/resources/project-memberships.service';
+import {
+  ProjectMembershipResponse,
+  ProjectMembershipsService,
+} from '@app/resources/project-memberships.service';
 import { StoriesService, StoryResponse } from '@app/resources/stories.service';
 
 @Component({
   selector: 'pt-project-board',
   templateUrl: './project-board.component.html',
-  styleUrls: ['./project-board.component.scss']
+  styleUrls: ['./project-board.component.scss'],
 })
 export class ProjectBoardComponent implements OnInit, OnDestroy {
-
   private destroy$ = new Subject();
   projectId: string;
   stories: StoryResponse[] = [];
   memberships: ProjectMembershipResponse[] = [];
   peopleMap = {};
   displayGroups = {};
-  displayOrder = ['unscheduled', 'unstarted', 'started', 'finished', 'delivered', 'accepted'];
+  displayOrder = [
+    'unscheduled',
+    'unstarted',
+    'started',
+    'finished',
+    'delivered',
+    'accepted',
+  ];
   focusedStory?: StoryResponse;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private storiesService: StoriesService,
     private projectMembershipService: ProjectMembershipsService,
-    private modalService: NgbModal,
-  ) { }
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit() {
     let storiesObservable: Observable<object>;
     let membershipsObservable: Observable<object>;
 
-    this.activatedRoute.paramMap
-      .subscribe(params => {
-        this.projectId = params.get('id');
-        storiesObservable = this.storiesService.get(this.projectId, { limit: 1000 });
-        membershipsObservable = this.projectMembershipService.get(this.projectId);
+    this.activatedRoute.parent.paramMap.subscribe(params => {
+      this.projectId = params.get('id');
+      storiesObservable = this.storiesService.get(this.projectId, {
+        limit: 1000,
       });
+      membershipsObservable = this.projectMembershipService.get(this.projectId);
+    });
 
     forkJoin([storiesObservable, membershipsObservable])
       .pipe(takeUntil(this.destroy$))
@@ -56,7 +66,9 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
 
         this.stories.forEach(story => {
           story.requester = this.peopleMap[story.requested_by_id];
-          story.owners = story.owner_ids.map(ownerId => this.peopleMap[ownerId]);
+          story.owners = story.owner_ids.map(
+            ownerId => this.peopleMap[ownerId]
+          );
 
           if (!this.displayGroups[story.current_state]) {
             this.displayGroups[story.current_state] = [];
@@ -65,7 +77,6 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
           this.displayGroups[story.current_state].push(story);
         });
       });
-
   }
 
   ngOnDestroy() {
@@ -73,14 +84,23 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  openStoryModal(content: TemplateRef<Element>, state: string, storyId: number | string) {
+  openStoryModal(
+    content: TemplateRef<Element>,
+    state: string,
+    storyId: number | string
+  ) {
     this.focusedStory = this.findStory(state, storyId);
     this.modalService.open(content, { size: 'xl', scrollable: true });
   }
 
-  private findStory(state: string, storyId: number | string): StoryResponse | null {
+  private findStory(
+    state: string,
+    storyId: number | string
+  ): StoryResponse | null {
     const storyGroup = this.displayGroups[state];
-    const story = storyGroup.find(({ id }: { id: number | string }) => id === storyId);
+    const story = storyGroup.find(
+      ({ id }: { id: number | string }) => id === storyId
+    );
     return story;
   }
 }

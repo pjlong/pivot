@@ -6,7 +6,6 @@ import * as process from 'process';
 export const environment = {
   production: false,
   host: 'http://localhost:8080',
-  pivotalAPIToken: 'aabe9b65aeb4d6392ad55a1ee1c37f46'
 };
 
 /*
