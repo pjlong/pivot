@@ -5,12 +5,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MarkdownModule } from 'ngx-markdown';
 
-import { ApiKeyGuardService } from './api-key-guard.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CardComponent } from './bootstrap/card/card.component';
 import { ApiKeyAuthComponent } from './components/api-key-auth/api-key-auth.component';
-import { ApiKeyInputComponent } from './components/api-key-input/api-key-input.component';
 import { ProjectNavComponent } from './components/project-nav/project-nav.component';
 import { StoryModalContentComponent } from './components/story-modal-content/story-modal-content.component';
 import { HomeComponent } from './containers/home/home.component';
@@ -24,6 +22,7 @@ import { EpicService } from './resources/epic.service';
 import { MeService } from './resources/me.service';
 import { ProjectMembershipsService } from './resources/project-memberships.service';
 import { ProjectService } from './resources/project.service';
+import { ObscurePipe } from './pipes/obscure.pipe';
 
 @NgModule({
   declarations: [
@@ -37,6 +36,7 @@ import { ProjectService } from './resources/project.service';
     ProjectNavComponent,
     StoryModalContentComponent,
     ApiKeyAuthComponent,
+    ObscurePipe,
   ],
   imports: [
     // Angular Modules

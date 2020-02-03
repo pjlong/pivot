@@ -1,35 +1,62 @@
-<section class="container pt-5">
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">
+      <a routerLink="/">
+        <i class="fa fa-chevron-left"></i>
+        Back
+      </a>
+    </li>
+  </ol>
+</nav>
+
+<section class="container pt-3">
   <div class="col-lg-6 offset-3">
     <div class="card">
       <section class="card-body">
-        <form submit></form>
-        <div class="form-group">
-          <label for="apiKey"
-            >Enter your Pivotal Tracker API Key to continue:</label
-          >
-          <input
-            class="form-control"
-            id="apiKey"
-            type="text"
-            [formControl]="apiKeyControl"
-          />
-        </div>
-        <footer class="d-flex justify-content-between">
-          <a
-            class="btn btn-link card-link"
-            href="https://www.pivotaltracker.com/profile#api"
-            target="_blank"
-            rel="nofollow noreferrer"
-            >Don&apos;t have one? Generate your API Key here!</a
-          >
-          <button
-            class="btn btn-primary card-link"
-            type="button"
-            (click)="submit()"
-          >
-            Save
-          </button>
-        </footer>
+        <form (submit)="submit()" *ngIf="isEditState; else displayApiKey">
+          <div class="form-group">
+            <label for="apiKey"
+              >Enter your Pivotal Tracker API Key to continue:</label
+            >
+            <input
+              class="form-control"
+              id="apiKey"
+              type="text"
+              [formControl]="apiKeyControl"
+            />
+            <a
+              class="card-link"
+              href="https://www.pivotaltracker.com/profile#api"
+              target="_blank"
+              rel="nofollow noreferrer"
+            >
+              Don&apos;t have one? Generate your API Key here!
+              <i class="fa fa-external-link-alt"></i>
+            </a>
+          </div>
+          <footer class="d-flex justify-content-end">
+            <button
+              class="btn btn-outline-secondary mr-2"
+              type="button"
+              (click)="cancelEdit()"
+            >
+              Cancel
+            </button>
+            <button class="btn btn-primary card-link" type="submit">
+              Save
+            </button>
+          </footer>
+        </form>
+        <ng-template #displayApiKey>
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <span>{{ existingApiKey | obscure: -4 }}</span>
+            </div>
+            <button class="btn btn-primary" (click)="editApiKey()">
+              Update
+            </button>
+          </div>
+        </ng-template>
       </section>
     </div>
   </div>
