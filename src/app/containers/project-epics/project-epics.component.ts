@@ -4,12 +4,15 @@ import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
 import { EpicResponse, EpicService } from '@app/resources/epic.service';
-import { ProjectResponse, ProjectService } from '@app/resources/project.service';
+import {
+  ProjectResponse,
+  ProjectService,
+} from '@app/resources/project.service';
 
 @Component({
   selector: 'pt-project-epics',
   templateUrl: './project-epics.component.html',
-  styleUrls: ['./project-epics.component.scss']
+  styleUrls: ['./project-epics.component.scss'],
 })
 export class ProjectEpicsComponent implements OnInit, OnDestroy {
   project: ProjectResponse;
@@ -19,28 +22,24 @@ export class ProjectEpicsComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private projectService: ProjectService,
-    private epicService: EpicService,
-  ) {
+    private epicService: EpicService
+  ) {}
 
-  }
   ngOnInit() {
-    this.activatedRoute.paramMap
-      .subscribe(params => {
-        this.projectService.get(params.get('id'));
-        this.epicService.get(params.get('id'));
-      });
+    this.activatedRoute.parent.paramMap.subscribe(params => {
+      this.projectService.get(params.get('id'));
+      this.epicService.get(params.get('id'));
+    });
 
     this.projectService.model$
       .pipe(take(1))
       .subscribe((project: ProjectResponse) => {
-        console.log('project', project);
         this.project = project;
       });
 
     this.epicService.model$
       .pipe(takeUntil(this.destroy$))
       .subscribe((epics: EpicResponse[]) => {
-        console.log('epics', epics);
         this.epics = epics;
       });
   }
@@ -49,5 +48,4 @@ export class ProjectEpicsComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

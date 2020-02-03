@@ -1,6 +1,9 @@
-<pt-project-nav activeTab="board"></pt-project-nav>
 <section class="viewport px-3">
-  <section class="pool mt-4 mb-5 py-2" [style.width.rem]="(21 + 1) * displayOrder.length" *ngIf="stories.length">
+  <section
+    class="pool mt-4 mb-5 py-2"
+    [style.width.rem]="(21 + 1) * displayOrder.length"
+    *ngIf="stories.length"
+  >
     <div class="swimlane mr-3" *ngFor="let stateName of displayOrder">
       <header>
         <h2 class="d-inline mr-1">{{ stateName | titlecase }}</h2>
@@ -8,7 +11,10 @@
       </header>
       <div class="y-scroll py-3">
         <div *ngFor="let story of displayGroups[stateName]">
-          <button class="btn p-0 mb-3 w-100" (click)="openStoryModal(storyModal, stateName, story.id)">
+          <button
+            class="btn p-0 mb-3 w-100"
+            (click)="openStoryModal(storyModal, stateName, story.id)"
+          >
             <article
               class="card text-left"
               [ngClass]="{
@@ -33,7 +39,9 @@
                     ></i>
                     {{ story.story_type }}
                   </span>
-                  <span class="badge badge-secondary mr-1 mb-2">{{ story.requester?.name || '--' }}</span>
+                  <span class="badge badge-secondary mr-1 mb-2">{{
+                    story.requester?.name || '--'
+                  }}</span>
                   <span class="badge badge-info mb-2">
                     <i class="fas fa-signal"></i>
                     {{ story.estimate || 'unestimated' }}
@@ -44,7 +52,7 @@
                     class="badge badge-dark badge-label mr-1 mb-2"
                     [title]="label.name"
                     *ngFor="let label of story.labels"
-                  >{{ label.name }}
+                    >{{ label.name }}
                   </span>
                 </div>
                 <div class="d-flex flex-row-reverse">
@@ -52,7 +60,7 @@
                     class="badge badge-primary mt-2 mr-1"
                     *ngFor="let owner of story.owners"
                     [title]="owner?.name"
-                  >{{ owner?.initials | uppercase }}
+                    >{{ owner?.initials | uppercase }}
                   </span>
                 </div>
               </div>
@@ -67,7 +75,12 @@
 <ng-template #storyModal let-modal>
   <header class="modal-header">
     <h4 class="modal-title">{{ focusedStory?.name }}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    >
       <i aria-hidden="true">&times;</i>
     </button>
   </header>
