@@ -7,15 +7,14 @@ import { MarkdownModule } from 'ngx-markdown';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CardComponent } from './bootstrap/card/card.component';
 import { ApiKeyAuthComponent } from './components/api-key-auth/api-key-auth.component';
+import { CurrentUserComponent } from './components/current-user/current-user.component';
 import { ProjectNavComponent } from './components/project-nav/project-nav.component';
 import { StoryModalContentComponent } from './components/story-modal-content/story-modal-content.component';
 import { HomeComponent } from './containers/home/home.component';
 import { ProjectBoardComponent } from './containers/project-board/project-board.component';
 import { ProjectEpicsComponent } from './containers/project-epics/project-epics.component';
 import { ProjectRootComponent } from './containers/project-root/project-root.component';
-import { CurrentUserComponent } from './current-user/current-user.component';
 import { LocalStorageService } from './local-storage.service';
 import { ObscurePipe } from './pipes/obscure.pipe';
 import { PivotalAPIService } from './pivotal-api.service';
@@ -23,13 +22,13 @@ import { EpicService } from './resources/epic.service';
 import { MeService } from './resources/me.service';
 import { ProjectMembershipsService } from './resources/project-memberships.service';
 import { ProjectService } from './resources/project.service';
+import { StoriesService } from './resources/stories.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     CurrentUserComponent,
     HomeComponent,
-    CardComponent,
     ProjectRootComponent,
     ProjectBoardComponent,
     ProjectEpicsComponent,
@@ -53,9 +52,10 @@ import { ProjectService } from './resources/project.service';
   providers: [
     PivotalAPIService,
     MeService,
-    ProjectService,
     EpicService,
+    ProjectService,
     ProjectMembershipsService,
+    StoriesService,
     {
       provide: LocalStorageService,
       useFactory: (): LocalStorageService => new LocalStorageService('pivot'),

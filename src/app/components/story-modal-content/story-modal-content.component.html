@@ -16,9 +16,9 @@
             <i
               class="fas"
               [ngClass]="{
-                'fa-star text-warning': story.story_type === 'feature',
-                'fa-bug text-danger': story.story_type === 'bug',
-                'fa-wrench text-secondary': story.story_type === 'chore'
+                'fa-star text-warning': story?.story_type === 'feature',
+                'fa-bug text-danger': story?.story_type === 'bug',
+                'fa-wrench text-secondary': story?.story_type === 'chore'
               }"
             ></i>
             {{ story?.story_type }}
@@ -37,7 +37,9 @@
           <span class="d-block" *ngFor="let owner of story?.owners">
             {{ owner?.name }}
           </span>
-          <span class="text-muted" *ngIf="story?.owners.length === 0">None</span>
+          <span class="text-muted" *ngIf="story?.owners.length === 0"
+            >None</span
+          >
         </li>
         <li class="list-group-item">
           <h4 class="h6">Estimate:</h4>
@@ -47,8 +49,8 @@
           <h4 class="h6">Labels:</h4>
           <span
             class="badge badge-dark text-truncate overflow-hidden w-100"
-            [title]="label.name"
             *ngFor="let label of story?.labels"
+            [title]="label.name"
           >
             {{ label.name }}
           </span>

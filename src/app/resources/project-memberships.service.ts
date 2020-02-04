@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { BaseResource } from './base-resource';
+import { PivotalAPIService } from '@app/pivotal-api.service';
 
-import { BaseElement, PtElement } from '.';
+import { BaseResource, BaseElement, PtElement } from '.';
 
 export interface PersonResponse extends BaseElement {
   kind: 'person';
@@ -28,12 +28,14 @@ export interface ProjectMembershipResponse extends PtElement {
 export class ProjectMembershipsService extends BaseResource<
   ProjectMembershipResponse[]
 > {
+  constructor(private pivotalAPI: PivotalAPIService) {
+    super();
+  }
+
   get(projectId: string): Observable<ProjectMembershipResponse[]> {
     const req = this.pivotalAPI
-      .get(`/projects/${projectId}/memberships`, null)
-      .pipe(map(response => response.body)) as Observable<
-      ProjectMembershipResponse[]
-    >;
+      .get<ProjectMembershipResponse[]>(`/projects/${projectId}/memberships`)
+      .pipe(map(response => response.body));
 
     req.subscribe({
       next: response => {

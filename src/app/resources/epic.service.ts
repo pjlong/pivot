@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { PivotalAPIService } from '@app/pivotal-api.service';
+
 import { PtElement, BaseResource } from './';
 
 export interface LabelResponse extends PtElement {
@@ -20,10 +22,14 @@ export interface EpicResponse extends PtElement {
   providedIn: 'root',
 })
 export class EpicService extends BaseResource<EpicResponse[]> {
+  constructor(private pivotalAPI: PivotalAPIService) {
+    super();
+  }
+
   get(projectId: string): Observable<EpicResponse[]> {
     const req = this.pivotalAPI
-      .get(`/projects/${projectId}/epics`)
-      .pipe(map(r => r.body)) as Observable<EpicResponse[]>;
+      .get<EpicResponse[]>(`/projects/${projectId}/epics`)
+      .pipe(map(r => r.body));
 
     req.subscribe({
       next: response => {
