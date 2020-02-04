@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { PivotalAPIService } from '../pivotal-api.service';
-import { PtElement } from './';
+import { PtElement, BaseResource } from './';
 
 export interface LabelResponse extends PtElement {
   kind: 'label';
@@ -18,22 +17,20 @@ export interface EpicResponse extends PtElement {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class EpicService {
-  private data$ = new BehaviorSubject<EpicResponse[]>(null);
+export class EpicService extends BaseResource<EpicResponse[]> {
+  get(projectId: string): Observable<EpicResponse[]> {
+    const req = this.pivotalAPI
+      .get(`/projects/${projectId}/epics`)
+      .pipe(map(r => r.body)) as Observable<EpicResponse[]>;
 
-  readonly model$ = this.data$.asObservable().pipe(filter(x => x !== null));
-
-  constructor(private pivotalAPI: PivotalAPIService) { }
-
-  get(projectId: string) {
-    const req = this.pivotalAPI.get(`/projects/${projectId}/epics`).pipe(map(r => r.body));
     req.subscribe({
       next: response => {
-        this.data$.next(response as EpicResponse[]);
-      }
+        this.data$.next(response);
+      },
     });
+
     return req;
   }
 }
