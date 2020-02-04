@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'obscure',
 })
 export class ObscurePipe implements PipeTransform {
-  transform(value: string, num: number, char: string = '*'): any {
+  transform(value: string, num: number, char = '*'): any {
     if (num > 0) {
       return `${this.generateFiller(num, char)}${value.slice(num)}`;
     } else {

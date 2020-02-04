@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { BaseResource } from './base-resource';
 
 import { BaseElement, PtElement } from '.';
-import { PivotalAPIService } from '../pivotal-api.service';
 
 export interface PersonResponse extends BaseElement {
   kind: 'person';
@@ -22,23 +23,24 @@ export interface ProjectMembershipResponse extends PtElement {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ProjectMembershipsService {
-  private data$ = new BehaviorSubject<ProjectMembershipResponse[]>(null);
+export class ProjectMembershipsService extends BaseResource<
+  ProjectMembershipResponse[]
+> {
+  get(projectId: string): Observable<ProjectMembershipResponse[]> {
+    const req = this.pivotalAPI
+      .get(`/projects/${projectId}/memberships`, null)
+      .pipe(map(response => response.body)) as Observable<
+      ProjectMembershipResponse[]
+    >;
 
-  readonly model$ = this.data$.asObservable().pipe(filter(x => x !== null));
-
-  constructor(private pivotalAPI: PivotalAPIService) { }
-
-  get(projectId: string): Observable<object> {
-    const req = this.pivotalAPI.get(`/projects/${projectId}/memberships`, null);
     req.subscribe({
       next: response => {
-        this.data$.next(response.body as ProjectMembershipResponse[]);
-      }
+        this.data$.next(response);
+      },
     });
 
-    return req.pipe(map(response => response.body));
+    return req;
   }
 }

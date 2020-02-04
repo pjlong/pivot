@@ -17,12 +17,12 @@ import { ProjectEpicsComponent } from './containers/project-epics/project-epics.
 import { ProjectRootComponent } from './containers/project-root/project-root.component';
 import { CurrentUserComponent } from './current-user/current-user.component';
 import { LocalStorageService } from './local-storage.service';
+import { ObscurePipe } from './pipes/obscure.pipe';
 import { PivotalAPIService } from './pivotal-api.service';
 import { EpicService } from './resources/epic.service';
 import { MeService } from './resources/me.service';
 import { ProjectMembershipsService } from './resources/project-memberships.service';
 import { ProjectService } from './resources/project.service';
-import { ObscurePipe } from './pipes/obscure.pipe';
 
 @NgModule({
   declarations: [
@@ -58,7 +58,7 @@ import { ObscurePipe } from './pipes/obscure.pipe';
     ProjectMembershipsService,
     {
       provide: LocalStorageService,
-      useFactory: () => new LocalStorageService('pivot'),
+      useFactory: (): LocalStorageService => new LocalStorageService('pivot'),
     },
   ],
   bootstrap: [AppComponent],

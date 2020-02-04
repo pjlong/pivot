@@ -16,7 +16,6 @@ import { StoriesService, StoryResponse } from '@app/resources/stories.service';
   styleUrls: ['./project-board.component.scss'],
 })
 export class ProjectBoardComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject();
   projectId: string;
   stories: StoryResponse[] = [];
   memberships: ProjectMembershipResponse[] = [];
@@ -31,6 +30,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     'accepted',
   ];
   focusedStory?: StoryResponse;
+  private destroy$ = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -39,7 +39,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     private modalService: NgbModal
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     let storiesObservable: Observable<object>;
     let membershipsObservable: Observable<object>;
 
@@ -79,7 +79,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -88,7 +88,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     content: TemplateRef<Element>,
     state: string,
     storyId: number | string
-  ) {
+  ): void {
     this.focusedStory = this.findStory(state, storyId);
     this.modalService.open(content, { size: 'xl', scrollable: true });
   }

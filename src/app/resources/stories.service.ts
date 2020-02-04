@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, concat, EMPTY, from, Observable } from 'rxjs';
-import { filter, map, mergeMap } from 'rxjs/operators';
+import { concat, EMPTY, from, Observable } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 
-import { PtElement } from '.';
-import { PivotalAPIService } from '../pivotal-api.service';
+import { BaseResource } from './base-resource';
 import { LabelResponse } from './epic.service';
 import { PersonResponse } from './project-memberships.service';
+
+import { PtElement } from '.';
 
 export interface StoryResponse extends PtElement {
   kind: 'story';
@@ -24,58 +25,55 @@ export interface StoryResponse extends PtElement {
   requester: PersonResponse;
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class StoriesService {
-
-  private data$ = new BehaviorSubject<StoryResponse[]>(null);
-
-  readonly model$ = this.data$.asObservable().pipe(filter(x => x !== null));
-
-  private index = 0;
-
-  constructor(private pivotalAPI: PivotalAPIService) { }
-
-  get(projectId: string, options: any = {}) {
+export class StoriesService extends BaseResource<StoryResponse[]> {
+  get(projectId: string, options: any = {}): Observable<StoryResponse[]> {
     const { limit = 100 } = options;
-    const req = this.pivotalAPI.get(`/projects/${projectId}/stories`, { params: { limit } });
+    const req = this.pivotalAPI
+      .get(`/projects/${projectId}/stories`, {
+        params: { limit },
+      })
+      .pipe(map(response => response.body)) as Observable<StoryResponse[]>;
 
     req.subscribe(response => {
-      // console.log('x-tracker-pagination-offset', response.headers.get('x-tracker-pagination-offset'));
-      // console.log('x-tracker-pagination-limit', response.headers.get('x-tracker-pagination-limit'));
-      // console.log('x-tracker-pagination-total', response.headers.get('x-tracker-pagination-total'));
-      // console.log('x-tracker-pagination-returned', response.headers.get('x-tracker-pagination-returned'));
-
-      this.data$.next(response.body as StoryResponse[]);
+      this.data$.next(response);
     });
 
-    return req.pipe(map(response => response.body));
+    return req;
   }
 
-  getAll(projectId: string, options: any = {}) {
-    const {
-      offset = 0,
-      limit = 100
-    } = options;
+  /**
+   * Recursively fetches the next set of paginated Stories and appends into one object
+   */
+  getAll(projectId: string, options: any = {}): Observable<StoryResponse[]> {
+    const { offset = 0, limit = 100 } = options;
 
-    const req = this.pivotalAPI.get(`/projects/${projectId}/stories`, { params: { offset, limit } })
+    const req = this.pivotalAPI
+      .get(`/projects/${projectId}/stories`, { params: { offset, limit } })
       .pipe(
-        mergeMap((response) => {
+        mergeMap(response => {
           // Get current items, and concat with the next set of paginations
           const items$ = from(response.body as Observable<any>);
-          const paginationOffset = +response.headers.get('x-tracker-pagination-offset');
+          const paginationOffset = +response.headers.get(
+            'x-tracker-pagination-offset'
+          );
           const nextOffset = paginationOffset + 100;
-          const paginationTotal = +response.headers.get('x-tracker-pagination-total');
-          const next$ = (nextOffset < paginationTotal) ? this.getAll(projectId, { offset: nextOffset }) : EMPTY;
+          const paginationTotal = +response.headers.get(
+            'x-tracker-pagination-total'
+          );
+          const next$ =
+            nextOffset < paginationTotal
+              ? this.getAll(projectId, { offset: nextOffset })
+              : EMPTY;
 
           return concat(items$, next$);
         })
-      );
+      ) as Observable<StoryResponse[]>;
 
     req.subscribe(story => {
-      this.data$.next(story as StoryResponse[]);
+      this.data$.next(story);
     });
 
     return req;

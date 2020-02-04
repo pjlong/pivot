@@ -1,30 +1,34 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { PivotalAPIService } from '../pivotal-api.service';
+import { ProjectMembershipResponse } from './project-memberships.service';
+
+import { BaseResource, BaseElement } from '.';
+
+interface MeResponse extends BaseElement {
+  kind: 'me';
+  name: string;
+  initials: string;
+  projects: ProjectMembershipResponse[];
+  username: string;
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class MeService {
-  private _me$ = new BehaviorSubject<any>(null);
+export class MeService extends BaseResource {
+  get(): Observable<MeResponse> {
+    const req = this.pivotalAPI
+      .get('/me')
+      .pipe(map(response => response.body)) as Observable<MeResponse>;
 
-  readonly me$ = this._me$.asObservable().pipe(filter(me => me !== null));
-
-  constructor(private pivotalAPI: PivotalAPIService) { }
-
-  get() {
-    return this._get();
-  }
-
-  private _get() {
-    const req = this.pivotalAPI.get('/me').pipe(map(r => r.body));
     req.subscribe({
       next: me => {
-        this._me$.next(me);
-      }
+        this.data$.next(me);
+      },
     });
+
     return req;
   }
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { PivotalAPIService } from '../pivotal-api.service';
+import { BaseResource } from '.';
 
 export interface ProjectResponse {
   created_at: string; // datetime
@@ -15,22 +15,20 @@ export interface ProjectResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ProjectService {
-  private data$ = new BehaviorSubject<ProjectResponse>(null);
+export class ProjectService extends BaseResource<ProjectResponse> {
+  get(id: string): Observable<ProjectResponse> {
+    const req = this.pivotalAPI
+      .get(`/projects/${id}`)
+      .pipe(map(r => r.body)) as Observable<ProjectResponse>;
 
-  readonly model$ = this.data$.asObservable().pipe(filter(x => x !== null));
-
-  constructor(private pivotalAPI: PivotalAPIService) { }
-
-  get(id: string) {
-    const req = this.pivotalAPI.get(`/projects/${id}`).pipe(map(r => r.body));
     req.subscribe({
       next: response => {
-        this.data$.next(response as ProjectResponse);
-      }
+        this.data$.next(response);
+      },
     });
+
     return req;
   }
 }
