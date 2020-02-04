@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
-import { MeService } from './resources/me.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'pt-root',
@@ -9,15 +7,8 @@ import { MeService } from './resources/me.service';
       <router-outlet></router-outlet>
     </main>
   `,
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'pivot';
-  me: any;
-
-  constructor(
-    private meService: MeService
-  ) {}
-
-  ngOnInit() {}
 }

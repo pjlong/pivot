@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { BaseResource } from './base-resource';
+import { BaseResource } from '.';
 
 export interface ProjectResponse {
   created_at: string; // datetime

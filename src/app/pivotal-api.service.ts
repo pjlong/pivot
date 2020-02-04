@@ -1,9 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-import { LocalStorageService } from './local-storage.service';
+import { Observable } from 'rxjs';
 
 import { environment } from '@env';
+
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,11 +23,11 @@ export class PivotalAPIService {
     private localStorageService: LocalStorageService
   ) {}
 
-  get(path: string, options?: any) {
+  get<T = {}>(path: string, options?: any): Observable<HttpResponse<T>> {
     const params = options ? options.params : {};
     const headers = options ? options.headers : {};
 
-    return this.http.get(
+    return this.http.get<T>(
       `${environment.host}/${this.PIVOTAL_API_ROOT}${path}`,
       {
         headers: this.buildHeaders(headers),
@@ -36,8 +37,8 @@ export class PivotalAPIService {
     );
   }
 
-  post(path: string, params: any) {
-    return this.http.post(
+  post<T = {}>(path: string, params: any): Observable<T> {
+    return this.http.post<T>(
       `${environment.host}/${this.PIVOTAL_API_ROOT}${path}`,
       {
         headers: this.buildHeaders(),
@@ -46,7 +47,7 @@ export class PivotalAPIService {
     );
   }
 
-  private buildHeaders(headers = {}) {
+  private buildHeaders(headers = {}): HttpHeaders {
     return new HttpHeaders({
       ...headers,
       ...this.DEFAULT_HEADERS,

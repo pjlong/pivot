@@ -20,7 +20,7 @@ export class ApiKeyAuthComponent implements OnInit {
 
   private currentState: ApiKeyAuthComponentState;
 
-  get isEditState() {
+  get isEditState(): boolean {
     return this.currentState === ApiKeyAuthComponentState.Edit;
   }
 
@@ -29,7 +29,7 @@ export class ApiKeyAuthComponent implements OnInit {
     private localStorageService: LocalStorageService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.existingApiKey = this.localStorageService.get('api_key');
     if (!this.existingApiKey) {
       this.currentState = ApiKeyAuthComponentState.Edit;
@@ -38,16 +38,16 @@ export class ApiKeyAuthComponent implements OnInit {
     }
   }
 
-  submit() {
+  submit(): void {
     this.localStorageService.set('api_key', this.apiKeyControl.value);
     this.router.navigate(['']);
   }
 
-  cancelEdit() {
+  cancelEdit(): void {
     this.currentState = ApiKeyAuthComponentState.View;
   }
 
-  editApiKey() {
+  editApiKey(): void {
     this.apiKeyControl.setValue(this.existingApiKey);
     this.currentState = ApiKeyAuthComponentState.Edit;
   }

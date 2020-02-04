@@ -1,14 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-
-import { LocalStorageService } from '@app/local-storage.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'pt-project-root',
   templateUrl: './project-root.component.html',
   styleUrls: ['./project-root.component.scss'],
 })
-export class ProjectRootComponent implements OnInit {
+export class ProjectRootComponent {
   constructor() {}
-
-  ngOnInit() {}
 }

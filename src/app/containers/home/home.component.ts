@@ -13,8 +13,8 @@ export class HomeComponent implements OnInit {
 
   constructor(private meService: MeService) {}
 
-  ngOnInit() {
-    this.meService.me$.pipe(take(1)).subscribe(response => {
+  ngOnInit(): void {
+    this.meService.model$.pipe(take(1)).subscribe(response => {
       this.me = response;
     });
 

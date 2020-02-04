@@ -25,7 +25,7 @@ export class ProjectEpicsComponent implements OnInit, OnDestroy {
     private epicService: EpicService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activatedRoute.parent.paramMap.subscribe(params => {
       this.projectService.get(params.get('id'));
       this.epicService.get(params.get('id'));
@@ -44,7 +44,7 @@ export class ProjectEpicsComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
