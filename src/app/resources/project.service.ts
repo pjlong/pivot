@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { PivotalAPIService } from '@app/pivotal-api.service';
+
 import { BaseResource } from '.';
 
 export interface ProjectResponse {
@@ -18,10 +20,14 @@ export interface ProjectResponse {
   providedIn: 'root',
 })
 export class ProjectService extends BaseResource<ProjectResponse> {
+  constructor(private pivotalAPI: PivotalAPIService) {
+    super();
+  }
+
   get(id: string): Observable<ProjectResponse> {
     const req = this.pivotalAPI
-      .get(`/projects/${id}`)
-      .pipe(map(r => r.body)) as Observable<ProjectResponse>;
+      .get<ProjectResponse>(`/projects/${id}`)
+      .pipe(map(r => r.body));
 
     req.subscribe({
       next: response => {

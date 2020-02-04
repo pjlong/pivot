@@ -1,4 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+
+import { ProjectNavComponent } from '@app/components/project-nav/project-nav.component';
 
 import { ProjectRootComponent } from './project-root.component';
 
@@ -8,9 +11,9 @@ describe('ProjectRootComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProjectRootComponent ]
-    })
-    .compileComponents();
+      declarations: [ProjectRootComponent, ProjectNavComponent],
+      imports: [RouterTestingModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { concat, EMPTY, from, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
-import { BaseResource } from './base-resource';
+import { PivotalAPIService } from '@app/pivotal-api.service';
+
 import { LabelResponse } from './epic.service';
 import { PersonResponse } from './project-memberships.service';
 
-import { PtElement } from '.';
+import { PtElement, BaseResource } from '.';
 
 export interface StoryResponse extends PtElement {
   kind: 'story';
@@ -29,16 +30,22 @@ export interface StoryResponse extends PtElement {
   providedIn: 'root',
 })
 export class StoriesService extends BaseResource<StoryResponse[]> {
+  constructor(private pivotalAPI: PivotalAPIService) {
+    super();
+  }
+
   get(projectId: string, options: any = {}): Observable<StoryResponse[]> {
     const { limit = 100 } = options;
     const req = this.pivotalAPI
-      .get(`/projects/${projectId}/stories`, {
+      .get<StoryResponse[]>(`/projects/${projectId}/stories`, {
         params: { limit },
       })
-      .pipe(map(response => response.body)) as Observable<StoryResponse[]>;
+      .pipe(map(response => response.body));
 
-    req.subscribe(response => {
-      this.data$.next(response);
+    req.subscribe({
+      next: response => {
+        this.data$.next(response);
+      },
     });
 
     return req;

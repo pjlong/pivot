@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { CurrentUserComponent } from './current-user.component';
 
@@ -8,9 +9,9 @@ describe('CurrentUserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CurrentUserComponent ]
-    })
-    .compileComponents();
+      declarations: [CurrentUserComponent],
+      imports: [RouterTestingModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

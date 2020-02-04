@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { StoryModalContentComponent } from './story-modal-content.component';
 
@@ -8,9 +9,9 @@ describe('StoryModalContentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StoryModalContentComponent ]
-    })
-    .compileComponents();
+      declarations: [StoryModalContentComponent],
+      imports: [MarkdownModule.forRoot()],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

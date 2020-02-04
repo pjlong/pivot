@@ -23,6 +23,7 @@ import { EpicService } from './resources/epic.service';
 import { MeService } from './resources/me.service';
 import { ProjectMembershipsService } from './resources/project-memberships.service';
 import { ProjectService } from './resources/project.service';
+import { StoriesService } from './resources/stories.service';
 
 @NgModule({
   declarations: [
@@ -53,9 +54,10 @@ import { ProjectService } from './resources/project.service';
   providers: [
     PivotalAPIService,
     MeService,
-    ProjectService,
     EpicService,
+    ProjectService,
     ProjectMembershipsService,
+    StoriesService,
     {
       provide: LocalStorageService,
       useFactory: (): LocalStorageService => new LocalStorageService('pivot'),
