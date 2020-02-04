@@ -1,9 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs';
 
 import { meMockService } from '@app/__mocks__/me-mock.service';
-import { CurrentUserComponent } from '@app/current-user/current-user.component';
+import { CurrentUserComponent } from '@app/components/current-user/current-user.component';
 import { MeService } from '@app/resources/me.service';
 
 import { HomeComponent } from './home.component';
