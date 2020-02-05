@@ -58,7 +58,8 @@ import { StoriesService } from './resources/stories.service';
     StoriesService,
     {
       provide: LocalStorageService,
-      useFactory: (): LocalStorageService => new LocalStorageService('pivot'),
+      useFactory: (): LocalStorageService =>
+        LocalStorageService.withPrefix('pivot'),
     },
   ],
   bootstrap: [AppComponent],

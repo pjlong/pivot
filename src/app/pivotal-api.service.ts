@@ -28,7 +28,7 @@ export class PivotalAPIService {
     const headers = options ? options.headers : {};
 
     return this.http.get<T>(
-      `${environment.host}/${this.PIVOTAL_API_ROOT}${path}`,
+      `${environment.apiHost}/${this.PIVOTAL_API_ROOT}${path}`,
       {
         headers: this.buildHeaders(headers),
         params,
@@ -39,7 +39,7 @@ export class PivotalAPIService {
 
   post<T = {}>(path: string, params: any): Observable<T> {
     return this.http.post<T>(
-      `${environment.host}/${this.PIVOTAL_API_ROOT}${path}`,
+      `${environment.apiHost}/${this.PIVOTAL_API_ROOT}${path}`,
       {
         headers: this.buildHeaders(),
         params,

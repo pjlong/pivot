@@ -8,7 +8,7 @@ import { ProjectMembershipResponse } from './project-memberships.service';
 
 import { BaseResource, BaseElement } from '.';
 
-interface MeResponse extends BaseElement {
+export interface MeResponse extends BaseElement {
   kind: 'me';
   name: string;
   initials: string;
