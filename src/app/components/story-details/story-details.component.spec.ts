@@ -9,13 +9,14 @@ import { peopleStoreMockService } from '@app/__mocks__/people-store-mock.service
 import { ResourceMockService } from '@app/__mocks__/resource-mock.service';
 import { PeopleStoreService } from '@app/people-store.service';
 import { StoryCommentsService } from '@app/resources/story-comments.service';
+import { StoryTasksService } from '@app/resources/story-tasks.service';
 
 import { StoryCommentComponent } from '../story-comment/story-comment.component';
-import { StoryModalContentComponent } from './story-modal-content.component';
+import { StoryDetailsComponent } from './story-details.component';
 
-describe('StoryModalContentComponent', () => {
-  let component: StoryModalContentComponent;
-  let fixture: ComponentFixture<StoryModalContentComponent>;
+describe('StoryDetailsComponent', () => {
+  let component: StoryDetailsComponent;
+  let fixture: ComponentFixture<StoryDetailsComponent>;
 
   const activatedRouteMock = {
     parent: {
@@ -27,10 +28,11 @@ describe('StoryModalContentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [StoryModalContentComponent, StoryCommentComponent],
+      declarations: [StoryDetailsComponent, StoryCommentComponent],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: StoryCommentsService, useValue: new ResourceMockService() },
+        { provide: StoryTasksService, useValue: new ResourceMockService() },
         { provide: PeopleStoreService, useValue: peopleStoreMockService },
       ],
       imports: [RouterTestingModule, MarkdownModule.forRoot()],
@@ -39,7 +41,7 @@ describe('StoryModalContentComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StoryModalContentComponent);
+    fixture = TestBed.createComponent(StoryDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,192 @@
+<div class="row">
+  <div class="col-sm-7 col-lg-9 pb-4">
+    <section id="description" class="card mb-3">
+      <header
+        class="card-header d-flex"
+        (click)="status.description.collapse = !status.description.collapse"
+      >
+        <h4 class="h5 my-0 flex-grow-1">Description</h4>
+        <span>
+          <i
+            class="fas"
+            [ngClass]="{
+              'fa-caret-down': !status.description.collapse,
+              'fa-caret-up': status.description.collapse
+            }"
+          ></i>
+        </span>
+      </header>
+      <div class="card-body" [ngbCollapse]="status.description.collapse">
+        <markdown style="font-size: .8em;">
+          {{ story?.description }}
+        </markdown>
+      </div>
+    </section>
+    <section id="tasks" class="card mb-3">
+      <header
+        class="card-header d-flex"
+        (click)="status.tasks.collapse = !status.tasks.collapse"
+      >
+        <h4 class="h5 my-0 flex-grow-1">Tasks</h4>
+        <span>
+          <i
+            class="fas"
+            [ngClass]="{
+              'fa-caret-down': !status.tasks.collapse,
+              'fa-caret-up': status.tasks.collapse
+            }"
+          ></i>
+        </span>
+      </header>
+      <div [ngbCollapse]="status.tasks.collapse" *ngIf="!status.tasks.loading">
+        <ul class="list-group list-group-flush">
+          <li
+            class="list-group-item d-flex"
+            *ngFor="
+              let task of story?.story_tasks.slice().reverse();
+              last as isLast;
+              trackBy: trackById
+            "
+            [ngClass]="{ 'bg-success text-white': task.complete }"
+          >
+            <span>
+              <i
+                [ngClass]="{
+                  'fas fa-check-square': task.complete,
+                  'far fa-square': !task.complete
+                }"
+              ></i>
+            </span>
+            <markdown class="inline pl-3 flex-grow-1">{{
+              task.description
+            }}</markdown>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="card-body"
+        [ngbCollapse]="status.tasks.collapse"
+        *ngIf="story?.story_tasks.length === 0"
+      >
+        <div
+          class="spinner-border text-secondary text-center"
+          role="status"
+          *ngIf="status.tasks.loading"
+        >
+          <span class="sr-only">Loading...</span>
+        </div>
+        <span class="font-italic text-muted" *ngIf="!status.tasks.loading"
+          >No Tasks</span
+        >
+      </div>
+    </section>
+    <section id="comments" class="card">
+      <header
+        class="card-header d-flex"
+        (click)="status.comments.collapse = !status.comments.collapse"
+      >
+        <h4 class="h5 my-0 flex-grow-1">Comments</h4>
+        <span>
+          <i
+            class="fas"
+            [ngClass]="{
+              'fa-caret-down': !status.comments.collapse,
+              'fa-caret-up': status.comments.collapse
+            }"
+          ></i>
+        </span>
+      </header>
+      <div class="card-body" [ngbCollapse]="status.comments.collapse">
+        <ul
+          class="list-unstyled"
+          *ngIf="
+            story?.story_comments.length && !status.comments.loading;
+            else noComments
+          "
+        >
+          <li
+            *ngFor="
+              let comment of story?.story_comments.slice().reverse();
+              last as isLast;
+              trackBy: trackById
+            "
+          >
+            <pt-story-comment [comment]="comment"></pt-story-comment>
+            <hr *ngIf="!isLast" />
+          </li>
+        </ul>
+        <ng-template #noComments>
+          <div
+            class="spinner-border text-secondary text-center"
+            role="status"
+            *ngIf="status.comments.loading"
+          >
+            <span class="sr-only">Loading...</span>
+          </div>
+          <span class="font-italic text-muted" *ngIf="!status.comments.loading"
+            >No Comments</span
+          >
+        </ng-template>
+      </div>
+    </section>
+  </div>
+  <aside class="col-sm-5 col-lg-3 pb-4">
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <h4 class="h6">Story Type:</h4>
+          <span>
+            <i
+              class="fas"
+              [ngClass]="{
+                'fa-star text-warning': story?.story_type === 'feature',
+                'fa-bug text-danger': story?.story_type === 'bug',
+                'fa-wrench text-secondary': story?.story_type === 'chore',
+                'fa-rocket text-secondary': story?.story_type === 'release'
+              }"
+            ></i>
+            {{ story?.story_type }}
+          </span>
+        </li>
+        <li class="list-group-item">
+          <h4 class="h6">State:</h4>
+          <span>{{ story?.current_state | titlecase }}</span>
+        </li>
+        <li class="list-group-item">
+          <h4 class="h6">Requester:</h4>
+          <span
+            [ngClass]="{ 'text-muted font-italic': !story?.requester.name }"
+            >{{ story?.requester.name || 'None' }}</span
+          >
+        </li>
+        <li class="list-group-item">
+          <h4 class="h6">Owners:</h4>
+          <span class="d-block" *ngFor="let owner of story?.owners">
+            {{ owner?.name }}
+          </span>
+          <span
+            class="text-muted font-italic"
+            *ngIf="story?.owners.length === 0"
+            >None</span
+          >
+        </li>
+        <li class="list-group-item">
+          <h4 class="h6">Estimate:</h4>
+          <span [ngClass]="{ 'text-muted font-italic': !story?.estimate }">{{
+            story?.estimate || 'unestimated'
+          }}</span>
+        </li>
+        <li class="list-group-item">
+          <h4 class="h6">Labels:</h4>
+          <span
+            class="badge badge-dark text-truncate overflow-hidden mr-1 px-2 py-1"
+            *ngFor="let label of story?.labels"
+            [title]="label.name"
+            >{{ label.name }}</span
+          >
+          <hr *ngIf="story?.labels.length === 0" />
+        </li>
+      </ul>
+    </div>
+  </aside>
+</div>

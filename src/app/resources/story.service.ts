@@ -7,6 +7,7 @@ import { PivotalAPIService } from '@app/pivotal-api.service';
 import { LabelResponse } from './epic.service';
 import { PersonResponse } from './project-memberships.service';
 import { StoryCommentResponse } from './story-comments.service';
+import { StoryTaskResponse } from './story-tasks.service';
 
 import { PtElement, BaseResource } from '.';
 
@@ -19,14 +20,14 @@ export interface StoryResponse extends PtElement {
   requested_by_id: number;
   url: string;
   owner_ids: number[];
-  labels: LabelResponse;
+  labels: LabelResponse[];
   estimate: number;
 
   // Non API properties
   owners: PersonResponse[];
   requester: PersonResponse;
-
   story_comments?: StoryCommentResponse[];
+  story_tasks?: StoryTaskResponse[];
 }
 
 @Injectable({

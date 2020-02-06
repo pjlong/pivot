@@ -28,7 +28,7 @@
     "@typescript-eslint/ban-ts-ignore": ["error"],
     "@typescript-eslint/ban-types": ["error"],
     "camelcase": "warn",
-    "@typescript-eslint/camelcase": ["error"],
+    "@typescript-eslint/camelcase": ["warn"],
     "@typescript-eslint/class-name-casing": ["error"],
     "@typescript-eslint/consistent-type-assertions": ["error"],
     "@typescript-eslint/explicit-function-return-type": ["warn"],
