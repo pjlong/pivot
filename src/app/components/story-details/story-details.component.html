@@ -1,18 +1,44 @@
 <div class="row">
-  <div class="col-sm-7 col-lg-9 px-3">
-    <section id="description">
-      <h4>Description</h4>
-      <div class="p-2">
-        <markdown>
+  <div class="col-sm-7 col-lg-9">
+    <section id="description" class="card mb-3">
+      <header
+        class="card-header d-flex"
+        (click)="collapseDescription = !collapseDescription"
+      >
+        <h4 class="h5 my-0 flex-grow-1">Description</h4>
+        <span>
+          <i
+            class="fas"
+            [ngClass]="{
+              'fa-caret-down': !collapseDescription,
+              'fa-caret-up': collapseDescription
+            }"
+          ></i>
+        </span>
+      </header>
+      <div class="card-body" [ngbCollapse]="collapseDescription">
+        <markdown style="font-size: .8em;">
           {{ story?.description }}
         </markdown>
       </div>
     </section>
     <section id="comments" class="card">
-      <header class="card-header">
-        <h4 class="py-0">Comments</h4>
+      <header
+        class="card-header d-flex"
+        (click)="collapseComments = !collapseComments"
+      >
+        <h4 class="h5 my-0 flex-grow-1">Comments</h4>
+        <span>
+          <i
+            class="fas"
+            [ngClass]="{
+              'fa-caret-down': !collapseComments,
+              'fa-caret-up': collapseComments
+            }"
+          ></i>
+        </span>
       </header>
-      <div class="card-body">
+      <div class="card-body" [ngbCollapse]="collapseComments">
         <ul
           class="list-unstyled"
           *ngIf="story?.story_comments.length; else noComments"
@@ -47,7 +73,8 @@
               [ngClass]="{
                 'fa-star text-warning': story?.story_type === 'feature',
                 'fa-bug text-danger': story?.story_type === 'bug',
-                'fa-wrench text-secondary': story?.story_type === 'chore'
+                'fa-wrench text-secondary': story?.story_type === 'chore',
+                'fa-rocket text-secondary': story?.story_type === 'release'
               }"
             ></i>
             {{ story?.story_type }}
@@ -59,30 +86,37 @@
         </li>
         <li class="list-group-item">
           <h4 class="h6">Requester:</h4>
-          <span>{{ story?.requester.name || 'None' }}</span>
+          <span
+            [ngClass]="{ 'text-muted font-italic': !story?.requester.name }"
+            >{{ story?.requester.name || 'None' }}</span
+          >
         </li>
         <li class="list-group-item">
           <h4 class="h6">Owners:</h4>
           <span class="d-block" *ngFor="let owner of story?.owners">
             {{ owner?.name }}
           </span>
-          <span class="text-muted" *ngIf="story?.owners.length === 0"
+          <span
+            class="text-muted font-italic"
+            *ngIf="story?.owners.length === 0"
             >None</span
           >
         </li>
         <li class="list-group-item">
           <h4 class="h6">Estimate:</h4>
-          <span>{{ story?.estimate || 'unestimated' }}</span>
+          <span [ngClass]="{ 'text-muted font-italic': !story?.estimate }">{{
+            story?.estimate || 'unestimated'
+          }}</span>
         </li>
         <li class="list-group-item">
           <h4 class="h6">Labels:</h4>
           <span
-            class="badge badge-dark text-truncate overflow-hidden w-100"
+            class="badge badge-dark text-truncate overflow-hidden mr-1 px-2 py-1"
             *ngFor="let label of story?.labels"
             [title]="label.name"
+            >{{ label.name }}</span
           >
-            {{ label.name }}
-          </span>
+          <hr *ngIf="story?.labels.length === 0" />
         </li>
       </ul>
     </div>

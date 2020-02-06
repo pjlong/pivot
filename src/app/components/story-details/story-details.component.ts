@@ -25,6 +25,8 @@ import { StoryResponse } from '@app/resources/story.service';
 export class StoryDetailsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() story: StoryResponse;
   fullStory?: StoryResponse;
+  collapseDescription = false;
+  collapseComments = false;
   private projectId: string;
   private destroy$ = new Subject();
 

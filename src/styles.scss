@@ -1,7 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/scss/bootstrap";
-@import "./variables";
+@import '~bootstrap/scss/bootstrap';
+@import './variables';
 
 body {
   overflow-y: hidden !important;
+}
+
+markdown {
+  $font-size-base-markdown: $font-size-base * 0.9;
+  $h1-font-size-markdown: $font-size-base-markdown * 1.8;
+  $h2-font-size-markdown: $font-size-base-markdown * 1.6;
+  $h3-font-size-markdown: $font-size-base-markdown * 1.4;
+  $h4-font-size-markdown: $font-size-base-markdown * 1.2;
+  $h5-font-size-markdown: $font-size-base-markdown * 1.1;
+  $h6-font-size-markdown: $font-size-base-markdown;
+
+  h1 {
+    font-size: $h1-font-size-markdown !important;
+  }
+  h2 {
+    font-size: $h2-font-size-markdown !important;
+  }
+  h3 {
+    font-size: $h3-font-size-markdown !important;
+  }
+  h4 {
+    font-size: $h4-font-size-markdown !important;
+  }
+  h5 {
+    font-size: $h5-font-size-markdown !important;
+  }
+  h6 {
+    font-size: $h6-font-size-markdown !important;
+  }
+  p {
+    font-size: $font-size-base-markdown;
+  }
 }

@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { Template } from '@angular/compiler/src/render3/r3_ast';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin, Observable, Subject } from 'rxjs';
@@ -19,6 +26,7 @@ import { StoryResponse } from '@app/resources/story.service';
   styleUrls: ['./project-board.component.scss'],
 })
 export class ProjectBoardComponent implements OnInit, OnDestroy {
+  @ViewChild('storyModal', { static: true }) storyModal: TemplateRef<NgbModal>;
   projectId: string;
   stories: StoryResponse[] = [];
   memberships: ProjectMembershipResponse[] = [];
@@ -84,23 +92,11 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  openStoryModal(
-    content: TemplateRef<Element>,
-    state: string,
-    storyId: number | string
-  ): void {
-    this.focusedStory = this.findStory(state, storyId);
-    this.modalService.open(content, { size: 'lg', scrollable: true });
-  }
-
-  private findStory(
-    state: string,
-    storyId: number | string
-  ): StoryResponse | null {
-    const storyGroup = this.displayGroups[state];
-    const story = storyGroup.find(
-      ({ id }: { id: number | string }) => id === storyId
-    );
-    return story;
+  openStoryModal(story: StoryResponse): void {
+    this.focusedStory = story;
+    if (this.modalService.hasOpenModals()) {
+      this.modalService.dismissAll();
+    }
+    this.modalService.open(this.storyModal, { size: 'lg', scrollable: true });
   }
 }
