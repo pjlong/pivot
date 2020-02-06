@@ -24,54 +24,7 @@
               trackBy: trackByCommentId
             "
           >
-            <div class="d-flex">
-              <div class="mr-2">
-                <span class="badge badge-pill badge-primary">{{
-                  comment?.commenter?.initials
-                }}</span>
-              </div>
-              <div class="flex-grow-1">
-                <strong [title]="comment?.commenter?.name"
-                  >@{{ comment?.commenter?.username }}:</strong
-                >
-                <ng-container *ngIf="comment?.text">
-                  <markdown>
-                    {{ comment?.text }}
-                  </markdown>
-                </ng-container>
-                <ng-container *ngIf="comment?.file_attachments.length">
-                  <div
-                    *ngFor="let attachment of comment?.file_attachments"
-                    title="Created At: {{ attachment.created_at }}"
-                  >
-                    <button
-                      class="btn btn-link w-100"
-                      (click)="openAttachmentImageModal(attachment)"
-                    >
-                      <div class="card">
-                        <div class="row no-gutters">
-                          <div class="d-flex align-items-center px-3">
-                            <img
-                              class="py-auto"
-                              [src]="attachment.thumbnail_url"
-                              [alt]="attachment.filename"
-                            />
-                          </div>
-                          <div class="border-left border-muted px-3">
-                            <div class="card-body">
-                              <span>{{ attachment.filename }}</span>
-                              <p class="card-text">
-                                {{ attachment.size | bytesize: 'kb' }}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                  </div>
-                </ng-container>
-              </div>
-            </div>
+            <pt-story-comment [comment]="comment"></pt-story-comment>
             <hr *ngIf="!isLast" />
           </li>
         </ul>
@@ -135,25 +88,3 @@
     </div>
   </aside>
 </div>
-
-<ng-template #attachmentModal let-modal>
-  <div>
-    <header class="position-absolute w-100 d-flex justify-content-end">
-      <button
-        class="p-4 close"
-        aria-label="Close"
-        type="button"
-        (click)="modal.dismiss()"
-      >
-        <i class="fas fa-times fa-lg" aria-hidden="true"></i>
-      </button>
-    </header>
-    <img
-      class="img-fluid rounded"
-      [src]="selectedAttachment.big_url"
-      [alt]="selectedAttachment.filename"
-      [width]="selectedAttachment.width"
-      [height]="selectedAttachment.height"
-    />
-  </div>
-</ng-template>

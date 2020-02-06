@@ -1,0 +1,24 @@
+<div class="d-flex">
+  <div class="mr-2">
+    <span class="badge badge-pill badge-primary">{{
+      comment?.commenter?.initials
+    }}</span>
+  </div>
+  <div class="flex-grow-1">
+    <strong [title]="comment?.commenter?.name"
+      >@{{ comment?.commenter?.username }}:</strong
+    >
+    <ng-container *ngIf="comment?.text">
+      <markdown>
+        {{ comment?.text }}
+      </markdown>
+    </ng-container>
+    <ng-container *ngIf="comment?.file_attachments.length">
+      <div *ngFor="let attachment of comment?.file_attachments">
+        <pt-file-attachment-preview
+          [attachment]="attachment"
+        ></pt-file-attachment-preview>
+      </div>
+    </ng-container>
+  </div>
+</div>

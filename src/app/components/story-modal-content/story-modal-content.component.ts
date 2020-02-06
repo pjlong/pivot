@@ -28,20 +28,15 @@ import { StoryResponse } from '@app/resources/story.service';
 })
 export class StoryModalContentComponent
   implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('attachmentModal', { static: true }) attachmentModal: TemplateRef<
-    NgbModal
-  >;
   @Input() story: StoryResponse;
   fullStory?: StoryResponse;
-  selectedAttachment: FileAttachmentResponse;
   private projectId: string;
   private destroy$ = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private storyCommentsService: StoryCommentsService,
-    private peopleStore: PeopleStoreService,
-    private ngbModal: NgbModal
+    private peopleStore: PeopleStoreService
   ) {}
 
   ngOnInit(): void {
@@ -84,11 +79,6 @@ export class StoryModalContentComponent
     this.destroy$.next();
     this.destroy$.complete();
     this.fullStory = null;
-  }
-
-  openAttachmentImageModal(attachment: FileAttachmentResponse): void {
-    this.selectedAttachment = attachment;
-    this.ngbModal.open(this.attachmentModal, { size: 'xl' });
   }
 
   trackByCommentId(comment: StoryCommentResponse): string {

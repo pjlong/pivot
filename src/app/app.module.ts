@@ -27,6 +27,8 @@ import { StoriesService } from './resources/stories.service';
 import { StoryCommentsService } from './resources/story-comments.service';
 import { StoryService } from './resources/story.service';
 import { BytesizePipe } from './pipes/bytesize.pipe';
+import { StoryCommentComponent } from './components/story-comment/story-comment.component';
+import { FileAttachmentPreviewComponent } from './components/file-attachment-preview/file-attachment-preview.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { BytesizePipe } from './pipes/bytesize.pipe';
     ApiKeyAuthComponent,
     ObscurePipe,
     BytesizePipe,
+    StoryCommentComponent,
+    FileAttachmentPreviewComponent,
   ],
   imports: [
     // Angular Modules

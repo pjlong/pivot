@@ -1,0 +1,43 @@
+<button class="btn btn-link w-100 p-0" (click)="openAttachmentImageModal()">
+  <div class="card">
+    <div class="row no-gutters">
+      <div class="d-flex align-items-center bg-light">
+        <img
+          class="py-auto"
+          [src]="attachment?.thumbnail_url"
+          [alt]="attachment?.filename"
+        />
+      </div>
+      <div class="border-left border-muted px-3">
+        <div class="card-body">
+          <span>{{ attachment?.filename }}</span>
+          <p class="card-text">
+            {{ attachment?.size | bytesize: 'kb' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</button>
+
+<ng-template #attachmentModal let-modal>
+  <div>
+    <header class="position-absolute w-100 d-flex justify-content-end">
+      <button
+        class="p-4 close"
+        aria-label="Close"
+        type="button"
+        (click)="modal.dismiss()"
+      >
+        <i class="fas fa-times fa-lg" aria-hidden="true"></i>
+      </button>
+    </header>
+    <img
+      class="img-fluid rounded"
+      [src]="attachment?.big_url"
+      [alt]="attachment?.filename"
+      [width]="attachment?.width"
+      [height]="attachment?.height"
+    />
+  </div>
+</ng-template>
