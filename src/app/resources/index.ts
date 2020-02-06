@@ -1,4 +1,4 @@
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 export interface BaseElement {
@@ -14,7 +14,9 @@ export interface PtElement extends BaseElement {
 
 export abstract class BaseResource<T = any> {
   readonly model$: Observable<T>;
-  protected data$ = new Subject<T>();
+  protected data$: Subject<T> | BehaviorSubject<T> = new BehaviorSubject<T>(
+    null
+  );
 
   constructor() {
     this.model$ = this.data$

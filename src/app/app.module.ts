@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { ApiKeyAuthComponent } from './components/api-key-auth/api-key-auth.component';
 import { CurrentUserComponent } from './components/current-user/current-user.component';
 import { FileAttachmentPreviewComponent } from './components/file-attachment-preview/file-attachment-preview.component';
+import { PersonBadgeComponent } from './components/person-badge/person-badge.component';
 import { ProjectNavComponent } from './components/project-nav/project-nav.component';
 import { StoryCommentComponent } from './components/story-comment/story-comment.component';
 import { StoryDetailsComponent } from './components/story-details/story-details.component';
@@ -45,6 +46,7 @@ import { StoryService } from './resources/story.service';
     BytesizePipe,
     StoryCommentComponent,
     FileAttachmentPreviewComponent,
+    PersonBadgeComponent,
   ],
   imports: [
     // Angular Modules

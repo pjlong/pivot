@@ -6,6 +6,15 @@ body {
   overflow-y: hidden !important;
 }
 
+.y-scroll {
+  height: 100%;
+  overflow-y: auto !important;
+
+  & > :last-child {
+    margin-bottom: 5rem;
+  }
+}
+
 markdown {
   $font-size-base-markdown: $font-size-base * 0.9;
   $h1-font-size-markdown: $font-size-base-markdown * 1.8;
