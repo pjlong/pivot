@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -44,6 +45,7 @@ describe('ProjectBoardComponent', () => {
         NgbModal,
       ],
       imports: [MarkdownModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
