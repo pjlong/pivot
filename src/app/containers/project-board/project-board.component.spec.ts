@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { ResourceMockService } from '@app/__mocks__/resource-mock.service';
 import { FileAttachmentPreviewComponent } from '@app/components/file-attachment-preview/file-attachment-preview.component';
 import { StoryCommentComponent } from '@app/components/story-comment/story-comment.component';
-import { StoryModalContentComponent } from '@app/components/story-modal-content/story-modal-content.component';
+import { StoryDetailsComponent } from '@app/components/story-details/story-details.component';
 import { BytesizePipe } from '@app/pipes/bytesize.pipe';
 import { ProjectMembershipsService } from '@app/resources/project-memberships.service';
 import { StoriesService } from '@app/resources/stories.service';
@@ -29,7 +29,7 @@ describe('ProjectBoardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ProjectBoardComponent,
-        StoryModalContentComponent,
+        StoryDetailsComponent,
         StoryCommentComponent,
         FileAttachmentPreviewComponent,
         BytesizePipe,

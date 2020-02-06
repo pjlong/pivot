@@ -5,11 +5,8 @@ import {
   OnChanges,
   SimpleChanges,
   OnDestroy,
-  ViewChild,
-  TemplateRef,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -17,17 +14,15 @@ import { PeopleStoreService } from '@app/people-store.service';
 import {
   StoryCommentResponse,
   StoryCommentsService,
-  FileAttachmentResponse,
 } from '@app/resources/story-comments.service';
 import { StoryResponse } from '@app/resources/story.service';
 
 @Component({
-  selector: 'pt-story-modal-content',
-  templateUrl: './story-modal-content.component.html',
-  styleUrls: ['./story-modal-content.component.scss'],
+  selector: 'pt-story-details',
+  templateUrl: './story-details.component.html',
+  styleUrls: ['./story-details.component.scss'],
 })
-export class StoryModalContentComponent
-  implements OnInit, OnChanges, OnDestroy {
+export class StoryDetailsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() story: StoryResponse;
   fullStory?: StoryResponse;
   private projectId: string;
