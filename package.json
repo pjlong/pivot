@@ -7,7 +7,8 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "eslint -c .eslintrc.json 'src/**/*.ts'",
+    "lint": "eslint -c .eslintrc.json",
+    "lint:all": "npm run lint -- 'src/**/*.ts'",
     "e2e": "ng e2e",
     "server": "node server.js",
     "dev": "concurrently 'npm start' 'npm run server'"
@@ -58,7 +59,9 @@
     "eslint-plugin-jest": "^23.6.0",
     "eslint-plugin-jsdoc": "^21.0.0",
     "eslint-plugin-prefer-arrow": "^1.1.7",
+    "husky": "^4.2.1",
     "jest": "^24.9.0",
+    "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
     "protractor": "^5.4.3",
     "ts-node": "~7.0.0",
@@ -70,5 +73,21 @@
   "bugs": {
     "url": "https://github.com/pjlong/pivot/issues"
   },
-  "homepage": "https://github.com/pjlong/pivot#readme"
+  "homepage": "https://github.com/pjlong/pivot#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,scss,json,md,html}": [
+      "prettier --write",
+      "git add"
+    ],
+    "src/**/*.ts": [
+      "npm run lint -- --fix",
+      "git add"
+    ]
+  }
 }
