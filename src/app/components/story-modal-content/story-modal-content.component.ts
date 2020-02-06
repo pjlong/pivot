@@ -45,8 +45,10 @@ export class StoryModalContentComponent
   ) {}
 
   ngOnInit(): void {
-    this.fullStory = this.story;
-    this.fullStory.story_comments = []; // TODO: move to story service?
+    if (this.story) {
+      this.fullStory = this.story;
+      this.fullStory.story_comments = []; // TODO: move to story service?
+    }
 
     this.activatedRoute.parent.paramMap
       .pipe(takeUntil(this.destroy$))

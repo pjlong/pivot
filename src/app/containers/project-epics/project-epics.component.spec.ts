@@ -3,8 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
-import { epicMockService } from '@app/__mocks__/epic-mock.service';
-import { projectMockService } from '@app/__mocks__/project-mock.service';
+import { ResourceMockService } from '@app/__mocks__/resource-mock.service';
 import { EpicService } from '@app/resources/epic.service';
 import { ProjectService } from '@app/resources/project.service';
 
@@ -25,8 +24,8 @@ describe('ProjectEpicsComponent', () => {
       imports: [RouterTestingModule],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: ProjectService, useValue: projectMockService },
-        { provide: EpicService, useValue: epicMockService },
+        { provide: ProjectService, useValue: new ResourceMockService() },
+        { provide: EpicService, useValue: new ResourceMockService() },
       ],
     }).compileComponents();
   }));
