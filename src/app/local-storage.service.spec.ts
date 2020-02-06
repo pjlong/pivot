@@ -4,7 +4,6 @@ import { LocalStorageService } from './local-storage.service';
 
 describe('LocalStorageService', () => {
   const prefix = 'foobar';
-  let getItemSpy;
   let setItemSpy;
 
   beforeEach(() => {
@@ -18,9 +17,6 @@ describe('LocalStorageService', () => {
       ],
     });
 
-    getItemSpy = jest
-      .spyOn(window.localStorage, 'getItem')
-      .mockImplementation(() => '');
     setItemSpy = jest
       .spyOn(window.localStorage, 'setItem')
       .mockImplementation(() => {});

@@ -4,16 +4,16 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class LocalStorageService {
-  private _prefix: string;
+  private keyPrefix: string;
 
-  static withPrefix(prefix: string = '') {
+  static withPrefix(prefix = ''): LocalStorageService {
     const instance: LocalStorageService = new LocalStorageService();
-    instance._prefix = prefix;
+    instance.keyPrefix = prefix;
     return instance;
   }
 
-  private get prefix() {
-    return !!this._prefix ? `${this._prefix}:` : '';
+  private get prefix(): string {
+    return this.keyPrefix ? `${this.keyPrefix}:` : '';
   }
 
   get(key: string): string {

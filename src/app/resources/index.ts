@@ -1,4 +1,4 @@
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 export interface BaseElement {
