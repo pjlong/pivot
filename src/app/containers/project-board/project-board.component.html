@@ -73,7 +73,7 @@
 </section>
 
 <ng-template #storyModal let-modal>
-  <header class="modal-header">
+  <header class="modal-header align-items-center">
     <h4 class="modal-title">{{ focusedStory?.name }}</h4>
     <button
       type="button"
@@ -81,7 +81,7 @@
       aria-label="Close"
       (click)="modal.dismiss()"
     >
-      <i aria-hidden="true">&times;</i>
+      <i aria-hidden="true" class="fas fa-times"></i>
     </button>
   </header>
   <div class="modal-body container-fluid">

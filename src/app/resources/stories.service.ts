@@ -4,27 +4,9 @@ import { map, mergeMap } from 'rxjs/operators';
 
 import { PivotalAPIService } from '@app/pivotal-api.service';
 
-import { LabelResponse } from './epic.service';
-import { PersonResponse } from './project-memberships.service';
+import { StoryResponse } from './story.service';
 
-import { PtElement, BaseResource } from '.';
-
-export interface StoryResponse extends PtElement {
-  kind: 'story';
-  story_type: 'bug' | 'feature' | 'chore';
-  name: string;
-  description: string;
-  current_state: string;
-  requested_by_id: number;
-  url: string;
-  owner_ids: number[];
-  labels: LabelResponse;
-  estimate: number;
-
-  // Non API properties
-  owners: PersonResponse[];
-  requester: PersonResponse;
-}
+import { BaseResource } from '.';
 
 @Injectable({
   providedIn: 'root',

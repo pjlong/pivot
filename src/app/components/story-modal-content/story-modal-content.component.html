@@ -1,12 +1,67 @@
 <div class="row">
-  <section class="col-sm-7 col-lg-9 px-3">
-    <h4>Description</h4>
-    <div class="p-2">
-      <markdown>
-        {{ story?.description }}
-      </markdown>
-    </div>
-  </section>
+  <div class="col-sm-7 col-lg-9 px-3">
+    <section id="description">
+      <h4>Description</h4>
+      <div class="p-2">
+        <markdown>
+          {{ story?.description }}
+        </markdown>
+      </div>
+    </section>
+    <section id="comments" class="card">
+      <header class="card-header">
+        <h4 class="py-0">Comments</h4>
+      </header>
+      <div class="card-body">
+        <ul
+          class="list-unstyled"
+          *ngIf="story?.story_comments.length; else noComments"
+        >
+          <li *ngFor="let comment of story?.story_comments; last as isLast">
+            <div class="d-flex">
+              <div class="mr-2">
+                <span class="badge badge-pill badge-primary">{{
+                  comment?.commenter?.initials
+                }}</span>
+              </div>
+              <div class="flex-grow-1">
+                <strong [title]="comment?.commenter?.name"
+                  >@{{ comment?.commenter?.username }}:</strong
+                >
+                <ng-container *ngIf="comment?.text">
+                  <markdown>
+                    {{ comment?.text }}
+                  </markdown>
+                </ng-container>
+                <ng-container *ngIf="comment?.file_attachments.length">
+                  <div
+                    *ngFor="let attachment of comment?.file_attachments"
+                    title="Created At: {{ attachment.created_at }}"
+                  >
+                    <button
+                      class="btn btn-link"
+                      (click)="openAttachmentImageModal(attachment)"
+                    >
+                      <img
+                        [src]="attachment.thumbnail_url"
+                        [alt]="attachment.filename"
+                      />
+                    </button>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <hr *ngIf="!isLast" />
+          </li>
+        </ul>
+        <ng-template #noComments>
+          <p>
+            <em>No Comments</em>
+          </p>
+        </ng-template>
+      </div>
+    </section>
+  </div>
   <aside class="col-sm-5 col-lg-3">
     <div class="card">
       <ul class="list-group list-group-flush">
@@ -59,3 +114,25 @@
     </div>
   </aside>
 </div>
+
+<ng-template #attachmentModal let-modal>
+  <div>
+    <header class="position-absolute w-100 d-flex justify-content-end">
+      <button
+        class="p-4 close"
+        aria-label="Close"
+        type="button"
+        (click)="modal.dismiss()"
+      >
+        <i class="fas fa-times fa-lg" aria-hidden="true"></i>
+      </button>
+    </header>
+    <img
+      class="img-fluid rounded"
+      [src]="selectedAttachment.big_url"
+      [alt]="selectedAttachment.filename"
+      [width]="selectedAttachment.width"
+      [height]="selectedAttachment.height"
+    />
+  </div>
+</ng-template>
