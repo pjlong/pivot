@@ -1,12 +1,41 @@
 <div class="row">
-  <section class="col-sm-7 col-lg-9 px-3">
-    <h4>Description</h4>
-    <div class="p-2">
-      <markdown>
-        {{ story?.description }}
-      </markdown>
-    </div>
-  </section>
+  <div class="col-sm-7 col-lg-9 px-3">
+    <section id="description">
+      <h4>Description</h4>
+      <div class="p-2">
+        <markdown>
+          {{ story?.description }}
+        </markdown>
+      </div>
+    </section>
+    <section id="comments" class="card">
+      <header class="card-header">
+        <h4 class="py-0">Comments</h4>
+      </header>
+      <div class="card-body">
+        <ul
+          class="list-unstyled"
+          *ngIf="story?.story_comments.length; else noComments"
+        >
+          <li
+            *ngFor="
+              let comment of story?.story_comments.slice().reverse();
+              last as isLast;
+              trackBy: trackByCommentId
+            "
+          >
+            <pt-story-comment [comment]="comment"></pt-story-comment>
+            <hr *ngIf="!isLast" />
+          </li>
+        </ul>
+        <ng-template #noComments>
+          <p>
+            <em>No Comments</em>
+          </p>
+        </ng-template>
+      </div>
+    </section>
+  </div>
   <aside class="col-sm-5 col-lg-3">
     <div class="card">
       <ul class="list-group list-group-flush">

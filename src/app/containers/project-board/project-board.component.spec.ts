@@ -4,9 +4,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MarkdownModule } from 'ngx-markdown';
 import { of } from 'rxjs';
 
-import { projectMembershipMockService } from '@app/__mocks__/project-membership-mock.service';
-import { storiesMockService } from '@app/__mocks__/stories-mock.service';
+import { ResourceMockService } from '@app/__mocks__/resource-mock.service';
+import { FileAttachmentPreviewComponent } from '@app/components/file-attachment-preview/file-attachment-preview.component';
+import { StoryCommentComponent } from '@app/components/story-comment/story-comment.component';
 import { StoryModalContentComponent } from '@app/components/story-modal-content/story-modal-content.component';
+import { BytesizePipe } from '@app/pipes/bytesize.pipe';
 import { ProjectMembershipsService } from '@app/resources/project-memberships.service';
 import { StoriesService } from '@app/resources/stories.service';
 
@@ -25,13 +27,19 @@ describe('ProjectBoardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProjectBoardComponent, StoryModalContentComponent],
+      declarations: [
+        ProjectBoardComponent,
+        StoryModalContentComponent,
+        StoryCommentComponent,
+        FileAttachmentPreviewComponent,
+        BytesizePipe,
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: StoriesService, useValue: storiesMockService },
+        { provide: StoriesService, useValue: new ResourceMockService() },
         {
           provide: ProjectMembershipsService,
-          useValue: projectMembershipMockService,
+          useValue: new ResourceMockService(),
         },
         NgbModal,
       ],

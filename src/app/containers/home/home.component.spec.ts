@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { meMockService } from '@app/__mocks__/me-mock.service';
+import { ResourceMockService } from '@app/__mocks__/resource-mock.service';
 import { CurrentUserComponent } from '@app/components/current-user/current-user.component';
 import { MeService } from '@app/resources/me.service';
 
@@ -15,7 +15,7 @@ describe('HomeComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HomeComponent, CurrentUserComponent],
       imports: [RouterTestingModule],
-      providers: [{ provide: MeService, useValue: meMockService }],
+      providers: [{ provide: MeService, useValue: new ResourceMockService() }],
     }).compileComponents();
   }));
 

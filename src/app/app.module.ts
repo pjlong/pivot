@@ -16,6 +16,7 @@ import { ProjectBoardComponent } from './containers/project-board/project-board.
 import { ProjectEpicsComponent } from './containers/project-epics/project-epics.component';
 import { ProjectRootComponent } from './containers/project-root/project-root.component';
 import { LocalStorageService } from './local-storage.service';
+import { PeopleStoreService } from './people-store.service';
 import { ObscurePipe } from './pipes/obscure.pipe';
 import { PivotalAPIService } from './pivotal-api.service';
 import { EpicService } from './resources/epic.service';
@@ -23,6 +24,11 @@ import { MeService } from './resources/me.service';
 import { ProjectMembershipsService } from './resources/project-memberships.service';
 import { ProjectService } from './resources/project.service';
 import { StoriesService } from './resources/stories.service';
+import { StoryCommentsService } from './resources/story-comments.service';
+import { StoryService } from './resources/story.service';
+import { BytesizePipe } from './pipes/bytesize.pipe';
+import { StoryCommentComponent } from './components/story-comment/story-comment.component';
+import { FileAttachmentPreviewComponent } from './components/file-attachment-preview/file-attachment-preview.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +42,9 @@ import { StoriesService } from './resources/stories.service';
     StoryModalContentComponent,
     ApiKeyAuthComponent,
     ObscurePipe,
+    BytesizePipe,
+    StoryCommentComponent,
+    FileAttachmentPreviewComponent,
   ],
   imports: [
     // Angular Modules
@@ -55,7 +64,10 @@ import { StoriesService } from './resources/stories.service';
     EpicService,
     ProjectService,
     ProjectMembershipsService,
+    StoryService,
     StoriesService,
+    StoryCommentsService,
+    PeopleStoreService,
     {
       provide: LocalStorageService,
       useFactory: (): LocalStorageService =>

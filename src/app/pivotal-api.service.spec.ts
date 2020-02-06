@@ -32,7 +32,7 @@ describe('PivotalAPIService', () => {
       const path = '/foo';
       service.get(path);
       expect(httpClientMock.get.mock.calls[0][0]).toBe(
-        `${environment.host}/https://pivotaltracker.com/services/v5/foo`
+        `${environment.apiHost}/https://pivotaltracker.com/services/v5/foo`
       );
     });
 
@@ -50,7 +50,7 @@ describe('PivotalAPIService', () => {
       const path = '/foo';
       service.post(path, {});
       expect(httpClientMock.post.mock.calls[0][0]).toBe(
-        `${environment.host}/https://pivotaltracker.com/services/v5/foo`
+        `${environment.apiHost}/https://pivotaltracker.com/services/v5/foo`
       );
     });
 
