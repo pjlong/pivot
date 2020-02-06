@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
-  OnDestroy,
-} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -27,12 +20,23 @@ import { StoryResponse } from '@app/resources/story.service';
   templateUrl: './story-details.component.html',
   styleUrls: ['./story-details.component.scss'],
 })
-export class StoryDetailsComponent implements OnInit, OnChanges, OnDestroy {
+export class StoryDetailsComponent implements OnInit, OnDestroy {
   @Input() story: StoryResponse;
   fullStory?: StoryResponse;
-  collapseDescription = false;
-  collapseComments = false;
-  collapseTasks = false;
+
+  status = {
+    description: {
+      collapse: false,
+    },
+    tasks: {
+      collapse: false,
+      loading: false,
+    },
+    comments: {
+      collapse: false,
+      loading: false,
+    },
+  };
   private projectId: string;
   private destroy$ = new Subject();
 
@@ -44,6 +48,9 @@ export class StoryDetailsComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.status.tasks.loading = true;
+    this.status.comments.loading = true;
+
     if (this.story) {
       this.fullStory = this.story;
       this.fullStory.story_tasks = [];
@@ -65,32 +72,20 @@ export class StoryDetailsComponent implements OnInit, OnChanges, OnDestroy {
           comment.commenter = this.peopleStore.getById(comment.person_id);
           return comment;
         });
+        this.status.comments.loading = false;
       });
 
     this.storyTasksService.model$
       .pipe(takeUntil(this.destroy$))
       .subscribe((storyTasks: StoryTaskResponse[]) => {
         this.fullStory.story_tasks = storyTasks;
+        this.status.tasks.loading = false;
       });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.story.isFirstChange()) {
-      const {
-        currentValue: currentStory,
-        previousValue: previousStory,
-      } = changes.story;
-      if (currentStory.id !== previousStory.id) {
-        this.fullStory = currentStory;
-        this.storyCommentsService.get(this.projectId, currentStory.id);
-      }
-    }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    this.fullStory = null;
   }
 
   trackById(resource: BaseElement): string {
