@@ -11,10 +11,15 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { PeopleStoreService } from '@app/people-store.service';
+import { BaseElement } from '@app/resources';
 import {
   StoryCommentResponse,
   StoryCommentsService,
 } from '@app/resources/story-comments.service';
+import {
+  StoryTasksService,
+  StoryTaskResponse,
+} from '@app/resources/story-tasks.service';
 import { StoryResponse } from '@app/resources/story.service';
 
 @Component({
@@ -27,11 +32,13 @@ export class StoryDetailsComponent implements OnInit, OnChanges, OnDestroy {
   fullStory?: StoryResponse;
   collapseDescription = false;
   collapseComments = false;
+  collapseTasks = false;
   private projectId: string;
   private destroy$ = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private storyTasksService: StoryTasksService,
     private storyCommentsService: StoryCommentsService,
     private peopleStore: PeopleStoreService
   ) {}
@@ -39,6 +46,7 @@ export class StoryDetailsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     if (this.story) {
       this.fullStory = this.story;
+      this.fullStory.story_tasks = [];
       this.fullStory.story_comments = []; // TODO: move to story service?
     }
 
@@ -46,6 +54,7 @@ export class StoryDetailsComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(param => {
         this.projectId = param.get('id');
+        this.storyTasksService.get(this.projectId, this.story.id);
         this.storyCommentsService.get(this.projectId, this.story.id);
       });
 
@@ -56,6 +65,12 @@ export class StoryDetailsComponent implements OnInit, OnChanges, OnDestroy {
           comment.commenter = this.peopleStore.getById(comment.person_id);
           return comment;
         });
+      });
+
+    this.storyTasksService.model$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((storyTasks: StoryTaskResponse[]) => {
+        this.fullStory.story_tasks = storyTasks;
       });
   }
 
@@ -78,7 +93,7 @@ export class StoryDetailsComponent implements OnInit, OnChanges, OnDestroy {
     this.fullStory = null;
   }
 
-  trackByCommentId(comment: StoryCommentResponse): string {
-    return comment.id;
+  trackById(resource: BaseElement): string {
+    return resource.id;
   }
 }

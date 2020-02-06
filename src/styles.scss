@@ -36,4 +36,10 @@ markdown {
   p {
     font-size: $font-size-base-markdown;
   }
+
+  &.inline {
+    p {
+      margin: 0;
+    }
+  }
 }
