@@ -20,7 +20,7 @@ export interface StoryResponse extends PtElement {
   requested_by_id: number;
   url: string;
   owner_ids: number[];
-  labels: LabelResponse;
+  labels: LabelResponse[];
   estimate: number;
 
   // Non API properties
