@@ -90,4 +90,8 @@ export class StoryModalContentComponent
     this.selectedAttachment = attachment;
     this.ngbModal.open(this.attachmentModal, { size: 'xl' });
   }
+
+  trackByCommentId(comment: StoryCommentResponse): string {
+    return comment.id;
+  }
 }

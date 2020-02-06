@@ -26,6 +26,7 @@ import { ProjectService } from './resources/project.service';
 import { StoriesService } from './resources/stories.service';
 import { StoryCommentsService } from './resources/story-comments.service';
 import { StoryService } from './resources/story.service';
+import { BytesizePipe } from './pipes/bytesize.pipe';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { StoryService } from './resources/story.service';
     StoryModalContentComponent,
     ApiKeyAuthComponent,
     ObscurePipe,
+    BytesizePipe,
   ],
   imports: [
     // Angular Modules

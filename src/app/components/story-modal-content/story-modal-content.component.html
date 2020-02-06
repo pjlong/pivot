@@ -17,7 +17,13 @@
           class="list-unstyled"
           *ngIf="story?.story_comments.length; else noComments"
         >
-          <li *ngFor="let comment of story?.story_comments; last as isLast">
+          <li
+            *ngFor="
+              let comment of story?.story_comments.slice().reverse();
+              last as isLast;
+              trackBy: trackByCommentId
+            "
+          >
             <div class="d-flex">
               <div class="mr-2">
                 <span class="badge badge-pill badge-primary">{{
@@ -39,13 +45,28 @@
                     title="Created At: {{ attachment.created_at }}"
                   >
                     <button
-                      class="btn btn-link"
+                      class="btn btn-link w-100"
                       (click)="openAttachmentImageModal(attachment)"
                     >
-                      <img
-                        [src]="attachment.thumbnail_url"
-                        [alt]="attachment.filename"
-                      />
+                      <div class="card">
+                        <div class="row no-gutters">
+                          <div class="d-flex align-items-center px-3">
+                            <img
+                              class="py-auto"
+                              [src]="attachment.thumbnail_url"
+                              [alt]="attachment.filename"
+                            />
+                          </div>
+                          <div class="border-left border-muted px-3">
+                            <div class="card-body">
+                              <span>{{ attachment.filename }}</span>
+                              <p class="card-text">
+                                {{ attachment.size | bytesize: 'kb' }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </button>
                   </div>
                 </ng-container>
