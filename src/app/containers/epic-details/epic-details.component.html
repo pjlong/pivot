@@ -28,14 +28,31 @@
 
             <div class="d-flex flex-column align-items-start">
               <div *ngFor="let story of displayGroups[stateName]">
-                <span
-                  class="badge badge-primary cursor-default"
-                  [ngbPopover]="storyPopover"
-                  [popoverTitle]="story.name"
-                  container="body"
-                  triggers="mouseenter:mouseleave"
-                  >#{{ story.id }}</span
-                >
+                <button class="btn" (click)="openModal(story)" type="button">
+                  <span
+                    class="badge cursor-default mw-100"
+                    [ngClass]="{
+                      'badge-warning': story.story_type === 'feature',
+                      'badge-secondary': story.story_type === 'chore',
+                      'badge-danger': story.story_type === 'bug',
+                      'badge-light': story.story_type === 'release'
+                    }"
+                    [ngbPopover]="storyPopover"
+                    [popoverTitle]="story.name"
+                    container="body"
+                    triggers="mouseenter:mouseleave"
+                    ><i
+                      class="fas"
+                      [ngClass]="{
+                        'fa-star': story?.story_type === 'feature',
+                        'fa-bug': story?.story_type === 'bug',
+                        'fa-wrench': story?.story_type === 'chore',
+                        'fa-rocket': story?.story_type === 'release'
+                      }"
+                    ></i>
+                    {{ story.id }}</span
+                  >
+                </button>
                 <ng-template #storyPopover>
                   <ul class="list-unstyled">
                     <li>
@@ -61,3 +78,20 @@
     </section>
   </div>
 </div>
+
+<ng-template #storyModal let-modal>
+  <header class="modal-header align-items-center border-bottom-0">
+    <h4 class="modal-title">{{ focusedStory?.name }}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    >
+      <i aria-hidden="true" class="fas fa-times"></i>
+    </button>
+  </header>
+  <div class="modal-body container-fluid">
+    <pt-story-details [story]="focusedStory"></pt-story-details>
+  </div>
+</ng-template>

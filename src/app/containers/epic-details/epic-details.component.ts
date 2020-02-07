@@ -1,5 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  TemplateRef,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -14,9 +21,11 @@ import { StoryResponse } from '@app/resources/story.service';
   styleUrls: ['./epic-details.component.scss'],
 })
 export class EpicDetailsComponent implements OnInit, OnDestroy {
+  @ViewChild('storyModal', { static: true }) storyModal: TemplateRef<NgbModal>;
   epic: EpicResponse;
   stories: StoryResponse[] = [];
   storyPoints: number;
+  focusedStory: StoryResponse;
   displayGroups: {};
   displayOrder = [
     'planned',
@@ -33,7 +42,8 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private epicService: EpicService,
     private storiesService: StoriesService,
-    private peopleStore: PeopleStoreService
+    private peopleStore: PeopleStoreService,
+    private ngbModal: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -77,11 +87,9 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  getGroup(key: string): StoryResponse[] {
-    if (key in this.displayGroups) {
-      return this.displayGroups[key];
-    }
-    return [];
+  openModal(story: StoryResponse): void {
+    this.focusedStory = story;
+    this.ngbModal.open(this.storyModal, { size: 'lg' });
   }
 
   private getStoryPoints(stories: StoryResponse[]): number {

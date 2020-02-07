@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { PivotalAPIService } from '@app/pivotal-api.service';
 
-import { LabelResponse } from './epics.service';
+import { LabelResponse } from './epic.service';
 import { PersonResponse } from './project-memberships.service';
 import { StoryCommentResponse } from './story-comments.service';
 import { StoryTaskResponse } from './story-tasks.service';
