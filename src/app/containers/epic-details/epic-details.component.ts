@@ -12,8 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { PeopleStoreService } from '@app/people-store.service';
 import { EpicService, EpicResponse } from '@app/resources/epic.service';
-import { StoriesService } from '@app/resources/stories.service';
-import { StoryResponse } from '@app/resources/story.service';
+import { Story, StoryService } from '@store/story';
 
 @Component({
   selector: 'pt-epic-details',
@@ -23,9 +22,9 @@ import { StoryResponse } from '@app/resources/story.service';
 export class EpicDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('storyModal', { static: true }) storyModal: TemplateRef<NgbModal>;
   epic: EpicResponse;
-  stories: StoryResponse[] = [];
+  stories: Story[] = [];
   storyPoints: number;
-  focusedStory: StoryResponse;
+  focusedStory: Story;
   displayGroups: {};
   displayOrder = [
     'planned',
@@ -41,8 +40,7 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private epicService: EpicService,
-    private storiesService: StoriesService,
-    private peopleStore: PeopleStoreService,
+    private storiesService: StoryService,
     private ngbModal: NgbModal
   ) {}
 
@@ -65,19 +63,16 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
 
     this.storiesService.model$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((stories: StoryResponse[]) => {
+      .subscribe((stories: Story[]) => {
         this.stories = stories;
         this.storyPoints = this.getStoryPoints(stories);
-        this.displayGroups = this.stories.reduce(
-          (acc: any, story: StoryResponse) => {
-            if (!acc[story.current_state]) {
-              acc[story.current_state] = [];
-            }
-            acc[story.current_state].push(story);
-            return acc;
-          },
-          {}
-        );
+        this.displayGroups = this.stories.reduce((acc: any, story: Story) => {
+          if (!acc[story.current_state]) {
+            acc[story.current_state] = [];
+          }
+          acc[story.current_state].push(story);
+          return acc;
+        }, {});
         console.log('displayGroups', this.displayGroups);
       });
   }
@@ -87,12 +82,12 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  openModal(story: StoryResponse): void {
+  openModal(story: Story): void {
     this.focusedStory = story;
     this.ngbModal.open(this.storyModal, { size: 'lg' });
   }
 
-  private getStoryPoints(stories: StoryResponse[]): number {
+  private getStoryPoints(stories: Story[]): number {
     return stories.reduce((sum, story) => {
       sum += story.estimate ? +story.estimate : 0;
       return sum;

@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 
 import { ResourceMockService } from '@app/__mocks__/resource-mock.service';
 import { EpicService } from '@app/resources/epic.service';
-import { StoriesService } from '@app/resources/stories.service';
+import { StoryService } from '@app/store/story/story.service';
 
 import { EpicDetailsComponent } from './epic-details.component';
 
@@ -25,7 +25,7 @@ describe('EpicDetailsComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: EpicService, useValue: new ResourceMockService() },
-        { provide: StoriesService, useValue: new ResourceMockService() },
+        { provide: StoryService, useValue: new ResourceMockService() },
         NgbModal,
       ],
       schemas: [NO_ERRORS_SCHEMA],

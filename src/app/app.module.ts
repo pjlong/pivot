@@ -2,8 +2,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MarkdownModule } from 'ngx-markdown';
+
+import { environment } from '@env';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,9 +32,8 @@ import { EpicsService } from './resources/epics.service';
 import { MeService } from './resources/me.service';
 import { ProjectMembershipsService } from './resources/project-memberships.service';
 import { ProjectService } from './resources/project.service';
-import { StoriesService } from './resources/stories.service';
 import { StoryCommentsService } from './resources/story-comments.service';
-import { StoryService } from './resources/story.service';
+import { StoryQuery, StoryStore, StoryService } from './store/story';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,9 @@ import { StoryService } from './resources/story.service';
     // Third-party Modules
     NgbModule,
     MarkdownModule.forRoot(),
+
+    // For Dev
+    environment.production ? [] : AkitaNgDevtools.forRoot(),
   ],
   providers: [
     PivotalAPIService,
@@ -71,7 +76,8 @@ import { StoryService } from './resources/story.service';
     ProjectService,
     ProjectMembershipsService,
     StoryService,
-    StoriesService,
+    StoryQuery,
+    StoryStore,
     StoryCommentsService,
     PeopleStoreService,
     {

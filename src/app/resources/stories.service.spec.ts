@@ -3,20 +3,20 @@ import { TestBed } from '@angular/core/testing';
 import { pivotalAPIMockService } from '@app/__mocks__/pivotal-api-mock.service';
 import { PivotalAPIService } from '@app/pivotal-api.service';
 
-import { StoriesService } from './stories.service';
+import { StoryService } from '../store/story/story.service';
 
-describe('StoriesService', () => {
+describe('StoryService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       providers: [
-        StoriesService,
+        StoryService,
         { provide: PivotalAPIService, useValue: pivotalAPIMockService },
       ],
     })
   );
 
   it('gets Stories', () => {
-    const service: StoriesService = TestBed.get(StoriesService);
+    const service: StoryService = TestBed.get(StoryService);
     expect(service).toBeTruthy();
   });
 });

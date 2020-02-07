@@ -1,30 +1,38 @@
 import { Injectable } from '@angular/core';
 import { concat, EMPTY, from, Observable } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, tap } from 'rxjs/operators';
 
 import { PivotalAPIService } from '@app/pivotal-api.service';
 
-import { StoryResponse } from './story.service';
-
-import { BaseResource } from '.';
+import { BaseResource } from '../../resources';
+import { Story } from './story.model';
+import { StoryStore } from './story.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class StoriesService extends BaseResource<StoryResponse[]> {
-  constructor(private pivotalAPI: PivotalAPIService) {
+export class StoryService extends BaseResource<Story[]> {
+  constructor(
+    private pivotalAPI: PivotalAPIService,
+    private store: StoryStore
+  ) {
     super();
   }
 
-  get(projectId: string, options: any = {}): Observable<StoryResponse[]> {
+  get(projectId: string, options: any = {}): Observable<Story[]> {
     const params = {
       ...this.buildParams(options),
       fields: [':default', 'owners', 'requested_by'].join(','),
     };
 
     const req = this.pivotalAPI
-      .get<StoryResponse[]>(`/projects/${projectId}/stories`, { params })
-      .pipe(map(response => response.body));
+      .get<Story[]>(`/projects/${projectId}/stories`, { params })
+      .pipe(
+        map(response => response.body),
+        tap(stories => {
+          this.store.set(stories);
+        })
+      );
 
     req.subscribe({
       next: response => {
@@ -38,7 +46,7 @@ export class StoriesService extends BaseResource<StoryResponse[]> {
   /**
    * Recursively fetches the next set of paginated Stories and appends into one object
    */
-  getAll(projectId: string, options: any = {}): Observable<StoryResponse[]> {
+  getAll(projectId: string, options: any = {}): Observable<Story[]> {
     const { offset = 0, limit = 100 } = options;
 
     const req = this.pivotalAPI
@@ -61,7 +69,7 @@ export class StoriesService extends BaseResource<StoryResponse[]> {
 
           return concat(items$, next$);
         })
-      ) as Observable<StoryResponse[]>;
+      ) as Observable<Story[]>;
 
     req.subscribe(story => {
       this.data$.next(story);

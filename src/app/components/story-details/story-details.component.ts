@@ -13,7 +13,7 @@ import {
   StoryTasksService,
   StoryTaskResponse,
 } from '@app/resources/story-tasks.service';
-import { StoryResponse } from '@app/resources/story.service';
+import { Story } from '@app/store/story';
 
 @Component({
   selector: 'pt-story-details',
@@ -21,8 +21,8 @@ import { StoryResponse } from '@app/resources/story.service';
   styleUrls: ['./story-details.component.scss'],
 })
 export class StoryDetailsComponent implements OnInit, OnDestroy {
-  @Input() story: StoryResponse;
-  fullStory?: StoryResponse;
+  @Input() story: Story;
+  fullStory?: Story;
 
   status = {
     description: {
