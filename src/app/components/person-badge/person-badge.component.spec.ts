@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { PersonBadgeComponent } from './person-badge.component';
 
@@ -9,6 +10,7 @@ describe('PersonBadgeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PersonBadgeComponent],
+      imports: [NgbPopoverModule],
     }).compileComponents();
   }));
 

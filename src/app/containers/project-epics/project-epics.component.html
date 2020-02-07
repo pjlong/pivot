@@ -4,48 +4,57 @@
       <h1 *ngIf="project">{{ project?.name }} - Epics:</h1>
     </header>
 
-    <div class="card mb-3" *ngFor="let epic of epics">
-      <header class="card-header">
-        <div class="d-flex align-items-center">
-          <h2 class="h5 flex-grow-1 mb-0">{{ epic.name }}</h2>
-          <a
-            class="btn btn-link"
-            [href]="epic.url"
-            target="_blank"
-            rel="nofollow noreferrer"
-            title="View in Pivotal Tracker"
+    <div class="card-columns">
+      <div class="card mb-3" *ngFor="let epic of epics">
+        <div class="card-body">
+          <header
+            class="d-flex align-items-center"
+            [class.mb-3]="epic?.description"
           >
-            <i class="fas fa-external-link-alt"></i>
-          </a>
-        </div>
-      </header>
-
-      <div class="card-body" *ngIf="epic?.description">
-        <h4 class="h6 mr-2">Description:</h4>
-        <div class="card">
-          <div class="card-body">
+            <h2 class="h6 card-title flex-grow-1 mb-0">
+              <a [routerLink]="[epic.id]">{{ epic.name }}</a>
+            </h2>
+            <a
+              class="btn btn-link"
+              [href]="epic.url"
+              target="_blank"
+              rel="nofollow noreferrer"
+              title="View in Pivotal Tracker"
+            >
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+          </header>
+          <div *ngIf="epic?.description">
+            <h4 class="h6 mr-2">Description:</h4>
             <markdown>{{ epic?.description }}</markdown>
           </div>
         </div>
-      </div>
 
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item" id="label">
-          <h4 class="h6 d-inline-block mr-2">Label:</h4>
-          <span class="badge badge-success">{{ epic.label?.name }}</span>
-        </li>
-        <li
-          class="list-group-item"
-          id="followers"
-          *ngIf="epic?.followers.length > 0"
-        >
-          <h4 class="h6 d-inline-block mr-2">Followers:</h4>
-          <pt-person-badge
-            *ngFor="let follower of epic.followers"
-            [person]="follower"
-          ></pt-person-badge>
-        </li>
-      </ul>
+        <ul class="list-group list-group-flush">
+          <li
+            class="list-group-item d-flex align-items-center border-top py-3"
+            id="label"
+          >
+            <h4 class="h6 d-inline-block mr-2 mb-0">Label:</h4>
+            <span
+              class="badge badge-success text-truncate"
+              [title]="epic.label?.name"
+              >{{ epic.label?.name }}</span
+            >
+          </li>
+          <li
+            class="list-group-item d-flex align-items-center py-1"
+            id="followers"
+            *ngIf="epic?.followers.length > 0"
+          >
+            <h4 class="h6 d-inline-block mr-2 mb-0">Followers:</h4>
+            <pt-person-badge
+              *ngFor="let follower of epic.followers"
+              [person]="follower"
+            ></pt-person-badge>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 </div>

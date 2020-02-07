@@ -6,7 +6,7 @@ import { PivotalAPIService } from '@app/pivotal-api.service';
 
 import { PersonResponse } from './project-memberships.service';
 
-import { PtElement, BaseResource } from './';
+import { PtElement, BaseResource } from '.';
 
 export interface LabelResponse extends PtElement {
   kind: 'label';
@@ -19,24 +19,25 @@ export interface EpicResponse extends PtElement {
   description: string;
   label: LabelResponse;
   url: string;
-  followers: PersonResponse[];
+
+  followers?: PersonResponse[];
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class EpicService extends BaseResource<EpicResponse[]> {
+export class EpicService extends BaseResource<EpicResponse> {
   constructor(private pivotalAPI: PivotalAPIService) {
     super();
   }
 
-  get(projectId: string): Observable<EpicResponse[]> {
+  get(projectId: string, epicId: string): Observable<EpicResponse> {
     const params = {
-      fields: [':default', 'followers'].join(','),
+      fields: [':default', 'followers', 'comments'].join(','),
     };
 
     const req = this.pivotalAPI
-      .get<EpicResponse[]>(`/projects/${projectId}/epics`, {
+      .get<EpicResponse>(`/projects/${projectId}/epics/${epicId}`, {
         params,
       })
       .pipe(map(r => r.body));

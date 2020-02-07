@@ -1,0 +1,63 @@
+<div>
+  <nav aria-label="breadcrumbs">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['..']">Epics</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page" *ngIf="epic">
+        {{ epic?.name }} (#{{ epic?.id }})
+      </li>
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <section class="card">
+      <header class="card-header">
+        <span> Stories: {{ stories?.length }} ({{ storyPoints }})</span>
+      </header>
+      <div class="card-body py-0">
+        <div class="row" *ngIf="stories.length">
+          <section
+            class="col p-3"
+            [ngClass]="{ 'border-right border-muted': !isLast }"
+            *ngFor="let stateName of displayOrder; last as isLast"
+          >
+            <header class="d-flex">
+              <h3 class="h6 flex-grow-1">{{ stateName | titlecase }}</h3>
+              <span>({{ displayGroups[stateName]?.length || 0 }})</span>
+            </header>
+
+            <div class="d-flex flex-column align-items-start">
+              <div *ngFor="let story of displayGroups[stateName]">
+                <span
+                  class="badge badge-primary cursor-default"
+                  [ngbPopover]="storyPopover"
+                  [popoverTitle]="story.name"
+                  container="body"
+                  triggers="mouseenter:mouseleave"
+                  >#{{ story.id }}</span
+                >
+                <ng-template #storyPopover>
+                  <ul class="list-unstyled">
+                    <li>
+                      <strong>Owners:</strong>
+                      <span *ngFor="let owner of story.owners">{{
+                        owner.name
+                      }}</span>
+                    </li>
+                    <li>
+                      <strong>Requester:</strong> {{ story.requester?.name }}
+                    </li>
+                    <li>
+                      <strong>Estimate:</strong>
+                      {{ story.estimate || 'unestimated' }}
+                    </li>
+                  </ul>
+                </ng-template>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

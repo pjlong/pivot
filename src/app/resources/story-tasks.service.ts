@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { PivotalAPIService } from '@app/pivotal-api.service';
@@ -20,8 +20,6 @@ export interface StoryTaskResponse extends BaseElement {
   providedIn: 'root',
 })
 export class StoryTasksService extends BaseResource<StoryTaskResponse[]> {
-  protected data$ = new Subject<StoryTaskResponse[]>();
-
   constructor(private pivotalAPI: PivotalAPIService) {
     super();
   }
