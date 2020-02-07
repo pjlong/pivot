@@ -82,12 +82,10 @@
   },
   "lint-staged": {
     "*.{js,ts,scss,json,md,html}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "src/**/*.ts": [
-      "npm run lint -- --fix",
-      "git add"
+      "npm run lint -- --fix"
     ]
   }
 }
