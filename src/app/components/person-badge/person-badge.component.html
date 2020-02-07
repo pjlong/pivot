@@ -1,0 +1,11 @@
+<span
+  class="badge badge-primary"
+  [ngbPopover]="popContent"
+  triggers="mouseenter:mouseleave"
+  [openDelay]="500"
+  [closeDelay]="200"
+  >{{ person?.initials }}</span
+>
+<ng-template #popContent
+  ><strong>@{{ person?.username }}</strong> {{ person?.name }}
+</ng-template>

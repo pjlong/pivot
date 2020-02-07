@@ -1,0 +1,97 @@
+<div>
+  <nav aria-label="breadcrumbs">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['..']">Epics</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page" *ngIf="epic">
+        {{ epic?.name }} (#{{ epic?.id }})
+      </li>
+    </ol>
+  </nav>
+  <div class="container-fluid">
+    <section class="card">
+      <header class="card-header">
+        <span> Stories: {{ stories?.length }} ({{ storyPoints }})</span>
+      </header>
+      <div class="card-body py-0">
+        <div class="row" *ngIf="stories.length">
+          <section
+            class="col p-3"
+            [ngClass]="{ 'border-right border-muted': !isLast }"
+            *ngFor="let stateName of displayOrder; last as isLast"
+          >
+            <header class="d-flex">
+              <h3 class="h6 flex-grow-1">{{ stateName | titlecase }}</h3>
+              <span>({{ displayGroups[stateName]?.length || 0 }})</span>
+            </header>
+
+            <div class="d-flex flex-column align-items-start">
+              <div *ngFor="let story of displayGroups[stateName]">
+                <button class="btn" (click)="openModal(story)" type="button">
+                  <span
+                    class="badge cursor-default mw-100"
+                    [ngClass]="{
+                      'badge-warning': story.story_type === 'feature',
+                      'badge-secondary': story.story_type === 'chore',
+                      'badge-danger': story.story_type === 'bug',
+                      'badge-light': story.story_type === 'release'
+                    }"
+                    [ngbPopover]="storyPopover"
+                    [popoverTitle]="story.name"
+                    container="body"
+                    triggers="mouseenter:mouseleave"
+                    ><i
+                      class="fas"
+                      [ngClass]="{
+                        'fa-star': story?.story_type === 'feature',
+                        'fa-bug': story?.story_type === 'bug',
+                        'fa-wrench': story?.story_type === 'chore',
+                        'fa-rocket': story?.story_type === 'release'
+                      }"
+                    ></i>
+                    {{ story.id }}</span
+                  >
+                </button>
+                <ng-template #storyPopover>
+                  <ul class="list-unstyled">
+                    <li>
+                      <strong>Owners:</strong>
+                      <span *ngFor="let owner of story.owners">{{
+                        owner.name
+                      }}</span>
+                    </li>
+                    <li>
+                      <strong>Requester:</strong> {{ story.requester?.name }}
+                    </li>
+                    <li>
+                      <strong>Estimate:</strong>
+                      {{ story.estimate || 'unestimated' }}
+                    </li>
+                  </ul>
+                </ng-template>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<ng-template #storyModal let-modal>
+  <header class="modal-header align-items-center border-bottom-0">
+    <h4 class="modal-title">{{ focusedStory?.name }}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    >
+      <i aria-hidden="true" class="fas fa-times"></i>
+    </button>
+  </header>
+  <div class="modal-body container-fluid">
+    <pt-story-details [story]="focusedStory"></pt-story-details>
+  </div>
+</ng-template>

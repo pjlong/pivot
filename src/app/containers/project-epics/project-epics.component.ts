@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { EpicResponse, EpicService } from '@app/resources/epic.service';
+import { EpicResponse } from '@app/resources/epic.service';
+import { EpicsService } from '@app/resources/epics.service';
 import {
   ProjectResponse,
   ProjectService,
@@ -22,13 +23,13 @@ export class ProjectEpicsComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private projectService: ProjectService,
-    private epicService: EpicService
+    private epicsService: EpicsService
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.parent.paramMap.subscribe(params => {
       this.projectService.get(params.get('id'));
-      this.epicService.get(params.get('id'));
+      this.epicsService.get(params.get('id'));
     });
 
     this.projectService.model$
@@ -37,7 +38,7 @@ export class ProjectEpicsComponent implements OnInit, OnDestroy {
         this.project = project;
       });
 
-    this.epicService.model$
+    this.epicsService.model$
       .pipe(takeUntil(this.destroy$))
       .subscribe((epics: EpicResponse[]) => {
         this.epics = epics;

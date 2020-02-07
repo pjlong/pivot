@@ -1,6 +1,60 @@
-<section class="container">
-  <div *ngFor="let epic of epics">
-    <h3>{{ epic.name }}</h3>
-    <span *ngFor="let label of epic.labels">{{ label.name }}</span>
-  </div>
-</section>
+<div class="y-scroll" style="height: 100vh;">
+  <section class="container py-3">
+    <header class="mb-3">
+      <h1 *ngIf="project">{{ project?.name }} - Epics:</h1>
+    </header>
+
+    <div class="card-columns">
+      <div class="card mb-3" *ngFor="let epic of epics">
+        <div class="card-body">
+          <header
+            class="d-flex align-items-center"
+            [class.mb-3]="epic?.description"
+          >
+            <h2 class="h6 card-title flex-grow-1 mb-0">
+              <a [routerLink]="[epic.id]">{{ epic.name }}</a>
+            </h2>
+            <a
+              class="btn btn-link"
+              [href]="epic.url"
+              target="_blank"
+              rel="nofollow noreferrer"
+              title="View in Pivotal Tracker"
+            >
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+          </header>
+          <div *ngIf="epic?.description">
+            <h4 class="h6 mr-2">Description:</h4>
+            <markdown>{{ epic?.description }}</markdown>
+          </div>
+        </div>
+
+        <ul class="list-group list-group-flush">
+          <li
+            class="list-group-item d-flex align-items-center border-top py-3"
+            id="label"
+          >
+            <h4 class="h6 d-inline-block mr-2 mb-0">Label:</h4>
+            <span
+              class="badge badge-success text-truncate"
+              [title]="epic.label?.name"
+              >{{ epic.label?.name }}</span
+            >
+          </li>
+          <li
+            class="list-group-item d-flex align-items-center py-1"
+            id="followers"
+            *ngIf="epic?.followers.length > 0"
+          >
+            <h4 class="h6 d-inline-block mr-2 mb-0">Followers:</h4>
+            <pt-person-badge
+              *ngFor="let follower of epic.followers"
+              [person]="follower"
+            ></pt-person-badge>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>

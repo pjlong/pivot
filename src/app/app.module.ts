@@ -10,9 +10,11 @@ import { AppComponent } from './app.component';
 import { ApiKeyAuthComponent } from './components/api-key-auth/api-key-auth.component';
 import { CurrentUserComponent } from './components/current-user/current-user.component';
 import { FileAttachmentPreviewComponent } from './components/file-attachment-preview/file-attachment-preview.component';
+import { PersonBadgeComponent } from './components/person-badge/person-badge.component';
 import { ProjectNavComponent } from './components/project-nav/project-nav.component';
 import { StoryCommentComponent } from './components/story-comment/story-comment.component';
 import { StoryDetailsComponent } from './components/story-details/story-details.component';
+import { EpicDetailsComponent } from './containers/epic-details/epic-details.component';
 import { HomeComponent } from './containers/home/home.component';
 import { ProjectBoardComponent } from './containers/project-board/project-board.component';
 import { ProjectEpicsComponent } from './containers/project-epics/project-epics.component';
@@ -23,6 +25,7 @@ import { BytesizePipe } from './pipes/bytesize.pipe';
 import { ObscurePipe } from './pipes/obscure.pipe';
 import { PivotalAPIService } from './pivotal-api.service';
 import { EpicService } from './resources/epic.service';
+import { EpicsService } from './resources/epics.service';
 import { MeService } from './resources/me.service';
 import { ProjectMembershipsService } from './resources/project-memberships.service';
 import { ProjectService } from './resources/project.service';
@@ -45,6 +48,8 @@ import { StoryService } from './resources/story.service';
     BytesizePipe,
     StoryCommentComponent,
     FileAttachmentPreviewComponent,
+    PersonBadgeComponent,
+    EpicDetailsComponent,
   ],
   imports: [
     // Angular Modules
@@ -62,6 +67,7 @@ import { StoryService } from './resources/story.service';
     PivotalAPIService,
     MeService,
     EpicService,
+    EpicsService,
     ProjectService,
     ProjectMembershipsService,
     StoryService,

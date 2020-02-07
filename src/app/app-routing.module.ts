@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ApiKeyGuardService } from './api-key-guard.service';
 import { ApiKeyAuthComponent } from './components/api-key-auth/api-key-auth.component';
+import { EpicDetailsComponent } from './containers/epic-details/epic-details.component';
 import { HomeComponent } from './containers/home/home.component';
 import { ProjectBoardComponent } from './containers/project-board/project-board.component';
 import { ProjectEpicsComponent } from './containers/project-epics/project-epics.component';
@@ -17,6 +18,7 @@ const routes: Routes = [
     canActivate: [ApiKeyGuardService],
     children: [
       { path: 'board', component: ProjectBoardComponent },
+      { path: 'epics/:epicId', component: EpicDetailsComponent },
       { path: 'epics', component: ProjectEpicsComponent },
       { path: '', redirectTo: 'board', pathMatch: 'full' },
     ],

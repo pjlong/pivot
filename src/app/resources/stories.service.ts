@@ -17,11 +17,13 @@ export class StoriesService extends BaseResource<StoryResponse[]> {
   }
 
   get(projectId: string, options: any = {}): Observable<StoryResponse[]> {
-    const { limit = 100 } = options;
+    const params = {
+      ...this.buildParams(options),
+      fields: [':default', 'owners', 'requested_by'].join(','),
+    };
+
     const req = this.pivotalAPI
-      .get<StoryResponse[]>(`/projects/${projectId}/stories`, {
-        params: { limit },
-      })
+      .get<StoryResponse[]>(`/projects/${projectId}/stories`, { params })
       .pipe(map(response => response.body));
 
     req.subscribe({
@@ -66,5 +68,16 @@ export class StoriesService extends BaseResource<StoryResponse[]> {
     });
 
     return req;
+  }
+
+  private buildParams(options: any): object {
+    const { limit = 100, label } = options;
+    const params: any = { limit };
+
+    if (label) {
+      params.with_label = label;
+    }
+
+    return params;
   }
 }

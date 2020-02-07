@@ -17,14 +17,17 @@ export interface StoryResponse extends PtElement {
   name: string;
   description: string;
   current_state: string;
+  requested_by: PersonResponse;
   requested_by_id: number;
   url: string;
   owner_ids: number[];
+  owners: PersonResponse[];
   labels: LabelResponse[];
   estimate: number;
+  tasks: StoryTaskResponse[];
+  comments: StoryCommentResponse[];
 
   // Non API properties
-  owners: PersonResponse[];
   requester: PersonResponse;
   story_comments?: StoryCommentResponse[];
   story_tasks?: StoryTaskResponse[];
@@ -40,7 +43,17 @@ export class StoryService extends BaseResource<StoryResponse> {
 
   get(projectId: string, storyId: string): Observable<StoryResponse> {
     const req = this.pivotalAPI
-      .get<StoryResponse>(`/projects/${projectId}/stories/${storyId}`)
+      .get<StoryResponse>(`/projects/${projectId}/stories/${storyId}`, {
+        params: {
+          fields: [
+            ':default',
+            'owners',
+            'requested_by',
+            'tasks',
+            'comments',
+          ].join(','),
+        },
+      })
       .pipe(map(response => response.body));
 
     req.subscribe({

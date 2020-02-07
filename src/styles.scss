@@ -6,6 +6,24 @@ body {
   overflow-y: hidden !important;
 }
 
+.y-scroll {
+  height: 100%;
+  overflow-y: auto !important;
+
+  & > :last-child {
+    margin-bottom: 5rem;
+  }
+}
+
+$cursor-styles: auto, default, pointer, context-menu, help, progress, wait, cell,
+  crosshair, text, move, no-drop, not-allowed, grab;
+@each $cursor-style in $cursor-styles {
+  .cursor-#{$cursor-style} {
+    cursor: $cursor-style !important;
+  }
+}
+
+// Styles for Markdown component
 markdown {
   $font-size-base-markdown: $font-size-base * 0.9;
   $h1-font-size-markdown: $font-size-base-markdown * 1.8;
