@@ -54,7 +54,10 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
     combineLatest([this.route.parent.paramMap, this.route.paramMap])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([parentParams, params]) => {
-        this.epicService.get(parentParams.get('id'), params.get('epicId'));
+        this.epicService.get(
+          parentParams.get('projectId'),
+          params.get('epicId')
+        );
       });
 
     this.epicService.model$

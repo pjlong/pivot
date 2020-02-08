@@ -26,7 +26,7 @@ export class ProjectRootComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.projectId = params.get('id');
+      this.projectId = params.get('projectId');
       this.projectMembershipService.get(this.projectId);
     });
 

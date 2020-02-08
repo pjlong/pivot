@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
@@ -61,6 +62,7 @@ import { StoryQuery, StoryStore, StoryService } from './store/story';
     ReactiveFormsModule,
 
     // Third-party Modules
+    AkitaNgRouterStoreModule,
     NgbModule,
     MarkdownModule.forRoot({
       markedOptions: {

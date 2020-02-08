@@ -49,7 +49,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.activatedRoute.parent.paramMap.subscribe(params => {
-      this.projectId = params.get('id');
+      this.projectId = params.get('projectId');
       this.storyService.get(this.projectId, { limit: 1000 });
     });
 

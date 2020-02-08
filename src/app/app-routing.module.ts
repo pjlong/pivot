@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [ApiKeyGuardService] },
   { path: 'auth', component: ApiKeyAuthComponent },
   {
-    path: 'project/:id',
+    path: 'project/:projectId',
     component: ProjectRootComponent,
     canActivate: [ApiKeyGuardService],
     children: [
