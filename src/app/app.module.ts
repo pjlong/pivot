@@ -29,7 +29,6 @@ import { BytesizePipe } from './pipes/bytesize.pipe';
 import { ObscurePipe } from './pipes/obscure.pipe';
 import { PivotalAPIService } from './pivotal-api.service';
 import { MeService } from './resources/me.service';
-import { ProjectMembershipsService } from './resources/project-memberships.service';
 import { EpicQuery, EpicStore, EpicService } from './store/epic';
 import { ProjectQuery, ProjectStore, ProjectService } from './store/project';
 import { StoryQuery, StoryStore, StoryService } from './store/story';
@@ -82,7 +81,6 @@ import { StoryQuery, StoryStore, StoryService } from './store/story';
     ProjectQuery,
     ProjectStore,
     ProjectService,
-    ProjectMembershipsService,
     StoryService,
     StoryQuery,
     StoryStore,

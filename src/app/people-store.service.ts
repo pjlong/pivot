@@ -1,31 +1,20 @@
 import { Injectable } from '@angular/core';
 
-import {
-  PersonResponse,
-  ProjectMembershipResponse,
-} from './resources/project-memberships.service';
+import { Person } from './resources';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PeopleStoreService {
-  private people: PersonResponse[];
-  private peopleMap: { [key: string]: PersonResponse } = {};
+  private peopleMap: { [key: string]: Person } = {};
 
   constructor() {}
 
-  setPeopleFromMemberships(memberships: ProjectMembershipResponse[]): void {
-    this.people = memberships.map(({ person }) => {
-      this.peopleMap[person.id] = person;
-      return person;
-    });
-  }
-
-  getById(personId: string | number): PersonResponse {
+  getById(personId: string | number): Person {
     return this.peopleMap[personId.toString()];
   }
 
-  getByIds(personIds: (string | number)[]): PersonResponse[] {
+  getByIds(personIds: (string | number)[]): Person[] {
     return personIds.map(id => this.peopleMap[id.toString()]);
   }
 }

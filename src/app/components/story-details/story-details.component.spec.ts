@@ -5,9 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MarkdownModule } from 'ngx-markdown';
 import { of } from 'rxjs';
 
-import { peopleStoreMockService } from '@app/__mocks__/people-store-mock.service';
-import { PeopleStoreService } from '@app/people-store.service';
-
 import { StoryCommentComponent } from '../story-comment/story-comment.component';
 import { StoryDetailsComponent } from './story-details.component';
 
@@ -26,10 +23,7 @@ describe('StoryDetailsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StoryDetailsComponent, StoryCommentComponent],
-      providers: [
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: PeopleStoreService, useValue: peopleStoreMockService },
-      ],
+      providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
       imports: [RouterTestingModule, MarkdownModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

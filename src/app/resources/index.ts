@@ -12,6 +12,14 @@ export interface PtElement extends BaseElement {
   updated_at: string;
 }
 
+export interface Person extends BaseElement {
+  kind: 'person';
+  name: string;
+  email: string;
+  initials: string;
+  username: string;
+}
+
 export abstract class BaseResource<T = any> {
   readonly model$: Observable<T>;
   protected data$: Subject<T> | BehaviorSubject<T> = new BehaviorSubject<T>(

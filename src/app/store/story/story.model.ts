@@ -1,6 +1,6 @@
-import { PtElement, BaseElement } from '@app/resources';
-import { LabelResponse } from '@app/resources/epic.service';
-import { PersonResponse } from '@app/resources/project-memberships.service';
+import { PtElement, BaseElement, Person } from '@app/resources';
+
+import { Label } from '../epic';
 
 export interface FileAttachment extends BaseElement {
   kind: 'file_attachment';
@@ -30,7 +30,7 @@ export interface Comment extends BaseElement {
   commit_identifier: string;
   commit_type: string;
 
-  commenter?: PersonResponse;
+  commenter?: Person;
 }
 
 export interface Task extends BaseElement {
@@ -50,9 +50,9 @@ export interface Story extends PtElement {
   current_state: StoryStateName;
   estimate: number;
   url: string;
-  owners: PersonResponse[];
-  requested_by: PersonResponse;
-  labels: LabelResponse[];
+  owners: Person[];
+  requested_by: Person;
+  labels: Label[];
 
   description?: string;
 

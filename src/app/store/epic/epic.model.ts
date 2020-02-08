@@ -1,5 +1,4 @@
-import { PtElement } from '@app/resources';
-import { PersonResponse } from '@app/resources/project-memberships.service';
+import { PtElement, Person } from '@app/resources';
 
 export interface Label extends PtElement {
   kind: 'label';
@@ -13,7 +12,7 @@ export interface Epic extends PtElement {
   label: Label;
   url: string;
 
-  followers?: PersonResponse[];
+  followers?: Person[];
 }
 
 export const createEpic = (params: Partial<Epic>): Epic => {
