@@ -1,6 +1,6 @@
 <button class="btn btn-link w-100 p-0" (click)="openAttachmentImageModal()">
   <div class="card">
-    <div class="row no-gutters">
+    <div class="d-flex">
       <div class="d-flex align-items-center bg-light">
         <img
           class="py-auto"
@@ -8,7 +8,7 @@
           [alt]="attachment?.filename"
         />
       </div>
-      <div class="border-left border-muted px-3">
+      <div class="border-left border-muted px-3 flex-grow-1">
         <div class="card-body">
           <span>{{ attachment?.filename }}</span>
           <p class="card-text">

@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MarkdownModule } from 'ngx-markdown';
+import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
 
 import { environment } from '@env';
 
@@ -63,7 +63,12 @@ import { StoryQuery, StoryStore, StoryService } from './store/story';
 
     // Third-party Modules
     NgbModule,
-    MarkdownModule.forRoot(),
+    MarkdownModule.forRoot({
+      markedOptions: {
+        provide: MarkedOptions,
+        useValue: { sanitize: true },
+      },
+    }),
 
     // For Dev
     environment.production ? [] : AkitaNgDevtools.forRoot(),
