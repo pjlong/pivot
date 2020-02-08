@@ -7,8 +7,8 @@ import { of } from 'rxjs';
 
 import { ResourceMockService } from '@app/__mocks__/resource-mock.service';
 import { PersonBadgeComponent } from '@app/components/person-badge/person-badge.component';
-import { ProjectService } from '@app/resources/project.service';
-import { EpicService } from '@app/store/epic';
+import { EpicService } from '@store/epic';
+import { ProjectService } from '@store/project';
 
 import { ProjectEpicsComponent } from './project-epics.component';
 
