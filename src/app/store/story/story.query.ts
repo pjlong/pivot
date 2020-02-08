@@ -8,11 +8,7 @@ import { StoryStore, StoryState } from './story.store';
 
 @Injectable({ providedIn: 'root' })
 export class StoryQuery extends QueryEntity<StoryState> {
-  focusedStory$ = this.select(state => state.focused).pipe(
-    filter(entity => entity !== null)
-  );
-
-  focusLoading$ = this.select(state => state.focusLoading);
+  activeLoading$ = this.select(state => state.activeLoading);
 
   constructor(protected store: StoryStore) {
     super(store);

@@ -30,13 +30,8 @@ export class StoryService {
       .pipe(map(response => response.body));
 
     req.subscribe(story => {
-      this.store.update((state: StoryState) => {
-        return {
-          ...state,
-          focused: { ...state.focused, ...story },
-          focusLoading: false,
-        };
-      });
+      this.store.updateActive(active => ({ ...active, ...story }));
+      this.store.update({ activeLoading: false });
     });
 
     return req;
@@ -74,7 +69,9 @@ export class StoryService {
    * Sets a story to be focused and fetches additional story data
    */
   focusStory(focused: Story): void {
-    this.store.update({ focused, focusLoading: true });
+    this.store.setActive(focused.id);
+    this.store.update({ activeLoading: true });
+
     this.getStoryDetails(focused.project_id.toString(), focused.id);
   }
 

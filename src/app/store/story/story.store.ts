@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import {
+  EntityState,
+  EntityStore,
+  StoreConfig,
+  ActiveState,
+} from '@datorama/akita';
 
 import { Story } from './story.model';
 
-export interface StoryState extends EntityState<Story> {
-  focused: Story;
-  focusLoading: boolean;
+export interface StoryState extends EntityState<Story>, ActiveState {
+  activeLoading: boolean;
 }
 
 const initialState = {
-  focused: null,
-  focusLoading: false,
+  active: null,
+  activeLoading: false,
 };
 
 @Injectable({ providedIn: 'root' })

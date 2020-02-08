@@ -66,13 +66,14 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
         this.loading = loading;
       });
 
-    this.storyQuery.focusedStory$
+    this.storyQuery
+      .selectActive()
       .pipe(takeUntil(this.destroy$))
       .subscribe((focusedStory: Story) => {
         this.focusedStory = focusedStory;
       });
 
-    this.storyQuery.focusLoading$
+    this.storyQuery.activeLoading$
       .pipe(takeUntil(this.destroy$))
       .subscribe(loading => {
         this.focusedStoryLoading = loading;
