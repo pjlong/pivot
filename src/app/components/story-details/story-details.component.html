@@ -17,7 +17,7 @@
         </span>
       </header>
       <div class="card-body" [ngbCollapse]="status.description.collapse">
-        <markdown [data]="story.description"></markdown>
+        <markdown [data]="story?.description"></markdown>
         <div
           class="spinner-border text-secondary text-center"
           role="status"

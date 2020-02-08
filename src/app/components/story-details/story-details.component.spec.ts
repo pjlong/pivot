@@ -6,10 +6,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { of } from 'rxjs';
 
 import { peopleStoreMockService } from '@app/__mocks__/people-store-mock.service';
-import { ResourceMockService } from '@app/__mocks__/resource-mock.service';
 import { PeopleStoreService } from '@app/people-store.service';
-import { StoryCommentsService } from '@app/resources/story-comments.service';
-import { StoryTasksService } from '@app/resources/story-tasks.service';
 
 import { StoryCommentComponent } from '../story-comment/story-comment.component';
 import { StoryDetailsComponent } from './story-details.component';
@@ -31,8 +28,6 @@ describe('StoryDetailsComponent', () => {
       declarations: [StoryDetailsComponent, StoryCommentComponent],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: StoryCommentsService, useValue: new ResourceMockService() },
-        { provide: StoryTasksService, useValue: new ResourceMockService() },
         { provide: PeopleStoreService, useValue: peopleStoreMockService },
       ],
       imports: [RouterTestingModule, MarkdownModule.forRoot()],
