@@ -10,8 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { PeopleStoreService } from '@app/people-store.service';
-import { EpicService, EpicResponse } from '@app/resources/epic.service';
+import { Epic, EpicService, EpicQuery } from '@app/store/epic';
 import {
   Story,
   StoryService,
@@ -26,7 +25,7 @@ import {
 })
 export class EpicDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('storyModal', { static: true }) storyModal: TemplateRef<NgbModal>;
-  epic: EpicResponse;
+  epic: Epic;
   stories: Story[] = [];
   storyPoints: number;
   focusedStory: Story;
@@ -45,24 +44,21 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private epicService: EpicService,
+    private epicQuery: EpicQuery,
     private storyService: StoryService,
     private storyQuery: StoryQuery,
     private ngbModal: NgbModal
   ) {}
 
   ngOnInit(): void {
-    combineLatest([this.route.parent.paramMap, this.route.paramMap])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([parentParams, params]) => {
-        this.epicService.get(
-          parentParams.get('projectId'),
-          params.get('epicId')
-        );
-      });
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      this.epicService.set(params.get('epicId'));
+    });
 
-    this.epicService.model$
+    this.epicQuery
+      .selectActive()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((epic: EpicResponse) => {
+      .subscribe((epic: Epic) => {
         this.epic = epic;
 
         this.storyService.get(epic.project_id.toString(), {
@@ -70,9 +66,12 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
         });
       });
 
-    this.storyQuery.selectAll().subscribe((stories: Story[]) => {
-      this.stories = stories;
-    });
+    this.storyQuery
+      .selectAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((stories: Story[]) => {
+        this.stories = stories;
+      });
 
     this.storyQuery.asGroups$
       .pipe(takeUntil(this.destroy$))

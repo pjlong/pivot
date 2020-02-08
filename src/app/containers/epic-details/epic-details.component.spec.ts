@@ -1,12 +1,11 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 
 import { ResourceMockService } from '@app/__mocks__/resource-mock.service';
-import { EpicService } from '@app/resources/epic.service';
+import { EpicService } from '@app/store/epic';
 import { StoryService } from '@app/store/story/story.service';
 
 import { EpicDetailsComponent } from './epic-details.component';

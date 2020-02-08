@@ -28,10 +28,9 @@ import { PeopleStoreService } from './people-store.service';
 import { BytesizePipe } from './pipes/bytesize.pipe';
 import { ObscurePipe } from './pipes/obscure.pipe';
 import { PivotalAPIService } from './pivotal-api.service';
-import { EpicService } from './resources/epic.service';
-import { EpicsService } from './resources/epics.service';
 import { MeService } from './resources/me.service';
 import { ProjectMembershipsService } from './resources/project-memberships.service';
+import { EpicQuery, EpicStore, EpicService } from './store/epic';
 import { ProjectQuery, ProjectStore, ProjectService } from './store/project';
 import { StoryQuery, StoryStore, StoryService } from './store/story';
 
@@ -77,8 +76,9 @@ import { StoryQuery, StoryStore, StoryService } from './store/story';
   providers: [
     PivotalAPIService,
     MeService,
+    EpicQuery,
+    EpicStore,
     EpicService,
-    EpicsService,
     ProjectQuery,
     ProjectStore,
     ProjectService,
