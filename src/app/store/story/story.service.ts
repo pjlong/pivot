@@ -1,81 +1,72 @@
 import { Injectable } from '@angular/core';
-import { concat, EMPTY, from, Observable } from 'rxjs';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { PivotalAPIService } from '@app/pivotal-api.service';
 
-import { BaseResource } from '../../resources';
 import { Story } from './story.model';
-import { StoryStore } from './story.store';
+import { StoryStore, StoryState } from './story.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class StoryService extends BaseResource<Story[]> {
+export class StoryService {
   constructor(
     private pivotalAPI: PivotalAPIService,
     private store: StoryStore
-  ) {
-    super();
+  ) {}
+
+  getStoryDetails(projectId: string, storyId: string): Observable<Story> {
+    const req = this.pivotalAPI
+      .get<Story>(`/projects/${projectId}/stories/${storyId}`, {
+        params: {
+          fields: [
+            'description',
+            'tasks',
+            'comments(:default,person,file_attachments)',
+          ].join(','),
+        },
+      })
+      .pipe(map(response => response.body));
+
+    req.subscribe(story => {
+      this.store.update((state: StoryState) => {
+        return { ...state, focused: { ...state.focused, ...story } };
+      });
+    });
+
+    return req;
   }
 
   get(projectId: string, options: any = {}): Observable<Story[]> {
     const params = {
       ...this.buildParams(options),
-      fields: [':default', 'owners', 'requested_by'].join(','),
+      fields: [
+        'kind',
+        'name',
+        'url',
+        'story_type',
+        'current_state',
+        'estimate',
+        'labels',
+        'owners',
+        'requested_by',
+      ].join(','),
     };
 
     const req = this.pivotalAPI
       .get<Story[]>(`/projects/${projectId}/stories`, { params })
-      .pipe(
-        map(response => response.body),
-        tap(stories => {
-          this.store.set(stories);
-        })
-      );
+      .pipe(map(response => response.body));
 
-    req.subscribe({
-      next: response => {
-        this.data$.next(response);
-      },
+    req.subscribe(stories => {
+      this.store.set(stories);
     });
 
     return req;
   }
 
-  /**
-   * Recursively fetches the next set of paginated Stories and appends into one object
-   */
-  getAll(projectId: string, options: any = {}): Observable<Story[]> {
-    const { offset = 0, limit = 100 } = options;
-
-    const req = this.pivotalAPI
-      .get(`/projects/${projectId}/stories`, { params: { offset, limit } })
-      .pipe(
-        mergeMap(response => {
-          // Get current items, and concat with the next set of paginations
-          const items$ = from(response.body as Observable<any>);
-          const paginationOffset = +response.headers.get(
-            'x-tracker-pagination-offset'
-          );
-          const nextOffset = paginationOffset + 100;
-          const paginationTotal = +response.headers.get(
-            'x-tracker-pagination-total'
-          );
-          const next$ =
-            nextOffset < paginationTotal
-              ? this.getAll(projectId, { offset: nextOffset })
-              : EMPTY;
-
-          return concat(items$, next$);
-        })
-      ) as Observable<Story[]>;
-
-    req.subscribe(story => {
-      this.data$.next(story);
-    });
-
-    return req;
+  setFocusedStory(focused: Story): void {
+    this.store.update({ focused });
   }
 
   private buildParams(options: any): object {

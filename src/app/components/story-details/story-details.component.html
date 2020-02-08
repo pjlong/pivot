@@ -17,9 +17,17 @@
         </span>
       </header>
       <div class="card-body" [ngbCollapse]="status.description.collapse">
-        <markdown style="font-size: .8em;">
-          {{ story?.description }}
-        </markdown>
+        <markdown [data]="story.description"></markdown>
+        <div
+          class="spinner-border text-secondary text-center"
+          role="status"
+          *ngIf="!story?.description"
+        >
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div *ngIf="story?.description === ''">
+          <em>No Description</em>
+        </div>
       </div>
     </section>
     <section id="tasks" class="card mb-3">
@@ -43,7 +51,7 @@
           <li
             class="list-group-item d-flex"
             *ngFor="
-              let task of story?.story_tasks.slice().reverse();
+              let task of story?.tasks?.slice().reverse();
               last as isLast;
               trackBy: trackById
             "
@@ -63,19 +71,15 @@
           </li>
         </ul>
       </div>
-      <div
-        class="card-body"
-        [ngbCollapse]="status.tasks.collapse"
-        *ngIf="story?.story_tasks.length === 0"
-      >
+      <div class="card-body" [ngbCollapse]="status.tasks.collapse">
         <div
           class="spinner-border text-secondary text-center"
           role="status"
-          *ngIf="status.tasks.loading"
+          *ngIf="!story?.tasks && story?.tasks?.length !== 0"
         >
           <span class="sr-only">Loading...</span>
         </div>
-        <span class="font-italic text-muted" *ngIf="!status.tasks.loading"
+        <span class="font-italic text-muted" *ngIf="story?.tasks?.length === 0"
           >No Tasks</span
         >
       </div>
@@ -99,14 +103,11 @@
       <div class="card-body" [ngbCollapse]="status.comments.collapse">
         <ul
           class="list-unstyled"
-          *ngIf="
-            story?.story_comments.length && !status.comments.loading;
-            else noComments
-          "
+          *ngIf="story?.comments?.length; else noComments"
         >
           <li
             *ngFor="
-              let comment of story?.story_comments.slice().reverse();
+              let comment of story?.comments?.slice().reverse();
               last as isLast;
               trackBy: trackById
             "
@@ -119,11 +120,13 @@
           <div
             class="spinner-border text-secondary text-center"
             role="status"
-            *ngIf="status.comments.loading"
+            *ngIf="!story?.comments && story?.comments?.length !== 0"
           >
             <span class="sr-only">Loading...</span>
           </div>
-          <span class="font-italic text-muted" *ngIf="!status.comments.loading"
+          <span
+            class="font-italic text-muted"
+            *ngIf="story?.comments?.length === 0"
             >No Comments</span
           >
         </ng-template>

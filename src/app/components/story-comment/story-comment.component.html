@@ -1,12 +1,12 @@
 <div class="d-flex">
   <div class="mr-2">
     <span class="badge badge-pill badge-primary">{{
-      comment?.commenter?.initials
+      comment?.person?.initials
     }}</span>
   </div>
   <div class="flex-grow-1">
-    <strong [title]="comment?.commenter?.name"
-      >@{{ comment?.commenter?.username }}:</strong
+    <strong [title]="comment?.person?.name"
+      >@{{ comment?.person?.username }}:</strong
     >
     <ng-container *ngIf="comment?.text">
       <markdown>
@@ -14,7 +14,10 @@
       </markdown>
     </ng-container>
     <ng-container *ngIf="comment?.file_attachments.length">
-      <div *ngFor="let attachment of comment?.file_attachments">
+      <div
+        class="col-lg-10 col-xl-8"
+        *ngFor="let attachment of comment?.file_attachments"
+      >
         <pt-file-attachment-preview
           [attachment]="attachment"
         ></pt-file-attachment-preview>

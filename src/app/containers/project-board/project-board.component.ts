@@ -7,16 +7,16 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { forkJoin, Observable, Subject, combineLatest } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { PeopleStoreService } from '@app/people-store.service';
 import {
-  ProjectMembershipResponse,
-  ProjectMembershipsService,
-  PersonResponse,
-} from '@app/resources/project-memberships.service';
-import { StoryQuery, Story, StoryService } from '@app/store/story';
+  StoryQuery,
+  Story,
+  StoryService,
+  StoriesGroupedByState,
+  StoryStateName,
+} from '@app/store/story';
 
 @Component({
   selector: 'pt-project-board',
@@ -26,11 +26,8 @@ import { StoryQuery, Story, StoryService } from '@app/store/story';
 export class ProjectBoardComponent implements OnInit, OnDestroy {
   @ViewChild('storyModal', { static: true }) storyModal: TemplateRef<NgbModal>;
   projectId: string;
-  stories: Story[] = [];
-  memberships: ProjectMembershipResponse[] = [];
-  peopleMap: { [key: string]: PersonResponse } = {};
-  displayGroups = {};
-  displayOrder = [
+  displayGroups: StoriesGroupedByState;
+  displayOrder: StoryStateName[] = [
     'unscheduled',
     'unstarted',
     'started',
@@ -39,51 +36,36 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     'accepted',
   ];
   focusedStory?: Story;
+  loading: boolean;
   private destroy$ = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private storyService: StoryService,
     private storyQuery: StoryQuery,
-    private projectMembershipService: ProjectMembershipsService,
-    private peopleStore: PeopleStoreService,
     private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
-    let membershipsObservable: Observable<object>;
-
-    const stories$: Observable<Story[]> = this.storyQuery.selectAll();
-    stories$.pipe(tap(s => console.log('hi', s))).subscribe();
-
     this.activatedRoute.parent.paramMap.subscribe(params => {
       this.projectId = params.get('id');
-      this.storyService.get(this.projectId, {
-        limit: 1000,
-      });
-      membershipsObservable = this.projectMembershipService.get(this.projectId);
+      console.log('project', this.projectId);
+      this.storyService.get(this.projectId, { limit: 1000 });
     });
 
-    combineLatest([stories$, membershipsObservable])
+    this.storyQuery.asGroups$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        ([stories, memberships]: [Story[], ProjectMembershipResponse[]]) => {
-          console.log('stories', stories);
-          this.stories = stories;
-          this.peopleStore.setPeopleFromMemberships(memberships);
+      .subscribe((groupedStories: StoriesGroupedByState) => {
+        this.displayGroups = groupedStories;
+      });
 
-          this.stories.forEach(story => {
-            // story.requester = this.peopleStore.getById(story.requested_by_id);
-            // story.owners = this.peopleStore.getByIds(story.owner_ids);
+    this.storyQuery.selectLoading().subscribe(loading => {
+      this.loading = loading;
+    });
 
-            if (!this.displayGroups[story.current_state]) {
-              this.displayGroups[story.current_state] = [];
-            }
-
-            this.displayGroups[story.current_state].push(story);
-          });
-        }
-      );
+    this.storyQuery.focusedStory$.subscribe((focusedStory: Story) => {
+      this.focusedStory = focusedStory;
+    });
   }
 
   ngOnDestroy(): void {
@@ -92,10 +74,13 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
   }
 
   openStoryModal(story: Story): void {
-    this.focusedStory = story;
+    this.storyService.setFocusedStory(story);
+    this.storyService.getStoryDetails(this.projectId, story.id);
+
     if (this.modalService.hasOpenModals()) {
       this.modalService.dismissAll();
     }
-    this.modalService.open(this.storyModal, { size: 'lg', scrollable: true });
+
+    this.modalService.open(this.storyModal, { size: 'xl', scrollable: true });
   }
 }

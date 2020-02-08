@@ -12,7 +12,12 @@ import { takeUntil } from 'rxjs/operators';
 
 import { PeopleStoreService } from '@app/people-store.service';
 import { EpicService, EpicResponse } from '@app/resources/epic.service';
-import { Story, StoryService } from '@store/story';
+import {
+  Story,
+  StoryService,
+  StoryQuery,
+  StoriesGroupedByState,
+} from '@store/story';
 
 @Component({
   selector: 'pt-epic-details',
@@ -40,7 +45,8 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private epicService: EpicService,
-    private storiesService: StoryService,
+    private storyService: StoryService,
+    private storyQuery: StoryQuery,
     private ngbModal: NgbModal
   ) {}
 
@@ -56,24 +62,19 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
       .subscribe((epic: EpicResponse) => {
         this.epic = epic;
 
-        this.storiesService.get(epic.project_id.toString(), {
+        this.storyService.get(epic.project_id.toString(), {
           label: epic.label.name,
         });
       });
 
-    this.storiesService.model$
+    this.storyQuery.selectAll().subscribe((stories: Story[]) => {
+      this.stories = stories;
+    });
+
+    this.storyQuery.asGroups$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((stories: Story[]) => {
-        this.stories = stories;
-        this.storyPoints = this.getStoryPoints(stories);
-        this.displayGroups = this.stories.reduce((acc: any, story: Story) => {
-          if (!acc[story.current_state]) {
-            acc[story.current_state] = [];
-          }
-          acc[story.current_state].push(story);
-          return acc;
-        }, {});
-        console.log('displayGroups', this.displayGroups);
+      .subscribe((storiesGroupedByState: StoriesGroupedByState) => {
+        this.displayGroups = storiesGroupedByState;
       });
   }
 
