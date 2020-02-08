@@ -5,10 +5,12 @@ import { Story } from './story.model';
 
 export interface StoryState extends EntityState<Story> {
   focused: Story;
+  focusLoading: boolean;
 }
 
 const initialState = {
   focused: null,
+  focusLoading: false,
 };
 
 @Injectable({ providedIn: 'root' })

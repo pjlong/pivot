@@ -1,7 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component, Input } from '@angular/core';
 
 import { BaseElement } from '@app/resources';
 import { Story } from '@app/store/story';
@@ -11,11 +8,10 @@ import { Story } from '@app/store/story';
   templateUrl: './story-details.component.html',
   styleUrls: ['./story-details.component.scss'],
 })
-export class StoryDetailsComponent implements OnInit, OnDestroy {
+export class StoryDetailsComponent {
   @Input() story: Story;
-  fullStory?: Story;
+  @Input() loading: boolean;
 
-  // TODO: not being used, migrate to using Akita
   status = {
     description: {
       collapse: false,
@@ -28,26 +24,6 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     },
   };
   projectId: string;
-  private destroy$ = new Subject();
-
-  constructor(private activatedRoute: ActivatedRoute) {}
-
-  ngOnInit(): void {
-    if (this.story) {
-      this.fullStory = this.story;
-    }
-
-    this.activatedRoute.parent.paramMap
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(param => {
-        this.projectId = param.get('id');
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   trackById(resource: BaseElement): string {
     return resource.id;

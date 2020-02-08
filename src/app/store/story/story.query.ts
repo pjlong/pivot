@@ -12,6 +12,8 @@ export class StoryQuery extends QueryEntity<StoryState> {
     filter(entity => entity !== null)
   );
 
+  focusLoading$ = this.select(state => state.focusLoading);
+
   constructor(protected store: StoryStore) {
     super(store);
   }

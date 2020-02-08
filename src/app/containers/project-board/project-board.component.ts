@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
@@ -36,6 +36,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     'accepted',
   ];
   focusedStory?: Story;
+  focusedStoryLoading: boolean;
   loading: boolean;
   private destroy$ = new Subject();
 
@@ -59,13 +60,24 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
         this.displayGroups = groupedStories;
       });
 
-    this.storyQuery.selectLoading().subscribe(loading => {
-      this.loading = loading;
-    });
+    this.storyQuery
+      .selectLoading()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(loading => {
+        this.loading = loading;
+      });
 
-    this.storyQuery.focusedStory$.subscribe((focusedStory: Story) => {
-      this.focusedStory = focusedStory;
-    });
+    this.storyQuery.focusedStory$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((focusedStory: Story) => {
+        this.focusedStory = focusedStory;
+      });
+
+    this.storyQuery.focusLoading$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(loading => {
+        this.focusedStoryLoading = loading;
+      });
   }
 
   ngOnDestroy(): void {
@@ -74,8 +86,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
   }
 
   openStoryModal(story: Story): void {
-    this.storyService.setFocusedStory(story);
-    this.storyService.getStoryDetails(this.projectId, story.id);
+    this.storyService.focusStory(story);
 
     if (this.modalService.hasOpenModals()) {
       this.modalService.dismissAll();

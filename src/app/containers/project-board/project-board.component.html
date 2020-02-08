@@ -85,6 +85,9 @@
     </button>
   </header>
   <div class="modal-body container-fluid">
-    <pt-story-details [story]="focusedStory"></pt-story-details>
+    <pt-story-details
+      [story]="focusedStory"
+      [loading]="focusedStoryLoading"
+    ></pt-story-details>
   </div>
 </ng-template>

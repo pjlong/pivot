@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-7 col-lg-9 pb-4">
+  <div class="col-lg-9 pb-4">
     <section id="description" class="card mb-3">
       <header
         class="card-header d-flex"
@@ -21,13 +21,16 @@
         <div
           class="spinner-border text-secondary text-center"
           role="status"
-          *ngIf="!story?.description"
+          *ngIf="loading"
         >
           <span class="sr-only">Loading...</span>
         </div>
-        <div *ngIf="story?.description === ''">
-          <em>No Description</em>
-        </div>
+        <span
+          class="text-muted font-italic"
+          *ngIf="!loading && !story?.description"
+        >
+          No Description
+        </span>
       </div>
     </section>
     <section id="tasks" class="card mb-3">
@@ -75,11 +78,13 @@
         <div
           class="spinner-border text-secondary text-center"
           role="status"
-          *ngIf="!story?.tasks && story?.tasks?.length !== 0"
+          *ngIf="loading"
         >
           <span class="sr-only">Loading...</span>
         </div>
-        <span class="font-italic text-muted" *ngIf="story?.tasks?.length === 0"
+        <span
+          class="font-italic text-muted"
+          *ngIf="!loading && story?.tasks?.length === 0"
           >No Tasks</span
         >
       </div>
@@ -103,7 +108,7 @@
       <div class="card-body" [ngbCollapse]="status.comments.collapse">
         <ul
           class="list-unstyled"
-          *ngIf="story?.comments?.length; else noComments"
+          *ngIf="!loading && story?.comments?.length; else noComments"
         >
           <li
             *ngFor="
@@ -120,20 +125,20 @@
           <div
             class="spinner-border text-secondary text-center"
             role="status"
-            *ngIf="!story?.comments && story?.comments?.length !== 0"
+            *ngIf="loading"
           >
             <span class="sr-only">Loading...</span>
           </div>
           <span
             class="font-italic text-muted"
-            *ngIf="story?.comments?.length === 0"
+            *ngIf="!loading && story?.comments?.length === 0"
             >No Comments</span
           >
         </ng-template>
       </div>
     </section>
   </div>
-  <aside class="col-sm-5 col-lg-3 pb-4">
+  <aside class="col-lg-3 pb-4">
     <div class="card">
       <ul class="list-group list-group-flush">
         <li class="list-group-item">

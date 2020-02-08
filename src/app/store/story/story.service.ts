@@ -31,7 +31,11 @@ export class StoryService {
 
     req.subscribe(story => {
       this.store.update((state: StoryState) => {
-        return { ...state, focused: { ...state.focused, ...story } };
+        return {
+          ...state,
+          focused: { ...state.focused, ...story },
+          focusLoading: false,
+        };
       });
     });
 
@@ -42,6 +46,7 @@ export class StoryService {
     const params = {
       ...this.buildParams(options),
       fields: [
+        'project_id',
         'kind',
         'name',
         'url',
@@ -65,8 +70,12 @@ export class StoryService {
     return req;
   }
 
-  setFocusedStory(focused: Story): void {
-    this.store.update({ focused });
+  /**
+   * Sets a story to be focused and fetches additional story data
+   */
+  focusStory(focused: Story): void {
+    this.store.update({ focused, focusLoading: true });
+    this.getStoryDetails(focused.project_id.toString(), focused.id);
   }
 
   private buildParams(options: any): object {
