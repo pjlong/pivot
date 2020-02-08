@@ -32,7 +32,7 @@ import { EpicService } from './resources/epic.service';
 import { EpicsService } from './resources/epics.service';
 import { MeService } from './resources/me.service';
 import { ProjectMembershipsService } from './resources/project-memberships.service';
-import { ProjectService } from './resources/project.service';
+import { ProjectQuery, ProjectStore, ProjectService } from './store/project';
 import { StoryQuery, StoryStore, StoryService } from './store/story';
 
 @NgModule({
@@ -79,6 +79,8 @@ import { StoryQuery, StoryStore, StoryService } from './store/story';
     MeService,
     EpicService,
     EpicsService,
+    ProjectQuery,
+    ProjectStore,
     ProjectService,
     ProjectMembershipsService,
     StoryService,
