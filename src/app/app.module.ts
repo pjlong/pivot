@@ -32,7 +32,6 @@ import { EpicsService } from './resources/epics.service';
 import { MeService } from './resources/me.service';
 import { ProjectMembershipsService } from './resources/project-memberships.service';
 import { ProjectService } from './resources/project.service';
-import { StoryCommentsService } from './resources/story-comments.service';
 import { StoryQuery, StoryStore, StoryService } from './store/story';
 
 @NgModule({
@@ -83,7 +82,6 @@ import { StoryQuery, StoryStore, StoryService } from './store/story';
     StoryService,
     StoryQuery,
     StoryStore,
-    StoryCommentsService,
     PeopleStoreService,
     {
       provide: LocalStorageService,
