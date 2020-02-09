@@ -29,6 +29,7 @@ import { BytesizePipe } from './pipes/bytesize.pipe';
 import { ObscurePipe } from './pipes/obscure.pipe';
 import { PivotalAPIService } from './pivotal-api.service';
 import { MeService } from './resources/me.service';
+import { BoardQuery, BoardStore, BoardService } from './store/board';
 import { EpicQuery, EpicStore, EpicService } from './store/epic';
 import { ProjectQuery, ProjectStore, ProjectService } from './store/project';
 import { StoryQuery, StoryStore, StoryService } from './store/story';
@@ -84,6 +85,9 @@ import { StoryQuery, StoryStore, StoryService } from './store/story';
     StoryService,
     StoryQuery,
     StoryStore,
+    BoardQuery,
+    BoardStore,
+    BoardService,
     PeopleStoreService,
     {
       provide: LocalStorageService,

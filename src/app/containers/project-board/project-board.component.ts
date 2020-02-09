@@ -10,6 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { BoardService, BoardQuery } from '@app/store/board';
 import {
   StoryQuery,
   Story,
@@ -28,6 +29,7 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
   projectId: string;
   displayGroups: StoriesGroupedByState;
   displayOrder: StoryStateName[] = [
+    'planned',
     'unscheduled',
     'unstarted',
     'started',
@@ -38,16 +40,28 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
   focusedStory?: Story;
   focusedStoryLoading: boolean;
   loading: boolean;
+  boardState: { [key in StoryStateName]: boolean };
+  inactiveStateKeys: string[];
   private destroy$ = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private storyService: StoryService,
     private storyQuery: StoryQuery,
+    private boardService: BoardService,
+    private boardQuery: BoardQuery,
     private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
+    this.boardQuery.select('stateSwimlane').subscribe(boardState => {
+      this.boardState = boardState;
+    });
+
+    this.boardQuery.inactiveStateKeys$.subscribe(states => {
+      this.inactiveStateKeys = states;
+    });
+
     this.activatedRoute.parent.paramMap.subscribe(params => {
       this.projectId = params.get('projectId');
       this.storyService.get(this.projectId, { limit: 1000 });
@@ -93,5 +107,9 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     }
 
     this.modalService.open(this.storyModal, { size: 'xl', scrollable: true });
+  }
+
+  toggleSwimlane(stateName: StoryStateName): void {
+    this.boardService.toggleSwimlane(stateName);
   }
 }
