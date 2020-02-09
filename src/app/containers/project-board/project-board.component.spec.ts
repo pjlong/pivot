@@ -10,8 +10,7 @@ import { FileAttachmentPreviewComponent } from '@app/components/file-attachment-
 import { StoryCommentComponent } from '@app/components/story-comment/story-comment.component';
 import { StoryDetailsComponent } from '@app/components/story-details/story-details.component';
 import { BytesizePipe } from '@app/pipes/bytesize.pipe';
-import { ProjectMembershipsService } from '@app/resources/project-memberships.service';
-import { StoriesService } from '@app/resources/stories.service';
+import { StoryService } from '@app/store/story/story.service';
 
 import { ProjectBoardComponent } from './project-board.component';
 
@@ -37,11 +36,7 @@ describe('ProjectBoardComponent', () => {
       ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: StoriesService, useValue: new ResourceMockService() },
-        {
-          provide: ProjectMembershipsService,
-          useValue: new ResourceMockService(),
-        },
+        { provide: StoryService, useValue: new ResourceMockService() },
         NgbModal,
       ],
       imports: [MarkdownModule.forRoot()],

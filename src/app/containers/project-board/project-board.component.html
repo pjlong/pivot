@@ -2,7 +2,7 @@
   <section
     class="pool mt-4 mb-5 py-2"
     [style.width.rem]="(21 + 1) * displayOrder.length"
-    *ngIf="stories.length"
+    *ngIf="!loading"
   >
     <div class="swimlane mr-3" *ngFor="let stateName of displayOrder">
       <header>
@@ -40,7 +40,7 @@
                     {{ story.story_type }}
                   </span>
                   <span class="badge badge-secondary mr-1 mb-2">{{
-                    story.requester?.name || '--'
+                    story.requested_by?.name || '--'
                   }}</span>
                   <span class="badge badge-info mb-2">
                     <i class="fas fa-signal"></i>
@@ -85,6 +85,9 @@
     </button>
   </header>
   <div class="modal-body container-fluid">
-    <pt-story-details [story]="focusedStory"></pt-story-details>
+    <pt-story-details
+      [story]="focusedStory"
+      [loading]="focusedStoryLoading"
+    ></pt-story-details>
   </div>
 </ng-template>

@@ -1,14 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
-import { EpicResponse } from '@app/resources/epic.service';
-import { EpicsService } from '@app/resources/epics.service';
-import {
-  ProjectResponse,
-  ProjectService,
-} from '@app/resources/project.service';
+import { EpicService, Epic, EpicQuery } from '@app/store/epic';
+import { Project, ProjectService, ProjectQuery } from '@app/store/project';
 
 @Component({
   selector: 'pt-project-epics',
@@ -16,31 +12,32 @@ import {
   styleUrls: ['./project-epics.component.scss'],
 })
 export class ProjectEpicsComponent implements OnInit, OnDestroy {
-  project: ProjectResponse;
-  epics: EpicResponse[];
+  project: Project;
+  epics: Epic[];
   private destroy$ = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private projectService: ProjectService,
-    private epicsService: EpicsService
+    private projectQuery: ProjectQuery,
+    private epicService: EpicService,
+    private epicQuery: EpicQuery
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.parent.paramMap.subscribe(params => {
-      this.projectService.get(params.get('id'));
-      this.epicsService.get(params.get('id'));
+      this.projectService.getProjectDetails(params.get('projectId'));
+      this.epicService.getAll(params.get('projectId'));
     });
 
-    this.projectService.model$
-      .pipe(take(1))
-      .subscribe((project: ProjectResponse) => {
-        this.project = project;
-      });
+    this.projectQuery.selectActive().subscribe((project: Project) => {
+      this.project = project;
+    });
 
-    this.epicsService.model$
+    this.epicQuery
+      .selectAll()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((epics: EpicResponse[]) => {
+      .subscribe((epics: Epic[]) => {
         this.epics = epics;
       });
   }

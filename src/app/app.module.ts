@@ -2,8 +2,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MarkdownModule } from 'ngx-markdown';
+import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
+
+import { environment } from '@env';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,14 +28,10 @@ import { PeopleStoreService } from './people-store.service';
 import { BytesizePipe } from './pipes/bytesize.pipe';
 import { ObscurePipe } from './pipes/obscure.pipe';
 import { PivotalAPIService } from './pivotal-api.service';
-import { EpicService } from './resources/epic.service';
-import { EpicsService } from './resources/epics.service';
 import { MeService } from './resources/me.service';
-import { ProjectMembershipsService } from './resources/project-memberships.service';
-import { ProjectService } from './resources/project.service';
-import { StoriesService } from './resources/stories.service';
-import { StoryCommentsService } from './resources/story-comments.service';
-import { StoryService } from './resources/story.service';
+import { EpicQuery, EpicStore, EpicService } from './store/epic';
+import { ProjectQuery, ProjectStore, ProjectService } from './store/project';
+import { StoryQuery, StoryStore, StoryService } from './store/story';
 
 @NgModule({
   declarations: [
@@ -60,19 +60,30 @@ import { StoryService } from './resources/story.service';
     ReactiveFormsModule,
 
     // Third-party Modules
+    AkitaNgRouterStoreModule,
     NgbModule,
-    MarkdownModule.forRoot(),
+    MarkdownModule.forRoot({
+      markedOptions: {
+        provide: MarkedOptions,
+        useValue: { sanitize: true },
+      },
+    }),
+
+    // For Dev
+    environment.production ? [] : AkitaNgDevtools.forRoot(),
   ],
   providers: [
     PivotalAPIService,
     MeService,
+    EpicQuery,
+    EpicStore,
     EpicService,
-    EpicsService,
+    ProjectQuery,
+    ProjectStore,
     ProjectService,
-    ProjectMembershipsService,
     StoryService,
-    StoriesService,
-    StoryCommentsService,
+    StoryQuery,
+    StoryStore,
     PeopleStoreService,
     {
       provide: LocalStorageService,

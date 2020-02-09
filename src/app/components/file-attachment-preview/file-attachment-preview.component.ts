@@ -1,7 +1,7 @@
 import { Component, TemplateRef, ViewChild, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { FileAttachmentResponse } from '@app/resources/story-comments.service';
+import { FileAttachment } from '@store/story';
 
 @Component({
   selector: 'pt-file-attachment-preview',
@@ -12,7 +12,7 @@ export class FileAttachmentPreviewComponent {
   @ViewChild('attachmentModal', { static: true }) attachmentModal: TemplateRef<
     NgbModal
   >;
-  @Input() attachment: FileAttachmentResponse;
+  @Input() attachment: FileAttachment;
 
   constructor(private ngbModal: NgbModal) {}
 

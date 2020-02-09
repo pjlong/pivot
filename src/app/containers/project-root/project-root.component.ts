@@ -1,13 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import { PeopleStoreService } from '@app/people-store.service';
-import {
-  ProjectMembershipsService,
-  ProjectMembershipResponse,
-} from '@app/resources/project-memberships.service';
 
 @Component({
   selector: 'pt-project-root',
@@ -18,23 +11,12 @@ export class ProjectRootComponent implements OnInit, OnDestroy {
   projectId: string;
   private destroy$ = new Subject();
 
-  constructor(
-    private route: ActivatedRoute,
-    private projectMembershipService: ProjectMembershipsService,
-    private peopleStore: PeopleStoreService
-  ) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.projectId = params.get('id');
-      this.projectMembershipService.get(this.projectId);
+      this.projectId = params.get('projectId');
     });
-
-    this.projectMembershipService.model$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((memberships: ProjectMembershipResponse[]) => {
-        this.peopleStore.setPeopleFromMemberships(memberships);
-      });
   }
 
   ngOnDestroy(): void {

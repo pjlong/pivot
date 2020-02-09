@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { StoryCommentResponse } from '@app/resources/story-comments.service';
+import { Comment } from '@store/story';
 
 @Component({
   selector: 'pt-story-comment',
@@ -8,7 +8,5 @@ import { StoryCommentResponse } from '@app/resources/story-comments.service';
   styleUrls: ['./story-comment.component.scss'],
 })
 export class StoryCommentComponent {
-  @Input() comment: StoryCommentResponse;
-
-  constructor() {}
+  @Input() comment: Comment;
 }

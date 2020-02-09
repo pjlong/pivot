@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { PersonResponse } from '@app/resources/project-memberships.service';
+import { Person } from '@app/resources';
 
 @Component({
   selector: 'pt-person-badge',
@@ -8,5 +8,5 @@ import { PersonResponse } from '@app/resources/project-memberships.service';
   styleUrls: ['./person-badge.component.scss'],
 })
 export class PersonBadgeComponent {
-  @Input() person: PersonResponse;
+  @Input() person: Person;
 }

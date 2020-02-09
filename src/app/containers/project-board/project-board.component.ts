@@ -7,17 +7,16 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { forkJoin, Observable, Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { PeopleStoreService } from '@app/people-store.service';
 import {
-  ProjectMembershipResponse,
-  ProjectMembershipsService,
-  PersonResponse,
-} from '@app/resources/project-memberships.service';
-import { StoriesService } from '@app/resources/stories.service';
-import { StoryResponse } from '@app/resources/story.service';
+  StoryQuery,
+  Story,
+  StoryService,
+  StoriesGroupedByState,
+  StoryStateName,
+} from '@app/store/story';
 
 @Component({
   selector: 'pt-project-board',
@@ -27,11 +26,8 @@ import { StoryResponse } from '@app/resources/story.service';
 export class ProjectBoardComponent implements OnInit, OnDestroy {
   @ViewChild('storyModal', { static: true }) storyModal: TemplateRef<NgbModal>;
   projectId: string;
-  stories: StoryResponse[] = [];
-  memberships: ProjectMembershipResponse[] = [];
-  peopleMap: { [key: string]: PersonResponse } = {};
-  displayGroups = {};
-  displayOrder = [
+  displayGroups: StoriesGroupedByState;
+  displayOrder: StoryStateName[] = [
     'unscheduled',
     'unstarted',
     'started',
@@ -39,51 +35,49 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     'delivered',
     'accepted',
   ];
-  focusedStory?: StoryResponse;
+  focusedStory?: Story;
+  focusedStoryLoading: boolean;
+  loading: boolean;
   private destroy$ = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private storiesService: StoriesService,
-    private projectMembershipService: ProjectMembershipsService,
-    private peopleStore: PeopleStoreService,
+    private storyService: StoryService,
+    private storyQuery: StoryQuery,
     private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
-    let storiesObservable: Observable<object>;
-    let membershipsObservable: Observable<object>;
-
     this.activatedRoute.parent.paramMap.subscribe(params => {
-      this.projectId = params.get('id');
-      storiesObservable = this.storiesService.get(this.projectId, {
-        limit: 1000,
-      });
-      membershipsObservable = this.projectMembershipService.get(this.projectId);
+      this.projectId = params.get('projectId');
+      this.storyService.get(this.projectId, { limit: 1000 });
     });
 
-    forkJoin([storiesObservable, membershipsObservable])
+    this.storyQuery.asGroups$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        ([stories, memberships]: [
-          StoryResponse[],
-          ProjectMembershipResponse[]
-        ]) => {
-          this.stories = stories;
-          this.peopleStore.setPeopleFromMemberships(memberships);
+      .subscribe((groupedStories: StoriesGroupedByState) => {
+        this.displayGroups = groupedStories;
+      });
 
-          this.stories.forEach(story => {
-            story.requester = this.peopleStore.getById(story.requested_by_id);
-            story.owners = this.peopleStore.getByIds(story.owner_ids);
+    this.storyQuery
+      .selectLoading()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(loading => {
+        this.loading = loading;
+      });
 
-            if (!this.displayGroups[story.current_state]) {
-              this.displayGroups[story.current_state] = [];
-            }
+    this.storyQuery
+      .selectActive()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((focusedStory: Story) => {
+        this.focusedStory = focusedStory;
+      });
 
-            this.displayGroups[story.current_state].push(story);
-          });
-        }
-      );
+    this.storyQuery.activeLoading$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(loading => {
+        this.focusedStoryLoading = loading;
+      });
   }
 
   ngOnDestroy(): void {
@@ -91,11 +85,13 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  openStoryModal(story: StoryResponse): void {
-    this.focusedStory = story;
+  openStoryModal(story: Story): void {
+    this.storyService.focusStory(story);
+
     if (this.modalService.hasOpenModals()) {
       this.modalService.dismissAll();
     }
-    this.modalService.open(this.storyModal, { size: 'lg', scrollable: true });
+
+    this.modalService.open(this.storyModal, { size: 'xl', scrollable: true });
   }
 }

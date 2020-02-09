@@ -8,12 +8,15 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, combineLatest } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 
-import { PeopleStoreService } from '@app/people-store.service';
-import { EpicService, EpicResponse } from '@app/resources/epic.service';
-import { StoriesService } from '@app/resources/stories.service';
-import { StoryResponse } from '@app/resources/story.service';
+import { Epic, EpicService, EpicQuery } from '@app/store/epic';
+import {
+  Story,
+  StoryService,
+  StoryQuery,
+  StoriesGroupedByState,
+} from '@store/story';
 
 @Component({
   selector: 'pt-epic-details',
@@ -22,10 +25,10 @@ import { StoryResponse } from '@app/resources/story.service';
 })
 export class EpicDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('storyModal', { static: true }) storyModal: TemplateRef<NgbModal>;
-  epic: EpicResponse;
-  stories: StoryResponse[] = [];
+  epic: Epic;
+  stories: Story[] = [];
   storyPoints: number;
-  focusedStory: StoryResponse;
+  focusedStory: Story;
   displayGroups: {};
   displayOrder = [
     'planned',
@@ -41,8 +44,9 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private epicService: EpicService,
-    private storiesService: StoriesService,
-    private peopleStore: PeopleStoreService,
+    private epicQuery: EpicQuery,
+    private storyService: StoryService,
+    private storyQuery: StoryQuery,
     private ngbModal: NgbModal
   ) {}
 
@@ -50,35 +54,34 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
     combineLatest([this.route.parent.paramMap, this.route.paramMap])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([parentParams, params]) => {
-        this.epicService.get(parentParams.get('id'), params.get('epicId'));
+        this.epicService.get(
+          parentParams.get('projectId'),
+          params.get('epicId')
+        );
       });
 
-    this.epicService.model$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((epic: EpicResponse) => {
+    this.epicQuery
+      .selectActive()
+      .pipe(takeUntil(this.destroy$), filter(Boolean))
+      .subscribe((epic: Epic) => {
         this.epic = epic;
 
-        this.storiesService.get(epic.project_id.toString(), {
+        this.storyService.get(epic.project_id.toString(), {
           label: epic.label.name,
         });
       });
 
-    this.storiesService.model$
+    this.storyQuery
+      .selectAll()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((stories: StoryResponse[]) => {
+      .subscribe((stories: Story[]) => {
         this.stories = stories;
-        this.storyPoints = this.getStoryPoints(stories);
-        this.displayGroups = this.stories.reduce(
-          (acc: any, story: StoryResponse) => {
-            if (!acc[story.current_state]) {
-              acc[story.current_state] = [];
-            }
-            acc[story.current_state].push(story);
-            return acc;
-          },
-          {}
-        );
-        console.log('displayGroups', this.displayGroups);
+      });
+
+    this.storyQuery.asGroups$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((storiesGroupedByState: StoriesGroupedByState) => {
+        this.displayGroups = storiesGroupedByState;
       });
   }
 
@@ -87,12 +90,12 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  openModal(story: StoryResponse): void {
+  openModal(story: Story): void {
     this.focusedStory = story;
     this.ngbModal.open(this.storyModal, { size: 'lg' });
   }
 
-  private getStoryPoints(stories: StoryResponse[]): number {
+  private getStoryPoints(stories: Story[]): number {
     return stories.reduce((sum, story) => {
       sum += story.estimate ? +story.estimate : 0;
       return sum;

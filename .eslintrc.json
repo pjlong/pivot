@@ -246,6 +246,6 @@
     ]
   },
   "settings": {
-    "import/internal-regex": "^@(app|env)"
+    "import/internal-regex": "^@(app|env|store)"
   }
 }

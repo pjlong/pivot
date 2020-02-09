@@ -4,15 +4,12 @@ import { map } from 'rxjs/operators';
 
 import { PivotalAPIService } from '@app/pivotal-api.service';
 
-import { ProjectMembershipResponse } from './project-memberships.service';
-
 import { BaseResource, BaseElement } from '.';
 
 export interface MeResponse extends BaseElement {
   kind: 'me';
   name: string;
   initials: string;
-  projects: ProjectMembershipResponse[];
   username: string;
 }
 

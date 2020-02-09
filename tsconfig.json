@@ -13,6 +13,7 @@
     "paths": {
       "@env": ["./src/environments/environment"],
       "@app/*": ["./src/app/*"],
+      "@store/*": ["./src/app/store/*"],
       "@bootstrap/*": ["./src/app/bootstrap/*"]
     },
     "target": "es2015",
