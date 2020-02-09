@@ -30,7 +30,10 @@ export class EpicService {
       .pipe(map(r => r.body));
 
     req.subscribe({
-      next: response => {},
+      next: response => {
+        this.epicStore.add(response);
+        this.epicStore.setActive(response.id);
+      },
     });
 
     return req;

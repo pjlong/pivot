@@ -8,7 +8,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, combineLatest } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 
 import { Epic, EpicService, EpicQuery } from '@app/store/epic';
 import {
@@ -51,13 +51,18 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      this.epicService.set(params.get('epicId'));
-    });
+    combineLatest([this.route.parent.paramMap, this.route.paramMap])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([parentParams, params]) => {
+        this.epicService.get(
+          parentParams.get('projectId'),
+          params.get('epicId')
+        );
+      });
 
     this.epicQuery
       .selectActive()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$), filter(Boolean))
       .subscribe((epic: Epic) => {
         this.epic = epic;
 
