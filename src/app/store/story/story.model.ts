@@ -29,8 +29,7 @@ export interface Comment extends BaseElement {
   file_attachments?: FileAttachment[];
   commit_identifier: string;
   commit_type: string;
-
-  commenter?: Person;
+  person?: Person;
 }
 
 export interface Task extends BaseElement {

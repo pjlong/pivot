@@ -49,7 +49,7 @@
           ></i>
         </span>
       </header>
-      <div [ngbCollapse]="status.tasks.collapse" *ngIf="!status.tasks.loading">
+      <div [ngbCollapse]="status.tasks.collapse">
         <ul class="list-group list-group-flush">
           <li
             class="list-group-item d-flex"
@@ -163,8 +163,8 @@
         <li class="list-group-item">
           <h4 class="h6">Requester:</h4>
           <span
-            [ngClass]="{ 'text-muted font-italic': !story?.requester?.name }"
-            >{{ story?.requester?.name || 'None' }}</span
+            [ngClass]="{ 'text-muted font-italic': !story?.requested_by?.name }"
+            >{{ story?.requested_by?.name || 'None' }}</span
           >
         </li>
         <li class="list-group-item">
