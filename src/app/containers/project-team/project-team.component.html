@@ -7,6 +7,15 @@
       >
         <h2 class="h5 m-0">
           {{ storiesByOwner[ownerId]._.name }}
+          <span>
+            ({{ ownerMetadata[ownerId].storyCount }} /
+            {{ ownerMetadata[ownerId].pointCount }})
+            <i
+              class="fas fa-info-circle fa-xs text-info"
+              ngbTooltip="(# of stories / # points) from non-accepted stories"
+              container="body"
+            ></i>
+          </span>
         </h2>
         <span>
           <span class="text-muted" *ngIf="ownerOnlyHasAcceptedStories(ownerId)">

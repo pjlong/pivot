@@ -39,6 +39,9 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
   storiesByOwner: StoriesGroupedByOwner;
   ownerIds: string[];
   collapseState: { [key: string]: boolean } = {};
+  ownerMetadata: {
+    [key: string]: { pointCount: number; storyCount: number };
+  } = {};
   focusedStory?: Story;
   focusedStoryLoading: boolean;
   private destroy$ = new Subject();
@@ -50,7 +53,7 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
     private modalService: NgbModal
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.activatedRoute.parent.paramMap.subscribe(params => {
       this.projectId = params.get('projectId');
       this.storyService.get(this.projectId, { limit: 1000 });
@@ -62,11 +65,14 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
         this.ownerIds = Object.keys(this.storiesByOwner);
 
         this.ownerIds.forEach((id: string) => {
+          // Set collapse state
           if (this.ownerOnlyHasAcceptedStories(id)) {
             this.collapseState[id] = true;
           } else {
             this.collapseState[id] = false;
           }
+
+          this.ownerMetadata[id] = this.getStoryPointCount(id);
         });
       }
     );
@@ -109,6 +115,28 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
     stateKeys.splice(stateKeys.indexOf('_'), 1);
 
     return stateKeys.length === 1 && stateKeys.includes('accepted');
+  }
+
+  getStoryPointCount(
+    ownerId: string
+  ): { storyCount: number; pointCount: number } {
+    const storiesByState = this.storiesByOwner[ownerId];
+    const totals = {
+      storyCount: 0,
+      pointCount: 0,
+    };
+
+    this.displayOrder.forEach((stateName: string) => {
+      if (stateName === 'accepted') return;
+      const stories = storiesByState[stateName];
+      if (stories) {
+        stories.forEach((story: Story) => {
+          totals.storyCount += 1;
+          totals.pointCount += story.estimate || 0;
+        });
+      }
+    });
+    return totals;
   }
 
   openStoryModal(story: Story): void {
