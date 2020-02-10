@@ -3,7 +3,13 @@ import { QueryEntity } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { Story, StoriesGroupedByState } from './story.model';
+import { Person } from '@app/resources';
+
+import {
+  Story,
+  StoriesGroupedByState,
+  StoriesGroupedByOwner,
+} from './story.model';
 import { StoryStore, StoryState } from './story.store';
 
 @Injectable({ providedIn: 'root' })
@@ -25,6 +31,30 @@ export class StoryQuery extends QueryEntity<StoryState> {
           acc[story.current_state].push(story);
           return acc;
         }, {})
+      )
+    );
+  }
+
+  get asTeam$(): Observable<StoriesGroupedByOwner> {
+    return this.selectAll().pipe(
+      map((stories: Story[]) =>
+        stories.reduce((acc: StoriesGroupedByOwner, story: Story) => {
+          story.owners.forEach((owner: Person) => {
+            if (!acc[owner.id]) {
+              acc[owner.id] = {};
+
+              acc[owner.id]._ = owner;
+            }
+
+            if (!acc[owner.id][story.current_state]) {
+              acc[owner.id][story.current_state] = [];
+            }
+
+            acc[owner.id][story.current_state].push(story);
+          });
+
+          return acc;
+        }, {} as StoriesGroupedByOwner)
       )
     );
   }
