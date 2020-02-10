@@ -38,8 +38,8 @@
             [ngClass]="{ 'border-right border-muted': !isLast }"
           >
             <div class="" [id]="stateName">
-              <header>
-                <h3 class="h6">{{ stateName }}</h3>
+              <header class="mb-3">
+                <h3 class="h6">{{ stateName | titlecase }}</h3>
               </header>
               <div
                 class="d-flex flex-column align-items-start"
