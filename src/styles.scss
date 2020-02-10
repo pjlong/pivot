@@ -61,3 +61,26 @@ markdown {
     }
   }
 }
+
+.pool {
+  height: calc(100vh - 6rem);
+  overflow: hidden;
+}
+
+.swimlane {
+  float: left;
+  height: 100%;
+  width: 21rem;
+}
+
+.viewport {
+  width: 100vw;
+  overflow-x: auto;
+}
+
+.badge-label {
+  max-width: 15rem;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -16,6 +16,7 @@ import { CurrentUserComponent } from './components/current-user/current-user.com
 import { FileAttachmentPreviewComponent } from './components/file-attachment-preview/file-attachment-preview.component';
 import { PersonBadgeComponent } from './components/person-badge/person-badge.component';
 import { ProjectNavComponent } from './components/project-nav/project-nav.component';
+import { StoryCardComponent } from './components/story-card/story-card.component';
 import { StoryCommentComponent } from './components/story-comment/story-comment.component';
 import { StoryDetailsComponent } from './components/story-details/story-details.component';
 import { EpicDetailsComponent } from './containers/epic-details/epic-details.component';
@@ -23,6 +24,7 @@ import { HomeComponent } from './containers/home/home.component';
 import { ProjectBoardComponent } from './containers/project-board/project-board.component';
 import { ProjectEpicsComponent } from './containers/project-epics/project-epics.component';
 import { ProjectRootComponent } from './containers/project-root/project-root.component';
+import { ProjectTeamComponent } from './containers/project-team/project-team.component';
 import { LocalStorageService } from './local-storage.service';
 import { PeopleStoreService } from './people-store.service';
 import { BytesizePipe } from './pipes/bytesize.pipe';
@@ -51,6 +53,8 @@ import { StoryQuery, StoryStore, StoryService } from './store/story';
     FileAttachmentPreviewComponent,
     PersonBadgeComponent,
     EpicDetailsComponent,
+    ProjectTeamComponent,
+    StoryCardComponent,
   ],
   imports: [
     // Angular Modules

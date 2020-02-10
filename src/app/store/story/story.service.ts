@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { PivotalAPIService } from '@app/pivotal-api.service';
 
 import { Story } from './story.model';
-import { StoryStore, StoryState } from './story.store';
+import { StoryStore } from './story.store';
 
 @Injectable({
   providedIn: 'root',

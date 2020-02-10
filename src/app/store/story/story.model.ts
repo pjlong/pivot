@@ -70,6 +70,12 @@ export type StoryStateName =
 
 export type StoriesGroupedByState = { [key in StoryStateName]?: Story[] };
 
+export interface StoriesGroupedByOwner {
+  [key: string]: {
+    [key: string]: any;
+  };
+}
+
 export const createStory = (params: Partial<Story>): Story => {
   return {} as Story;
 };

@@ -8,6 +8,7 @@ import { HomeComponent } from './containers/home/home.component';
 import { ProjectBoardComponent } from './containers/project-board/project-board.component';
 import { ProjectEpicsComponent } from './containers/project-epics/project-epics.component';
 import { ProjectRootComponent } from './containers/project-root/project-root.component';
+import { ProjectTeamComponent } from './containers/project-team/project-team.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [ApiKeyGuardService] },
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: 'board', component: ProjectBoardComponent },
       { path: 'epics/:epicId', component: EpicDetailsComponent },
       { path: 'epics', component: ProjectEpicsComponent },
+      { path: 'team', component: ProjectTeamComponent },
       { path: '', redirectTo: 'board', pathMatch: 'full' },
     ],
   },
