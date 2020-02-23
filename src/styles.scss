@@ -2,10 +2,6 @@
 @import '~bootstrap/scss/bootstrap';
 @import './variables';
 
-body {
-  overflow-y: hidden !important;
-}
-
 .y-scroll {
   height: 100%;
   overflow-y: auto !important;
@@ -17,6 +13,7 @@ body {
 
 $cursor-styles: auto, default, pointer, context-menu, help, progress, wait, cell,
   crosshair, text, move, no-drop, not-allowed, grab;
+
 @each $cursor-style in $cursor-styles {
   .cursor-#{$cursor-style} {
     cursor: $cursor-style !important;
@@ -62,20 +59,17 @@ markdown {
   }
 }
 
-.pool {
-  height: calc(100vh - 6rem);
-  overflow: hidden;
-}
-
-.swimlane {
-  float: left;
-  height: 100%;
-  width: 21rem;
+.overflow-inherit {
+  overflow: inherit !important;
 }
 
 .viewport {
-  width: 100vw;
   overflow-x: auto;
+  overflow-y: hidden;
+
+  &.viewport_with-header {
+    max-height: calc(100vh - 3.5rem);
+  }
 }
 
 .badge-label {
