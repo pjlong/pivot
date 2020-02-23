@@ -26,6 +26,7 @@ import { ProjectBoardComponent } from './containers/project-board/project-board.
 import { ProjectEpicsComponent } from './containers/project-epics/project-epics.component';
 import { ProjectRootComponent } from './containers/project-root/project-root.component';
 import { ProjectTeamComponent } from './containers/project-team/project-team.component';
+import { StoryModalWrapperComponent } from './containers/story-modal-wrapper/story-modal-wrapper.component';
 import { LocalStorageService } from './local-storage.service';
 import { PeopleStoreService } from './people-store.service';
 import { BytesizePipe } from './pipes/bytesize.pipe';
@@ -57,6 +58,7 @@ import { StoryQuery, StoryStore, StoryService } from './store/story';
     ProjectTeamComponent,
     StoryCardComponent,
     ProjectCardComponent,
+    StoryModalWrapperComponent,
   ],
   imports: [
     // Angular Modules

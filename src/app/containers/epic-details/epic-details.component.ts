@@ -28,7 +28,6 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
   epic: Epic;
   stories: Story[] = [];
   storyPoints: number;
-  focusedStory: Story;
   displayGroups: {};
   displayOrder = [
     'planned',
@@ -46,8 +45,7 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
     private epicService: EpicService,
     private epicQuery: EpicQuery,
     private storyService: StoryService,
-    private storyQuery: StoryQuery,
-    private ngbModal: NgbModal
+    private storyQuery: StoryQuery
   ) {}
 
   ngOnInit(): void {
@@ -90,9 +88,8 @@ export class EpicDetailsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  openModal(story: Story): void {
-    this.focusedStory = story;
-    this.ngbModal.open(this.storyModal, { size: 'lg' });
+  selectStory(story: Story): void {
+    this.storyService.focusStory(story);
   }
 
   private getStoryPoints(stories: Story[]): number {

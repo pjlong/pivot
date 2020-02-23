@@ -28,7 +28,7 @@
 
             <div class="d-flex flex-column align-items-start">
               <div *ngFor="let story of displayGroups[stateName]">
-                <button class="btn" (click)="openModal(story)" type="button">
+                <pt-story-modal-wrapper (modalOpenClick)="selectStory(story)">
                   <span
                     class="badge cursor-default mw-100"
                     [ngClass]="{
@@ -52,7 +52,7 @@
                     ></i>
                     {{ story.id }}</span
                   >
-                </button>
+                </pt-story-modal-wrapper>
                 <ng-template #storyPopover>
                   <ul class="list-unstyled">
                     <li>
@@ -78,20 +78,3 @@
     </section>
   </div>
 </div>
-
-<ng-template #storyModal let-modal>
-  <header class="modal-header align-items-center border-bottom-0">
-    <h4 class="modal-title">{{ focusedStory?.name }}</h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="modal.dismiss()"
-    >
-      <i aria-hidden="true" class="fas fa-times"></i>
-    </button>
-  </header>
-  <div class="modal-body container-fluid">
-    <pt-story-details [story]="focusedStory"></pt-story-details>
-  </div>
-</ng-template>

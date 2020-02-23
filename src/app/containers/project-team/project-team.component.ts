@@ -8,13 +8,11 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import {
   StoryService,
   StoryQuery,
   StoriesGroupedByOwner,
-  StoriesGroupedByState,
   StoryStateName,
   Story,
 } from '@app/store/story';
@@ -42,15 +40,12 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
   ownerMetadata: {
     [key: string]: { pointCount: number; storyCount: number };
   } = {};
-  focusedStory?: Story;
-  focusedStoryLoading: boolean;
   private destroy$ = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private storyService: StoryService,
-    private storyQuery: StoryQuery,
-    private modalService: NgbModal
+    private storyQuery: StoryQuery
   ) {}
 
   ngOnInit(): void {
@@ -76,19 +71,6 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
         });
       }
     );
-
-    this.storyQuery
-      .selectActive()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((focusedStory: Story) => {
-        this.focusedStory = focusedStory;
-      });
-
-    this.storyQuery.activeLoading$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(loading => {
-        this.focusedStoryLoading = loading;
-      });
   }
 
   ngOnDestroy(): void {
@@ -139,13 +121,7 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
     return totals;
   }
 
-  openStoryModal(story: Story): void {
+  selectStory(story: Story): void {
     this.storyService.focusStory(story);
-
-    if (this.modalService.hasOpenModals()) {
-      this.modalService.dismissAll();
-    }
-
-    this.modalService.open(this.storyModal, { size: 'xl', scrollable: true });
   }
 }

@@ -1,0 +1,20 @@
+<button class="btn w-100" (click)="openModal()">
+  <ng-content></ng-content>
+</button>
+
+<ng-template #modal let-modal>
+  <header class="modal-header align-items-center border-bottom-0">
+    <h4 class="modal-title">{{ story?.name }}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    >
+      <i aria-hidden="true" class="fas fa-times"></i>
+    </button>
+  </header>
+  <div class="modal-body container-fluid">
+    <pt-story-details [story]="story" [loading]="loading"></pt-story-details>
+  </div>
+</ng-template>

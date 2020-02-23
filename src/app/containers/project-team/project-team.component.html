@@ -48,13 +48,11 @@
                   else tooManyStories
                 "
               >
-                <button
-                  class="btn p-0 mb-3 w-100"
-                  *ngFor="let story of getStories(ownerId, stateName)"
-                  (click)="openStoryModal(story)"
-                >
-                  <pt-story-card [story]="story"></pt-story-card>
-                </button>
+                <div *ngFor="let story of getStories(ownerId, stateName)">
+                  <pt-story-modal-wrapper (modalOpenClick)="selectStory(story)">
+                    <pt-story-card [story]="story"></pt-story-card>
+                  </pt-story-modal-wrapper>
+                </div>
               </div>
               <ng-template #tooManyStories>
                 <span class="text-muted font-italic">10+ Stories</span>
@@ -66,23 +64,3 @@
     </div>
   </section>
 </div>
-
-<ng-template #storyModal let-modal>
-  <header class="modal-header align-items-center border-bottom-0">
-    <h4 class="modal-title">{{ focusedStory?.name }}</h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="modal.dismiss()"
-    >
-      <i aria-hidden="true" class="fas fa-times"></i>
-    </button>
-  </header>
-  <div class="modal-body container-fluid">
-    <pt-story-details
-      [story]="focusedStory"
-      [loading]="focusedStoryLoading"
-    ></pt-story-details>
-  </div>
-</ng-template>

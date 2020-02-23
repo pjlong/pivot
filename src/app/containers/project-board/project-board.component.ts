@@ -79,19 +79,6 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
       .subscribe(loading => {
         this.loading = loading;
       });
-
-    this.storyQuery
-      .selectActive()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((focusedStory: Story) => {
-        this.focusedStory = focusedStory;
-      });
-
-    this.storyQuery.activeLoading$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(loading => {
-        this.focusedStoryLoading = loading;
-      });
   }
 
   ngOnDestroy(): void {
@@ -99,14 +86,8 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  openStoryModal(story: Story): void {
+  selectStory(story: Story): void {
     this.storyService.focusStory(story);
-
-    if (this.modalService.hasOpenModals()) {
-      this.modalService.dismissAll();
-    }
-
-    this.modalService.open(this.storyModal, { size: 'xl', scrollable: true });
   }
 
   toggleSwimlane(stateName: StoryStateName): void {
