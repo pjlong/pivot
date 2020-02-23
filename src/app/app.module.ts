@@ -15,6 +15,7 @@ import { ApiKeyAuthComponent } from './components/api-key-auth/api-key-auth.comp
 import { CurrentUserComponent } from './components/current-user/current-user.component';
 import { FileAttachmentPreviewComponent } from './components/file-attachment-preview/file-attachment-preview.component';
 import { PersonBadgeComponent } from './components/person-badge/person-badge.component';
+import { ProjectCardComponent } from './components/project-card/project-card.component';
 import { ProjectNavComponent } from './components/project-nav/project-nav.component';
 import { StoryCardComponent } from './components/story-card/story-card.component';
 import { StoryCommentComponent } from './components/story-comment/story-comment.component';
@@ -55,6 +56,7 @@ import { StoryQuery, StoryStore, StoryService } from './store/story';
     EpicDetailsComponent,
     ProjectTeamComponent,
     StoryCardComponent,
+    ProjectCardComponent,
   ],
   imports: [
     // Angular Modules

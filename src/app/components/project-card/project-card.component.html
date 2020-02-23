@@ -1,0 +1,37 @@
+<div class="card card-info">
+  <header class="card-header">
+    <h2 class="mb-0 h6 mb-0">{{ project?.name }}</h2>
+  </header>
+  <div class="card-body pb-0">
+    <div class="btn-group w-100">
+      <a
+        class="btn btn-primary"
+        [routerLink]="['/project', project.id, 'board']"
+        >Stories: {{ project?.story_ids?.length || 0 }}</a
+      >
+      <a class="btn btn-info" [routerLink]="['/project', project.id, 'epics']"
+        >Epics: {{ project?.epic_ids?.length || 0 }}</a
+      >
+    </div>
+  </div>
+  <div class="card-body">
+    <ul class="list-unstyled">
+      <li class="row">
+        <b class="h6 col-6">Point Scale:</b>
+        <span class="col-6">{{ project?.point_scale }}</span>
+      </li>
+      <li class="row">
+        <b class="h6 col-6">Current Iteration:</b>
+        <span class="col-6">{{ project?.current_iteration }}</span>
+      </li>
+      <li class="row">
+        <b class="h6 col-6">Current Velocity:</b>
+        <span class="col-6">{{ project?.current_velocity }}</span>
+      </li>
+      <li class="row">
+        <b class="h6 col-6">Members:</b>
+        <span class="col-6">{{ project?.membership_ids?.length || 0 }}</span>
+      </li>
+    </ul>
+  </div>
+</div>
