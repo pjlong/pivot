@@ -37,7 +37,7 @@
             *ngFor="let stateName of displayOrder; last as isLast"
             [ngClass]="{ 'border-right border-muted': !isLast }"
           >
-            <div class="" [id]="stateName">
+            <div [id]="stateName">
               <header class="mb-3">
                 <h3 class="h6">{{ stateName | titlecase }}</h3>
               </header>

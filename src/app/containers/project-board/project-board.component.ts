@@ -93,4 +93,8 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
   toggleSwimlane(stateName: StoryStateName): void {
     this.boardService.toggleSwimlane(stateName);
   }
+
+  stateIsInactive(stateName: StoryStateName): boolean {
+    return this.inactiveStateKeys.includes(stateName);
+  }
 }
