@@ -1,5 +1,8 @@
 <div>
   <section class="container-fluid pt-3">
+    <header class="mb-3">
+      <h1 *ngIf="project">{{ project?.name }} - Team</h1>
+    </header>
     <div class="card mb-4" *ngFor="let ownerId of ownerIds">
       <header
         class="card-header d-flex align-items-center justify-content-between"

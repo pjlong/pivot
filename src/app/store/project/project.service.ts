@@ -22,6 +22,7 @@ export class ProjectService {
     req.subscribe({
       next: (project: Project) => {
         console.log('project', project);
+        this.projectStore.add(project);
       },
     });
 
@@ -60,5 +61,9 @@ export class ProjectService {
     });
 
     return req;
+  }
+
+  setActive(projectId: string): Observable<Project> {
+    return this.projectStore.setActive(projectId);
   }
 }

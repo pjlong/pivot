@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 
+import { ProjectQuery, Project } from '@app/store/project';
 import {
   StoryService,
   StoryQuery,
@@ -34,6 +35,7 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
     'accepted',
   ];
   projectId: string;
+  project: Project;
   storiesByOwner: StoriesGroupedByOwner;
   ownerIds: string[];
   collapseState: { [key: string]: boolean } = {};
@@ -45,7 +47,8 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private storyService: StoryService,
-    private storyQuery: StoryQuery
+    private storyQuery: StoryQuery,
+    private projectQuery: ProjectQuery
   ) {}
 
   ngOnInit(): void {
@@ -60,7 +63,6 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
         this.ownerIds = Object.keys(this.storiesByOwner);
 
         this.ownerIds.forEach((id: string) => {
-          // Set collapse state
           if (this.ownerOnlyHasAcceptedStories(id)) {
             this.collapseState[id] = true;
           } else {
@@ -71,6 +73,10 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
         });
       }
     );
+
+    this.projectQuery.selectActive().subscribe((project: Project) => {
+      this.project = project;
+    });
   }
 
   ngOnDestroy(): void {
