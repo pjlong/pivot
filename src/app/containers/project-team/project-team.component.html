@@ -1,12 +1,11 @@
-<div>
-  <section class="container-fluid pt-3">
-    <header class="mb-3">
-      <h1 *ngIf="project">{{ project?.name }} - Team</h1>
-    </header>
-    <div class="card mb-4" *ngFor="let ownerId of ownerIds">
+<header class="mb-3">
+  <h1 *ngIf="project">{{ project?.name }} - Team</h1>
+</header>
+<section class="d-flex px-3 pt-3">
+  <div class="swimlane mr-3" *ngFor="let ownerId of ownerIds">
+    <div class="card w-100">
       <header
         class="card-header d-flex align-items-center justify-content-between"
-        (click)="toggleCollapse(ownerId)"
       >
         <h2 class="h5 m-0">
           {{ storiesByOwner[ownerId]._.name }}
@@ -20,50 +19,35 @@
             ></i>
           </span>
         </h2>
-        <span>
-          <span class="text-muted" *ngIf="ownerOnlyHasAcceptedStories(ownerId)">
-            (all accepted)
-          </span>
-          <i
-            class="fas"
-            [ngClass]="{
-              'fa-caret-down': !collapseState[ownerId],
-              'fa-caret-up': collapseState[ownerId]
-            }"
-          ></i>
-        </span>
       </header>
-      <div [ngbCollapse]="collapseState[ownerId]">
-        <div class="card-body d-flex p-0">
-          <div
-            class="col px-4 py-3"
-            *ngFor="let stateName of displayOrder; last as isLast"
-            [ngClass]="{ 'border-right border-muted': !isLast }"
-          >
-            <div [id]="stateName">
-              <header class="mb-3">
-                <h3 class="h6">{{ stateName | titlecase }}</h3>
-              </header>
+      <div class="card-body d-flex flex-column p-2">
+        <div class="" *ngFor="let stateName of displayOrder">
+          <div class="" [id]="stateName">
+            <header class="mb-3">
+              <h3 class="h6">{{ stateName | titlecase }}</h3>
+            </header>
+            <div
+              class="d-flex flex-column align-items-start mb-2"
+              *ngIf="
+                getStories(ownerId, stateName)?.length < 10;
+                else tooManyStories
+              "
+            >
               <div
-                class="d-flex flex-column align-items-start"
-                *ngIf="
-                  getStories(ownerId, stateName)?.length < 10;
-                  else tooManyStories
-                "
+                class="mb-2"
+                *ngFor="let story of getStories(ownerId, stateName)"
               >
-                <div *ngFor="let story of getStories(ownerId, stateName)">
-                  <pt-story-modal-wrapper (modalOpenClick)="selectStory(story)">
-                    <pt-story-card [story]="story"></pt-story-card>
-                  </pt-story-modal-wrapper>
-                </div>
+                <pt-story-modal-wrapper (modalOpenClick)="selectStory(story)">
+                  <pt-story-card [story]="story"></pt-story-card>
+                </pt-story-modal-wrapper>
               </div>
-              <ng-template #tooManyStories>
-                <span class="text-muted font-italic">10+ Stories</span>
-              </ng-template>
             </div>
+            <ng-template #tooManyStories>
+              <span class="text-muted font-italic">10+ Stories</span>
+            </ng-template>
           </div>
         </div>
       </div>
     </div>
-  </section>
-</div>
+  </div>
+</section>

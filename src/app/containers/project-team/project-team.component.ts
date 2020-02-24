@@ -38,7 +38,6 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
   project: Project;
   storiesByOwner: StoriesGroupedByOwner;
   ownerIds: string[];
-  collapseState: { [key: string]: boolean } = {};
   ownerMetadata: {
     [key: string]: { pointCount: number; storyCount: number };
   } = {};
@@ -63,12 +62,6 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
         this.ownerIds = Object.keys(this.storiesByOwner);
 
         this.ownerIds.forEach((id: string) => {
-          if (this.ownerOnlyHasAcceptedStories(id)) {
-            this.collapseState[id] = true;
-          } else {
-            this.collapseState[id] = false;
-          }
-
           this.ownerMetadata[id] = this.getStoryPointCount(id);
         });
       }
@@ -91,11 +84,6 @@ export class ProjectTeamComponent implements OnInit, OnDestroy {
       }
     }
     return null;
-  }
-
-  toggleCollapse(ownerId: string): void {
-    console.log('toggle');
-    this.collapseState[ownerId] = !this.collapseState[ownerId];
   }
 
   ownerOnlyHasAcceptedStories(id: string): boolean {
