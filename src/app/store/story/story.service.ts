@@ -76,11 +76,16 @@ export class StoryService {
   }
 
   private buildParams(options: any): object {
-    const { limit = 100, label } = options;
+    // TODO: update this to just take options as a object of camelCase keys, cast to snake_case
+    const { limit = 100, label, filter } = options;
     const params: any = { limit };
 
     if (label) {
       params.with_label = label;
+    }
+
+    if (filter) {
+      params.filter = filter;
     }
 
     return params;

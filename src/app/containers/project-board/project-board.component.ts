@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { BoardService, BoardQuery } from '@app/store/board';
@@ -58,14 +58,24 @@ export class ProjectBoardComponent implements OnInit, OnDestroy {
       this.boardState = boardState;
     });
 
-    this.boardQuery.inactiveStateKeys$.subscribe(states => {
-      this.inactiveStateKeys = states;
-    });
+    combineLatest([
+      this.activatedRoute.parent.paramMap,
+      this.boardQuery.inactiveStateKeys$,
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([params, inactiveStates]) => {
+        this.projectId = params.get('projectId');
+        this.inactiveStateKeys = inactiveStates;
 
-    this.activatedRoute.parent.paramMap.subscribe(params => {
-      this.projectId = params.get('projectId');
-      this.storyService.get(this.projectId, { limit: 1000 });
-    });
+        const statesToFetch = this.displayOrder
+          .filter(key => !inactiveStates.includes(key))
+          .join(',');
+
+        this.storyService.get(this.projectId, {
+          limit: 1000,
+          filter: `state:${statesToFetch}`,
+        });
+      });
 
     this.storyQuery.asGroups$
       .pipe(takeUntil(this.destroy$))
